@@ -6,4 +6,5 @@ public interface IStocksFinaisDiariosBarracas {
         50 a 100 -> Prata;
         < 50 -> Ouro;
      */
+
 }
