@@ -24,6 +24,7 @@ public class Produto {
         this.preco = produto.preco;
     }
 
+    // Getters e Setters
     public String getNome() {
         return nome;
     }
@@ -45,14 +46,11 @@ public class Produto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Produto produto = (Produto) o;
-        return Double.compare(preco, produto.preco) == 0 && Objects.equals(nome, produto.nome);
+        return Double.compare(produto.preco, preco) == 0 && Objects.equals(nome, produto.nome);
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("");
-        sb.append(nome);
-        sb.append(String.format(" (%.2f€)", preco));
-        return sb.toString();
+        return nome + " (Preço: " + preco + "€)";
     }
 }

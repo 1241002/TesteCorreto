@@ -1,4 +1,8 @@
 package org.example.model;
 
-public class Barraca {
+import java.io.Serializable;
+import java.util.*;
+
+public class Barraca implements Serializable {
+
 }
