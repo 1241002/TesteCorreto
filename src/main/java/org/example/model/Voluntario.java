@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public class Voluntario {
     private String nome;
-    private String numeroAluno;
+    private int numeroAluno;
     private Federacao federacao;
 
-    public Voluntario(String nome, String numeroAluno, Federacao federacao) {
+    public Voluntario(String nome, int numeroAluno, Federacao federacao) {
         this.nome = nome;
         this.numeroAluno = numeroAluno;
         this.federacao = federacao;
@@ -17,7 +17,7 @@ public class Voluntario {
         return nome;
     }
 
-    public String getNumeroAluno() {
+    public int getNumeroAluno() {
         return numeroAluno;
     }
 
@@ -39,6 +39,10 @@ public class Voluntario {
 
     @Override
     public String toString() {
-        return "Voluntário: " + nome + " | Nº Aluno: " + numeroAluno + " | " + federacao;
+        return "Voluntario{" +
+                "nome='" + nome + '\'' +
+                ", numeroAluno=" + numeroAluno +
+                '}';
     }
+
 }

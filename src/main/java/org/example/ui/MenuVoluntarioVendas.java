@@ -1,21 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.example.ui;
 
-//import model.ViagensTop;
-//import utils.Utils;
-
 import org.example.model.Federacao;
+import org.example.model.VoluntarioVendas;
 import org.example.utils.Utils;
 
 import java.io.IOException;
 
-
-public class MenuVoluntarioVendas
-{
+public class MenuVoluntarioVendas {
     private Federacao federacao;
     private String opcao;
 
@@ -25,19 +16,56 @@ public class MenuVoluntarioVendas
 
     public void run() throws IOException {
         do {
-            System.out.println("###### MENU #####");
+            System.out.println("\n###### MENU VOLUNTÁRIO VENDAS #####");
             System.out.println("1. Fazer venda");
-            // Completar
+            System.out.println("2. Ver total de vendas de um voluntário");
             System.out.println("0. Voltar");
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 
-            if (opcao.equals("1")) {
-                // Completar
-                System.out.println("Selecionou a opção: Fazer venda");
+            switch (opcao) {
+                case "1":
+                    fazerVenda();
+                    break;
+                case "2":
+                    verTotalVendas();
+                    break;
+                case "0":
+                    System.out.println("A voltar ao menu anterior...");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
             }
+        } while (!opcao.equals("0"));
+    }
+
+    private void fazerVenda() {
+        int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");
+        VoluntarioVendas voluntario = federacao.getVoluntarioVendasPorNumeroAluno(numeroAluno);
+
+        if (voluntario == null) {
+            System.out.println("Voluntário não encontrado.");
+            return;
         }
-        while (!opcao.equals("0"));
+
+        double valor = Utils.readDoubleFromConsole("Valor da venda: ");
+        if (valor <= 0) {
+            System.out.println("Valor inválido.");
+            return;
+        }
+
+        voluntario.registarVenda(valor);
+        System.out.println("Venda registada com sucesso.");
+    }
+
+    private void verTotalVendas() {
+        int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");
+        VoluntarioVendas voluntario = federacao.getVoluntarioVendasPorNumeroAluno(numeroAluno);
+
+        if (voluntario == null) {
+            System.out.println("Voluntário não encontrado.");
+            return;
+        }
+
+        System.out.println("Total de vendas: " + String.format("%.2f€", voluntario.getTotalVendas()));
     }
 }
-
-
