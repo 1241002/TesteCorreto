@@ -1,5 +1,6 @@
 package org.example.model;
 
+
 public class Instituicao {
     private String nome;
 
@@ -17,6 +18,10 @@ public class Instituicao {
 
     @Override
     public String toString() {
-        return "Instituição{" + "nome=" + nome + '}';
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Instituicao");
+        sb.append("\nNome: ").append(nome);
+        sb.append("");
+        return sb.toString();
     }
 }

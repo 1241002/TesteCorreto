@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class VoluntarioVendas extends Voluntario {
+public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
     private final List<Double> vendas;
 
     public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao) {
@@ -43,6 +43,13 @@ public class VoluntarioVendas extends Voluntario {
         return total;
     }
 
+    public void setTotalVendas(double totalVendas) {
+    }
+
+    public void verificarEExibirCategoria() {
+        super.verificarEExibirCategoria();
+    }
+
     public void limparVendas() {
         vendas.clear();
     }
@@ -63,8 +70,10 @@ public class VoluntarioVendas extends Voluntario {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("VoluntarioVendas: ").append(super.toString());
+        sb.append(super.toString());
         sb.append("Total de Vendas: %.2f€").append(getTodasVendas());
-        sb.append('}');
+        sb.append("");
         return sb.toString();
     }
 }
+

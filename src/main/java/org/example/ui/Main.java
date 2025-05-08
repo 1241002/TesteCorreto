@@ -19,7 +19,7 @@ public class Main {
 
 
             // Criando voluntários de vendas
-            VoluntarioVendas voluntario1 = new VoluntarioVendas("João Silva", 123456789, instituicaoX);
+            VoluntarioVendas voluntario1 = new VoluntarioVendas("João Silva", 123456789,instituicaoX);
             VoluntarioVendas voluntario2 = new VoluntarioVendas("Maria Oliveira", 987654321, instituicaoY);
 
             // Adicionando voluntários à federação

@@ -1,6 +1,6 @@
 package org.example.model;
 
-public class Voluntario {
+public abstract class Voluntario implements IVendasVoluntarios {
     private String nome;
     private int numeroAluno;
     private Instituicao instituicao;
@@ -15,7 +15,7 @@ public class Voluntario {
         this.instituicao = instituicao;
     }
 
-    public Voluntario(){
+    public Voluntario() {
         this.nome = NOME_POR_OMISSAO;
         this.numeroAluno = NUMERO_ALUNO_POR_OMISSAO;
         this.instituicao = INSTITUICAO_POR_OMISSAO;
@@ -54,13 +54,13 @@ public class Voluntario {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Voluntario{");
-        sb.append("nome='").append(nome).append('\'');
-        sb.append(", numeroAluno=").append(numeroAluno);
-        sb.append(", instituicao=").append(instituicao);
-        sb.append('}');
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Voluntario: ");
+        sb.append("\nNome='").append(nome);
+        sb.append("\nNumero de Aluno=").append(numeroAluno);
+        sb.append("\nInstituicao").append(instituicao);
+        sb.append("");
         return sb.toString();
     }
-
 
 }
