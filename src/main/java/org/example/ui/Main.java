@@ -1,6 +1,7 @@
 package org.example.ui;
 
 import org.example.model.Federacao;
+import org.example.model.Instituicao;
 import org.example.model.VoluntarioVendas;
 
 public class Main {
@@ -13,9 +14,13 @@ public class Main {
             // Criação da Federação X
             Federacao FederaçãoX = new Federacao("Federação X");
 
+            Instituicao instituicaoX = new Instituicao("Instituicao X");
+            Instituicao instituicaoY = new Instituicao("Instituicao Y");
+
+
             // Criando voluntários de vendas
-            VoluntarioVendas voluntario1 = new VoluntarioVendas("João Silva", 123456789, FederaçãoX);
-            VoluntarioVendas voluntario2 = new VoluntarioVendas("Maria Oliveira", 987654321, FederaçãoX);
+            VoluntarioVendas voluntario1 = new VoluntarioVendas("João Silva", 123456789, instituicaoX);
+            VoluntarioVendas voluntario2 = new VoluntarioVendas("Maria Oliveira", 987654321, instituicaoY);
 
             // Adicionando voluntários à federação
             FederaçãoX.adicionarVoluntario(voluntario1);

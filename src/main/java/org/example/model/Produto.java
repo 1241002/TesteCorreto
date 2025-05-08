@@ -48,9 +48,11 @@ public class Produto {
         Produto produto = (Produto) o;
         return Double.compare(produto.preco, preco) == 0 && Objects.equals(nome, produto.nome);
     }
-
-    @Override
     public String toString() {
-        return nome + " (Preço: " + preco + "€)";
+        final StringBuilder sb = new StringBuilder();
+        sb.append("\nNome: ").append(nome);
+        sb.append("\nPreco:").append(preco).append("€");
+        sb.append("");
+        return sb.toString();
     }
 }

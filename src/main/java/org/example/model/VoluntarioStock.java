@@ -1,4 +1,8 @@
 package org.example.model;
 
-public class VoluntarioStock {
+import java.util.ArrayList;
+
+public class VoluntarioStock extends Voluntario {
+  //  private final ArrayList<StockProdutos>stock;
+
 }

@@ -7,13 +7,13 @@ import java.util.Objects;
 public class VoluntarioVendas extends Voluntario {
     private final List<Double> vendas;
 
-    public VoluntarioVendas(String nome, int numeroAluno, Federacao federacao) {
-        super(nome, numeroAluno, federacao);
+    public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao) {
+        super(nome, numeroAluno, instituicao);
         this.vendas = new ArrayList<>();
     }
 
-    public VoluntarioVendas(String nome, int numeroAluno, Federacao federacao, List<Double> vendasAntigas) {
-        super(nome, numeroAluno, federacao);
+    public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao, List<Double> vendasAntigas) {
+        super(nome, numeroAluno, instituicao);
         this.vendas = new ArrayList<>(vendasAntigas); // cópia defensiva
     }
 
@@ -59,9 +59,12 @@ public class VoluntarioVendas extends Voluntario {
         return Objects.equals(vendas, that.vendas);
     }
 
-
     @Override
     public String toString() {
-        return super.toString() + String.format(", Total de Vendas: %.2f€", getTotalVendas());
+        final StringBuilder sb = new StringBuilder();
+        sb.append("VoluntarioVendas: ").append(super.toString());
+        sb.append("Total de Vendas: %.2f€").append(getTodasVendas());
+        sb.append('}');
+        return sb.toString();
     }
 }

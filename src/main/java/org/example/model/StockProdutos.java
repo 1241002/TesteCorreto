@@ -1,4 +1,5 @@
 package org.example.model;
 
-public class StockProdutos {
+public class StockProdutos extends Produto {
+
 }
