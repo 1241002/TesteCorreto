@@ -12,10 +12,6 @@ public class Voluntario {
         this.federacao = federacao;
     }
 
-    public Voluntario(){
-
-    }
-
     public String getNome() {
         return nome;
     }
