@@ -3,13 +3,29 @@ package org.example.model;
 public class Voluntario {
     private String nome;
     private int numeroAluno;
-    private Federacao federacao;
+    private Instituicao instituicao;
 
+    private static final String NOME_POR_OMISSAO = "Sem nome";
+    private static final int NUMERO_ALUNO_POR_OMISSAO = 0;
+    private static final Instituicao INSTITUICAO_POR_OMISSAO = new Instituicao();
 
-    public Voluntario(String nome, int numeroAluno, Federacao federacao) {
+    public Voluntario(String nome, int numeroAluno, Instituicao instituicao) {
         this.nome = nome;
         this.numeroAluno = numeroAluno;
-        this.federacao = federacao;
+        this.instituicao = instituicao;
+    }
+
+    public Voluntario(){
+        this.nome = NOME_POR_OMISSAO;
+        this.numeroAluno = NUMERO_ALUNO_POR_OMISSAO;
+        this.instituicao = INSTITUICAO_POR_OMISSAO;
+
+    }
+
+    public Voluntario(Voluntario v) {
+        this.nome = v.nome;
+        this.numeroAluno = v.numeroAluno;
+        this.instituicao = v.instituicao;
     }
 
     public String getNome() {
@@ -28,11 +44,20 @@ public class Voluntario {
         this.numeroAluno = numeroAluno;
     }
 
-    public Federacao getFederacao() {
-        return federacao;
+    public Instituicao getInstituicao() {
+        return instituicao;
     }
 
-    public void setFederacao(Federacao federacao) {
-        this.federacao = federacao;
+    public void setInstituicao(Instituicao instituicao) {
+        this.instituicao = instituicao;
+    }
+
+    @Override
+    public String toString() {
+        return "Voluntario{" +
+                "nome='" + nome + '\'' +
+                ", numeroAluno=" + numeroAluno +
+                ", instituicao=" + instituicao +
+                '}';
     }
 }
