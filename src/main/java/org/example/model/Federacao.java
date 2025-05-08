@@ -63,7 +63,7 @@ public class Federacao {
 
 
     // Completar com outras funcionalidades
-
+    // trocar para jdk 1.5
     @Override
     public String toString() {
         return "Federacao{" +

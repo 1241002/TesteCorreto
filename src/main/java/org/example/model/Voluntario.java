@@ -7,7 +7,7 @@ public class Voluntario {
 
     private static final String NOME_POR_OMISSAO = "Sem nome";
     private static final int NUMERO_ALUNO_POR_OMISSAO = 0;
-    private static final Instituicao INSTITUICAO_POR_OMISSAO = new Instituicao();
+    private static final Instituicao INSTITUICAO_POR_OMISSAO = new Instituicao("");
 
     public Voluntario(String nome, int numeroAluno, Instituicao instituicao) {
         this.nome = nome;
@@ -54,10 +54,13 @@ public class Voluntario {
 
     @Override
     public String toString() {
-        return "Voluntario{" +
-                "nome='" + nome + '\'' +
-                ", numeroAluno=" + numeroAluno +
-                ", instituicao=" + instituicao +
-                '}';
+        final StringBuilder sb = new StringBuilder("Voluntario{");
+        sb.append("nome='").append(nome).append('\'');
+        sb.append(", numeroAluno=").append(numeroAluno);
+        sb.append(", instituicao=").append(instituicao);
+        sb.append('}');
+        return sb.toString();
     }
+
+
 }
