@@ -11,27 +11,11 @@ public class Main {
             Federacao fap = new Federacao("Federação Académica do Porto");
             System.out.println(fap);
 
-            // Criação da Federação X
-            Federacao FederaçãoX = new Federacao("Federação X");
-
-            Instituicao instituicaoX = new Instituicao("Instituicao X");
-            Instituicao instituicaoY = new Instituicao("Instituicao Y");
-
-
-            // Criando voluntários de vendas
-            VoluntarioVendas voluntario1 = new VoluntarioVendas("João Silva", 123456789,instituicaoX);
-            VoluntarioVendas voluntario2 = new VoluntarioVendas("Maria Oliveira", 987654321, instituicaoY);
-
-            // Adicionando voluntários à federação
-            FederaçãoX.adicionarVoluntario(voluntario1);
-            FederaçãoX.adicionarVoluntario(voluntario2);
-
-
             // Iniciar menu após inicialização dos dados
-            MenuInicial_UI uiMenu = new MenuInicial_UI(FederaçãoX);  // Passando a federação correta
+            MenuInicial_UI uiMenu = new MenuInicial_UI(fap);  // Passando a federação correta
             uiMenu.run();
 
-            System.out.println(FederaçãoX); // Mostrar estado final da federação
+            System.out.println(fap); // Mostrar estado final da federação
         } catch (Exception e) {
             e.printStackTrace();
         }

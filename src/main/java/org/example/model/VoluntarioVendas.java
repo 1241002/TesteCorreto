@@ -46,9 +46,6 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
     public void setTotalVendas(double totalVendas) {
     }
 
-    public void verificarEExibirCategoria() {
-        super.verificarEExibirCategoria();
-    }
 
     public void limparVendas() {
         vendas.clear();

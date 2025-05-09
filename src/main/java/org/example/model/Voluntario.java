@@ -1,9 +1,10 @@
 package org.example.model;
 
-public abstract class Voluntario implements IVendasVoluntarios {
+public abstract class Voluntario {
     private String nome;
     private int numeroAluno;
     private Instituicao instituicao;
+    private Barraca barracaAssociada;  // Campo para a barraca associada ao voluntário
 
     private static final String NOME_POR_OMISSAO = "Sem nome";
     private static final int NUMERO_ALUNO_POR_OMISSAO = 0;
@@ -13,19 +14,21 @@ public abstract class Voluntario implements IVendasVoluntarios {
         this.nome = nome;
         this.numeroAluno = numeroAluno;
         this.instituicao = instituicao;
+        this.barracaAssociada = null; // Inicializa a barracaAssociada como null
     }
 
     public Voluntario() {
         this.nome = NOME_POR_OMISSAO;
         this.numeroAluno = NUMERO_ALUNO_POR_OMISSAO;
         this.instituicao = INSTITUICAO_POR_OMISSAO;
-
+        this.barracaAssociada = null;  // Inicializa a barracaAssociada como null
     }
 
     public Voluntario(Voluntario v) {
         this.nome = v.nome;
         this.numeroAluno = v.numeroAluno;
         this.instituicao = v.instituicao;
+        this.barracaAssociada = v.barracaAssociada;  // Copia a barracaAssociada
     }
 
     public String getNome() {
@@ -52,15 +55,23 @@ public abstract class Voluntario implements IVendasVoluntarios {
         this.instituicao = instituicao;
     }
 
+    public Barraca getBarracaAssociada() {
+        return barracaAssociada;
+    }
+
+    public void setBarracaAssociada(Barraca barracaAssociada) {
+        this.barracaAssociada = barracaAssociada;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Voluntario: ");
         sb.append("\nNome='").append(nome);
         sb.append("\nNumero de Aluno=").append(numeroAluno);
-        sb.append("\nInstituicao").append(instituicao);
+        sb.append("\nInstituicao=").append(instituicao);
+        sb.append("\nBarraca Associada=").append(barracaAssociada != null ? barracaAssociada.getNome() : "Nenhuma");
         sb.append("");
         return sb.toString();
     }
-
 }

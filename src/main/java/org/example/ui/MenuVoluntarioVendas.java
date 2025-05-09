@@ -1,6 +1,7 @@
 package org.example.ui;
 
 import org.example.model.Federacao;
+import org.example.model.Instituicao;
 import org.example.model.VoluntarioVendas;
 import org.example.utils.Utils;
 
@@ -40,7 +41,7 @@ public class MenuVoluntarioVendas {
 
     private void fazerVenda() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");
-        VoluntarioVendas voluntario = federacao.getVoluntarioVendasPorNumeroAluno(numeroAluno);
+        VoluntarioVendas voluntario = federacao.buscarVoluntarioVendasPorNumeroAluno(numeroAluno);
 
         if (voluntario == null) {
             System.out.println("Voluntário não encontrado.");
@@ -59,7 +60,7 @@ public class MenuVoluntarioVendas {
 
     private void verTotalVendas() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");
-        VoluntarioVendas voluntario = federacao.getVoluntarioVendasPorNumeroAluno(numeroAluno);
+        VoluntarioVendas voluntario = federacao.buscarVoluntarioVendasPorNumeroAluno(numeroAluno);
 
         if (voluntario == null) {
             System.out.println("Voluntário não encontrado.");
