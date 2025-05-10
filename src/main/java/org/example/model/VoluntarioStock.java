@@ -44,6 +44,11 @@ public class VoluntarioStock extends Voluntario {
 
     @Override
     public String toString() {
-        return "Voluntário de Stock: " + super.toString() + "\nGerenciando o Stock de Produtos.";
+        final StringBuilder sb = new StringBuilder();
+        sb.append("\nVoluntario de Stock:");
+        sb.append(super.toString());
+        sb.append("\nProdutos de Stoque: ").append(produtosEstoque);
+        sb.append("");
+        return sb.toString();
     }
 }

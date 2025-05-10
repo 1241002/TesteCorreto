@@ -1,8 +1,8 @@
 package org.example.ui;
 
-import org.example.model.Federacao;
-import org.example.model.Instituicao;
-import org.example.model.VoluntarioVendas;
+import org.example.model.*;
+
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {

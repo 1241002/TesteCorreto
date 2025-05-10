@@ -1,10 +1,7 @@
 package org.example.ui;
-
-import org.example.model.Federacao;
-import org.example.model.Instituicao;
-import org.example.model.VoluntarioVendas;
+import org.example.model.Produto;
+import org.example.model.*;
 import org.example.utils.Utils;
-
 import java.io.IOException;
 
 public class MenuVoluntarioVendas {
@@ -38,6 +35,7 @@ public class MenuVoluntarioVendas {
             }
         } while (!opcao.equals("0"));
     }
+
 
     private void fazerVenda() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");
