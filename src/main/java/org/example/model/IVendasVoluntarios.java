@@ -12,6 +12,7 @@ public interface IVendasVoluntarios {
     //Ver com os bacanos
 
      void setInstituicao(Instituicao instituicao);
+
      void setNumeroAluno(int numeroAluno);
 
     default void verificarEExibirCategoria() {

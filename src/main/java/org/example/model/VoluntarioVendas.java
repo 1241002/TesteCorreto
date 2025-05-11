@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
-    private final List<VendaProdutos> vendasProdutos;
+    private List<VendaProdutos> vendasProdutos;
 
     public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao) {
         super(nome, numeroAluno, instituicao);

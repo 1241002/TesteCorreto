@@ -5,6 +5,9 @@ import org.example.model.Instituicao;
 import org.example.model.Voluntario;
 import org.example.model.Federacao;
 import org.example.utils.Utils;
+import org.example.model.EscalaDiaria;
+import java.util.List;
+
 
 public class MenuBarraca {
 
@@ -13,6 +16,7 @@ public class MenuBarraca {
     public MenuBarraca(Federacao federacao) {
         this.federacao = federacao;
     }
+
 
     public void run() {
         String opcao;
@@ -65,6 +69,19 @@ public class MenuBarraca {
 
         instituicaoSelecionada.adicionarBarraca(novaBarraca);
         System.out.println("Barraca criada com sucesso!");
+
+        // Adicionar a barraca à lista geral
+        federacao.getTodasBarracas().add(novaBarraca);
+
+
+        if (federacao.getEscalaAtual() != null) {
+            federacao.getEscalaAtual().adicionarBarraca(novaBarraca);
+            System.out.println("Barraca adicionada à escala atual do dia: " + federacao.getEscalaAtual().getData());
+        }
+
+
+
+
     }
 
     private void adicionarVoluntariosBarracaExistente() {

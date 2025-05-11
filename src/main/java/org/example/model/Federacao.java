@@ -12,6 +12,9 @@ public class Federacao {
     private String nome;
     private final List<Produto> lstProdutos;
     private final List<Instituicao> instituicoes;
+    private EscalaDiaria escalaAtual;
+    private final List<Barraca> todasBarracas = new ArrayList<>();
+
 
     public Federacao(String nome) {
         this.nome = nome;
@@ -109,6 +112,17 @@ public class Federacao {
         return null;
     }
 
+    public List<Barraca> getTodasBarracas() {
+        return todasBarracas;
+    }
+
+    public EscalaDiaria getEscalaAtual() {
+        return escalaAtual;
+    }
+
+    public void setEscalaAtual(EscalaDiaria escalaAtual) {
+        this.escalaAtual = escalaAtual;
+    }
 
 
     // Getter do nome

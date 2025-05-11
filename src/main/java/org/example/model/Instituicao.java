@@ -7,13 +7,28 @@ public class Instituicao {
     private String nome;
     private final List<Voluntario> listaVoluntarios; // Lista de voluntários
     private final List<Produto> lstProdutos;
-    private List<Barraca> barracas = new ArrayList<>();  // Inicializando a lista de barracas.
+    private List<Barraca> barracas;
+    private List<EscalaDiaria> escalasDiarias; // Lista de escalas diárias// Inicializando a lista de barracas.
 
 
     public Instituicao(String nome) {
         this.nome = nome;
-        this.listaVoluntarios = new ArrayList<>();  // Inicializando a lista de voluntários
+        this.listaVoluntarios = new ArrayList<>();
         this.lstProdutos = new ArrayList<>();
+        this.barracas = new ArrayList<>();
+        this.escalasDiarias = new ArrayList<>();
+    }
+
+    public List<EscalaDiaria> getEscalasDiarias() {
+        return escalasDiarias;
+    }
+
+    public void setEscalasDiarias(List<EscalaDiaria> escalasDiarias) {
+        this.escalasDiarias = escalasDiarias;
+    }
+
+    public void setBarracas(List<Barraca> barracas) {
+        this.barracas = barracas;
     }
 
     public List<Barraca> getBarracas() {
@@ -35,6 +50,11 @@ public class Instituicao {
 
     public List<Voluntario> getListaVoluntarios() {
         return listaVoluntarios;
+    }
+
+    // Metodo para adicionar uma escala diária
+    public void adicionarEscalaDiaria(EscalaDiaria escala) {
+        escalasDiarias.add(escala);
     }
 
     public boolean adicionarBarraca(Barraca barraca) {

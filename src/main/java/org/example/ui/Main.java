@@ -2,8 +2,6 @@ package org.example.ui;
 
 import org.example.model.*;
 
-import java.util.ArrayList;
-
 public class Main {
     public static void main(String[] args) {
         try {
@@ -11,8 +9,12 @@ public class Main {
             Federacao fap = new Federacao("Federação Académica do Porto");
             System.out.println(fap);
 
-            // Iniciar menu após inicialização dos dados
-            MenuInicial_UI uiMenu = new MenuInicial_UI(fap);  // Passando a federação correta
+            // Criar escala do dia automaticamente
+            EscalaDiaria escalaAtual = EscalaDiaria.criarEscalaHoje();
+            fap.setEscalaAtual(escalaAtual);
+
+            // Iniciar menu principal
+            MenuInicial_UI uiMenu = new MenuInicial_UI(fap);
             uiMenu.run();
 
             System.out.println(fap); // Mostrar estado final da federação

@@ -21,6 +21,7 @@ public class MenuInicial_UI {
             System.out.println("4. Gerenciar Barracas");
             System.out.println("5. Gerenciar Voluntários");
             System.out.println("6. Gerenciar Instituições");
+            System.out.println("7. Gerenciar EscalasDiarias");
             System.out.println("0. Sair");
 
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
@@ -42,6 +43,9 @@ public class MenuInicial_UI {
                 ui.run();
             } else if (opcao.equals("6")) {
                 MenuInstituicao ui = new MenuInstituicao(federacao);
+                ui.run();
+            } else if (opcao.equals("7")) {
+                MenuEscalaDiaria ui = new MenuEscalaDiaria(federacao);
                 ui.run();
             }
 
