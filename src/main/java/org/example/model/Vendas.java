@@ -21,7 +21,7 @@ public class Vendas {
         this.quantidade = QUANTIDADE_POR_OMISSAO;
     }
     public double calcularTotalVendas(){
-        return produtos.getPreco()*quantidade;
+        return produtos.getPrecoUnitario()*quantidade;
     }
 
     public StockProdutos getProdutos() {

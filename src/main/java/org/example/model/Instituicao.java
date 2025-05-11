@@ -7,12 +7,19 @@ public class Instituicao {
     private String nome;
     private final List<Voluntario> listaVoluntarios; // Lista de voluntários
     private final List<Produto> lstProdutos;
+    private List<Barraca> barracas = new ArrayList<>();  // Inicializando a lista de barracas.
+
 
     public Instituicao(String nome) {
         this.nome = nome;
         this.listaVoluntarios = new ArrayList<>();  // Inicializando a lista de voluntários
         this.lstProdutos = new ArrayList<>();
     }
+
+    public List<Barraca> getBarracas() {
+        return this.barracas;
+    }
+
 
     public List<Produto> getLstProdutos() {
         return lstProdutos;
@@ -29,6 +36,15 @@ public class Instituicao {
     public List<Voluntario> getListaVoluntarios() {
         return listaVoluntarios;
     }
+
+    public boolean adicionarBarraca(Barraca barraca) {
+        if (!getBarracas().contains(barraca)) {  // Verifica se a barraca já existe na lista.
+            getBarracas().add(barraca);  // Se não existir, adiciona a barraca.
+            return true;  // Retorna verdadeiro se a barraca foi adicionada com sucesso.
+        }
+        return false;  // Retorna falso se a barraca já existir na lista.
+    }
+
 
     // Metodo para adicionar um voluntário à lista (agora usando o número de aluno como int)
     public boolean adicionarVoluntario(Voluntario voluntario) {

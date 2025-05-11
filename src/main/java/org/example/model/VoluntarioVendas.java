@@ -5,72 +5,53 @@ import java.util.List;
 import java.util.Objects;
 
 public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
-    private final List<Double> vendas;
+    private final List<VendaProdutos> vendasProdutos;
 
     public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao) {
         super(nome, numeroAluno, instituicao);
-        this.vendas = new ArrayList<>();
+        this.vendasProdutos = new ArrayList<>();
     }
 
-    public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao, List<Double> vendasAntigas) {
-        super(nome, numeroAluno, instituicao);
-        this.vendas = new ArrayList<>(vendasAntigas); // cópia defensiva
-    }
-
-    public void registarVenda(double valor) {
-        if (valor > 0) {
-            vendas.add(valor);
+    public void registarVenda(String nomeProduto, int quantidade, double precoUnitario) {
+        if (quantidade > 0 && precoUnitario > 0) {
+            vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, precoUnitario));
         }
     }
 
     public boolean removerUltimaVenda() {
-        if (!vendas.isEmpty()) {
-            vendas.remove(vendas.size() - 1);
+        if (!vendasProdutos.isEmpty()) {
+            vendasProdutos.remove(vendasProdutos.size() - 1);
             return true;
         }
         return false;
     }
 
-    public boolean removerVendaPorValor(double valor) {
-        return vendas.remove(valor); // remove a primeira ocorrência
-    }
-
     public double getTotalVendas() {
         double total = 0.0;
-        for (double v : vendas) {
-            total += v;
+        for (VendaProdutos venda : vendasProdutos) {
+            total += venda.getValorTotal();
         }
         return total;
     }
 
-    public void setTotalVendas(double totalVendas) {
+    public List<VendaProdutos> getTodasVendas() {
+        return new ArrayList<>(vendasProdutos);
     }
-
 
     public void limparVendas() {
-        vendas.clear();
-    }
-
-    public List<Double> getTodasVendas() {
-        return new ArrayList<>(vendas); // cópia de segurança
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        VoluntarioVendas that = (VoluntarioVendas) o;
-        return Objects.equals(vendas, that.vendas);
+        vendasProdutos.clear();
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("VoluntarioVendas: ").append(super.toString());
-        sb.append(super.toString());
-        sb.append("Total de Vendas: %.2f€").append(getTodasVendas());
-        sb.append("");
+        sb.append("Total de Vendas: ").append(String.format("%.2f€", getTotalVendas())).append("\n");
+        for (VendaProdutos v : vendasProdutos) {
+            sb.append(" - ").append(v.toString()).append("\n");
+        }
         return sb.toString();
     }
 }
+
 

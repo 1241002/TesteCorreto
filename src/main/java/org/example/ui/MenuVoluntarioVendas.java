@@ -46,15 +46,34 @@ public class MenuVoluntarioVendas {
             return;
         }
 
-        double valor = Utils.readDoubleFromConsole("Valor da venda: ");
-        if (valor <= 0) {
-            System.out.println("Valor inválido.");
+        Barraca barraca = voluntario.getBarracaAssociada();
+        if (barraca == null) {
+            System.out.println("O voluntário não está associado a nenhuma barraca.");
             return;
         }
 
-        voluntario.registarVenda(valor);
-        System.out.println("Venda registada com sucesso.");
+        String nomeProduto = Utils.readLineFromConsole("Nome do produto a vender: ");
+        int quantidade = Utils.readIntFromConsole("Quantidade vendida: ");
+
+        for (StockProdutos stock : barraca.getStock()) {
+            if (stock.getNome().equalsIgnoreCase(nomeProduto)) {
+                if (stock.getQuantidade() >= quantidade) {
+                    double preco = stock.getPrecoUnitario(); // diretamente da superclasse Produto
+                    stock.setQuantidade(stock.getQuantidade() - quantidade);
+                    voluntario.registarVenda(nomeProduto, quantidade, preco);
+                    System.out.printf("Venda registada: %s - %d x %.2f€\n", nomeProduto, quantidade, preco);
+                    return;
+                } else {
+                    System.out.println("Quantidade insuficiente em stock.");
+                    return;
+                }
+            }
+        }
+
+        System.out.println("Produto não encontrado.");
     }
+
+
 
     private void verTotalVendas() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");

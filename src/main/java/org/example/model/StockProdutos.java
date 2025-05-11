@@ -5,8 +5,8 @@ public class StockProdutos extends Produto {
 
     private static final int QUANTIDADE_POR_OMISSAO = 0;
 
-    public StockProdutos(String nome, double preco, int quantidade) {
-        super(nome, preco);
+    public StockProdutos(String nome, double precoUnitario, int quantidade) {
+        super(nome, precoUnitario);
         this.quantidade = quantidade;
     }
 
