@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
+public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios, IClassificacao {
     private List<VendaProdutos> vendasProdutos;
 
     public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao) {
@@ -13,7 +13,7 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
     }
 
     public void registarVenda(String nomeProduto, int quantidade, double precoUnitario) {
-        if (quantidade > 0 && precoUnitario > 0) {
+        if (quantidade > 0 && precoUnitario > 0.0) {
             vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, precoUnitario));
         }
     }
@@ -34,12 +34,25 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         return total;
     }
 
+
     public List<VendaProdutos> getTodasVendas() {
         return new ArrayList<>(vendasProdutos);
     }
 
     public void limparVendas() {
         vendasProdutos.clear();
+    }
+
+    @Override
+    public String classificar() {
+        double totalVendas = getTotalVendas();
+        if (totalVendas < 500.0) {
+            return "Bronze";
+        } else if (totalVendas >= 500.0 && totalVendas <= 1000.0) {
+            return "Prata";
+        } else {
+            return "Ouro";
+        }
     }
 
     @Override
@@ -52,6 +65,8 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         }
         return sb.toString();
     }
+
+
 }
 
 

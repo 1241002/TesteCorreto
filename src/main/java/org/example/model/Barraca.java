@@ -69,7 +69,7 @@ public class Barraca {
     }
 
     public double exportarVendas() {
-        double totalVendas = 0;
+        double totalVendas = 0.0;
 
         for (Voluntario v : voluntarios) {
             if (v instanceof VoluntarioVendas) {
@@ -83,7 +83,6 @@ public class Barraca {
         return totalVendas;
     }
 
-
     public int exportarStockTotal() {
         int totalStock = 0;
 
@@ -95,14 +94,22 @@ public class Barraca {
         return totalStock;
     }
 
-
-
-
     private int calcularTotalProdutos() {
         int total = 0;
         for (StockProdutos sp : stock) {
             total += sp.getQuantidade();
         }
         return total;
+    }
+
+    public String classificar() {
+        int stockFinal = exportarStockTotal();
+        if (stockFinal > 100) {
+            return "Bronze";
+        } else if (stockFinal >= 50 && stockFinal <= 100) {
+            return "Prata";
+        } else {
+            return "Ouro";
+        }
     }
 }

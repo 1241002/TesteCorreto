@@ -1,8 +1,6 @@
 package org.example.ui;
-
 import org.example.model.Federacao;
 import org.example.utils.Utils;
-
 import java.io.IOException;
 
 public class MenuAdministrador {
@@ -14,8 +12,7 @@ public class MenuAdministrador {
         this.federacao = federacao;
     }
 
-    public void run() throws IOException
-    {
+    public void run() throws IOException {
         do
         {
             System.out.println("###### MENU #####");
