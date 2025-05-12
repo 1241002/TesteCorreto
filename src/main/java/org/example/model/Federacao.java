@@ -22,7 +22,6 @@ public class Federacao {
         this.instituicoes = new ArrayList<>();
     }
 
-    // Adicionar Produto
     public boolean adicionarProduto(Produto produto) {
         if (!listaContemProduto(produto.getNome())) {
             lstProdutos.add(new Produto(produto));
@@ -31,7 +30,6 @@ public class Federacao {
         return false;
     }
 
-    // Verifica se produto existe
     public boolean listaContemProduto(String nomeProduto) {
         for (Produto produto : lstProdutos) {
             if (produto.getNome().equals(nomeProduto)) {
@@ -41,13 +39,10 @@ public class Federacao {
         return false;
     }
 
-    // Retorna lista de produtos (cópia para segurança)
     public List<Produto> getLstProdutos() {
         return new ArrayList<>(lstProdutos);
     }
 
-
-    // Adicionar Instituicao
     public boolean adicionarInstituicao(Instituicao instituicao) {
         if (!instituicaoExiste(instituicao.getNome())) {
             instituicoes.add(instituicao);
@@ -69,7 +64,6 @@ public class Federacao {
         return false;
     }
 
-    // Verifica se Instituição existe por nome
     private boolean instituicaoExiste(String nome) {
         for (Instituicao inst : instituicoes) {
             if (inst.getNome().equalsIgnoreCase(nome)) {
@@ -79,7 +73,6 @@ public class Federacao {
         return false;
     }
 
-    // Retorna voluntário de vendas (busca em todas as instituições)
     public VoluntarioVendas buscarVoluntarioVendasPorNumeroAluno(int numeroAluno) {
         for (Instituicao instituicao : instituicoes) {
             VoluntarioVendas voluntario = instituicao.getVoluntarioVendasPorNumeroAluno(numeroAluno);
@@ -90,7 +83,6 @@ public class Federacao {
         return null;
     }
 
-    // Retorna voluntário de stock
     public VoluntarioStock buscarVoluntarioStockPorNumeroAluno(int numeroAluno) {
         for (Instituicao instituicao : instituicoes) {
             VoluntarioStock voluntario = instituicao.getVoluntarioStockPorNumeroAluno(numeroAluno);
@@ -101,7 +93,6 @@ public class Federacao {
         return null;
     }
 
-    // Retorna qualquer voluntário
     public Voluntario buscarVoluntarioPorNumeroAluno(int numeroAluno) {
         for (Instituicao instituicao : instituicoes) {
             Voluntario voluntario = instituicao.getVoluntarioPorNumeroAluno(numeroAluno);
@@ -124,8 +115,6 @@ public class Federacao {
         this.escalaAtual = escalaAtual;
     }
 
-
-    // Getter do nome
     public String getNome() {
         return nome;
     }

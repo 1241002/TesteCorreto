@@ -62,9 +62,9 @@ public class MenuEscalaDiaria {
             double totalVendas = barraca.exportarVendas();  // Pega o valor total de vendas
             int stockFinal = barraca.exportarStockTotal();  // Pega o stock final (quantidade total de produtos)
 
-            // Adiciona as informações de vendas e estoque na escala atual
+            // Adiciona as informações de vendas e stock na escala atual
             escalaAtual.adicionarVendaTotal(totalVendas);  // Metodo para somar as vendas totais
-            escalaAtual.adicionarEstoqueFinal(stockFinal);  // Metodo para adicionar o estoque final
+            escalaAtual.adicionarStockFinal(stockFinal);  // Metodo para adicionar o stock final
         }
 
         System.out.println("Dia terminado e dados guardados na escala do dia: " + escalaAtual.getData());
@@ -94,12 +94,12 @@ public class MenuEscalaDiaria {
 
                 for (Barraca b : e.getBarracas()) {
                     double totalVendas = b.exportarVendas();  // Supondo que exportarVendas() retorne o total de vendas
-                    int stockFinal = b.exportarStockTotal();  // Supondo que exportarStockTotal() retorne o estoque final
+                    int stockFinal = b.exportarStockTotal();  // Supondo que exportarStockTotal() retorne o stock final
 
                     // Exibindo as informações da barraca
                     System.out.println("\tBarraca: " + b.getNome());
                     System.out.println("\tTotal de vendas: " + totalVendas);
-                    System.out.println("\tEstoque final: " + stockFinal);
+                    System.out.println("\tStock final: " + stockFinal);
                 }
                 System.out.println();  // Linha em branco entre as escalas
             }

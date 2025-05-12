@@ -24,7 +24,6 @@ public class Produto {
         this.precoUnitario = produto.precoUnitario;
     }
 
-    // Getters e Setters
     public String getNome() {
         return nome;
     }

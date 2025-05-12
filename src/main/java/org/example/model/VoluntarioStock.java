@@ -4,27 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VoluntarioStock extends Voluntario {
-    private List<StockProdutos> produtosEstoque;
+    private List<StockProdutos> produtosStock;
 
     public VoluntarioStock(String nome, int numeroAluno, Instituicao instituicao) {
         super(nome, numeroAluno, instituicao);
-        this.produtosEstoque = new ArrayList<>(); // Inicializa a lista de produtos no estoque
+        this.produtosStock = new ArrayList<>(); // Inicializa a lista de produtos no stock
     }
 
-    // Metodo para repor um produto no estoque
+    // Metodo para repor um produto no stock
     public void reporProduto(String nomeProduto, int quantidade) {
         StockProdutos produto = encontrarProduto(nomeProduto);
         if (produto != null) {
             produto.setQuantidade(produto.getQuantidade() + quantidade);
             System.out.println("Produto " + nomeProduto + " reposto com sucesso. Quantidade atual: " + produto.getQuantidade());
         } else {
-            System.out.println("Produto " + nomeProduto + " não encontrado no estoque.");
+            System.out.println("Produto " + nomeProduto + " não encontrado no stock.");
         }
     }
 
-    // Metodo auxiliar para encontrar um produto pelo nome
     private StockProdutos encontrarProduto(String nomeProduto) {
-        for (StockProdutos produto : produtosEstoque) {
+        for (StockProdutos produto : produtosStock) {
             if (produto.getNome().equalsIgnoreCase(nomeProduto)) {
                 return produto;
             }
@@ -32,14 +31,14 @@ public class VoluntarioStock extends Voluntario {
         return null; // Produto não encontrado
     }
 
-    // Metodo para adicionar um produto ao estoque
-    public void adicionarProdutoAoEstoque(StockProdutos produto) {
-        produtosEstoque.add(produto);
-        System.out.println("Produto " + produto.getNome() + " adicionado ao estoque.");
+
+    public void adicionarProdutoAoStock(StockProdutos produto) {
+        produtosStock.add(produto);
+        System.out.println("Produto " + produto.getNome() + " adicionado ao stock.");
     }
 
-    public List<StockProdutos> getProdutosEstoque() {
-        return produtosEstoque;
+    public List<StockProdutos> getProdutosStock() {
+        return produtosStock;
     }
 
     @Override
@@ -47,7 +46,7 @@ public class VoluntarioStock extends Voluntario {
         final StringBuilder sb = new StringBuilder();
         sb.append("\nVoluntario de Stock:");
         sb.append(super.toString());
-        sb.append("\nProdutos de Stoque: ").append(produtosEstoque);
+        sb.append("\nProdutos de Stock: ").append(produtosStock);
         sb.append("");
         return sb.toString();
     }

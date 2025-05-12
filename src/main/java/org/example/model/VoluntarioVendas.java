@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios, IClassificacao {
+public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
     private List<VendaProdutos> vendasProdutos;
 
     public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao) {
@@ -43,7 +43,7 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios, 
         vendasProdutos.clear();
     }
 
-    @Override
+
     public String classificar() {
         double totalVendas = getTotalVendas();
         if (totalVendas < 500.0) {

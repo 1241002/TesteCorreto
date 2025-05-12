@@ -4,20 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import org.example.utils.Data;
 import java.time.LocalDate;
-import org.example.utils.Data;
 
 public class EscalaDiaria {
 
     private Data data;
     private List<Barraca> barracas;
     private double vendasTotais;  // Agora temos um único valor para vendas totais
-    private int estoqueFinal;
+    private int stockFinal;
 
     public EscalaDiaria(Data data) {
         this.data = data;
         this.barracas = new ArrayList<>();
         this.vendasTotais = 0.0;
-        this.estoqueFinal = 0;
+        this.stockFinal = 0;
     }
 
     public Data getData() {
@@ -32,26 +31,21 @@ public class EscalaDiaria {
         return vendasTotais;
     }
 
-    public int getEstoqueFinal() {
-        return estoqueFinal;
+    public int getStockFinal() {
+        return stockFinal;
     }
 
-    // Atualiza o valor das vendas totais
     public void adicionarVendaTotal(double vendas) {
         this.vendasTotais += vendas;
     }
 
-    // Atualiza o valor do estoque final
-    public void adicionarEstoqueFinal(int estoque) {
-        this.estoqueFinal += estoque;
+    public void adicionarStockFinal(int stock) {
+        this.stockFinal += stock;
     }
-
-
 
     public void adicionarBarraca(Barraca b) {
         barracas.add(b);
     }
-
 
     public static EscalaDiaria criarEscalaHoje() {
         LocalDate hoje = LocalDate.now();
@@ -59,17 +53,13 @@ public class EscalaDiaria {
         return new EscalaDiaria(dataHoje);
     }
 
-
-
-
-
     @Override
     public String toString() {
         return "\nEscalaDiaria [" +
                 "Data=" + data +
                 ", Nº Barracas=" + barracas.size() +
                 ", Total Vendas=" + vendasTotais + "€" +
-                ", Estoque Final=" + estoqueFinal +
+                ", Stock Final=" + stockFinal +
                 ']';
     }
 }

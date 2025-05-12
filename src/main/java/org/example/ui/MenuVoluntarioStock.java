@@ -64,7 +64,7 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        // Chama o metodo da Barraca para adicionar o produto ao estoque
+        // Chama o metodo da Barraca para adicionar o produto ao stock
         barraca.adicionarStock(produto, quantidade);
         System.out.println("Stock adicionado com sucesso.");
     }

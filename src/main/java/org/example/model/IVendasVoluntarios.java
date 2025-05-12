@@ -9,8 +9,6 @@ public interface IVendasVoluntarios {
 
     double getTotalVendas();
 
-    //Ver com os bacanos
-
      void setInstituicao(Instituicao instituicao);
 
      void setNumeroAluno(int numeroAluno);

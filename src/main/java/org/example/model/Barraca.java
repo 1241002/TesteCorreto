@@ -58,14 +58,14 @@ public class Barraca {
         for (StockProdutos sp : stock) {
             if (sp.getNome().equals(nomeProduto)) {
                 sp.setQuantidade(sp.getQuantidade() + quantidade);
-                System.out.println("Produto " + nomeProduto + " atualizado no estoque.");
+                System.out.println("Produto " + nomeProduto + " atualizado no stock.");
                 return;
             }
         }
 
         StockProdutos novoProduto = new StockProdutos(nomeProduto, 0, quantidade);
         stock.add(novoProduto);
-        System.out.println("Produto " + nomeProduto + " adicionado ao estoque.");
+        System.out.println("Produto " + nomeProduto + " adicionado ao stock.");
     }
 
     public double exportarVendas() {
@@ -86,7 +86,6 @@ public class Barraca {
     public int exportarStockTotal() {
         int totalStock = 0;
 
-        // Para pegar o total de stock final, soma a quantidade de todos os produtos no stock
         for (StockProdutos sp : stock) {
             totalStock += sp.getQuantidade();
         }

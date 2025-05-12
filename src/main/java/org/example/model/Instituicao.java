@@ -52,7 +52,6 @@ public class Instituicao {
         return listaVoluntarios;
     }
 
-    // Metodo para adicionar uma escala diária
     public void adicionarEscalaDiaria(EscalaDiaria escala) {
         escalasDiarias.add(escala);
     }
@@ -65,8 +64,6 @@ public class Instituicao {
         return false;  // Retorna falso se a barraca já existir na lista.
     }
 
-
-    // Metodo para adicionar um voluntário à lista (agora usando o número de aluno como int)
     public boolean adicionarVoluntario(Voluntario voluntario) {
         if (!listaContemVoluntario(voluntario.getNumeroAluno())) {  // Verifica com base no número
             listaVoluntarios.add(voluntario);
@@ -76,7 +73,6 @@ public class Instituicao {
         }
     }
 
-    // Verificar se o voluntário já está na lista, usando o número de aluno como int
     public boolean listaContemVoluntario(int numeroAluno) {
         for (Voluntario voluntario : listaVoluntarios) {
             if (voluntario.getNumeroAluno() == numeroAluno) {  // Comparando número de aluno (agora int)
@@ -86,7 +82,6 @@ public class Instituicao {
         return false;
     }
 
-    // Buscar Voluntário por número de aluno
     public Voluntario buscarVoluntarioPorNumeroAluno(int numeroAluno) {
         for (Voluntario v : listaVoluntarios) {
             if (v.getNumeroAluno() == numeroAluno) {
@@ -96,7 +91,6 @@ public class Instituicao {
         return null; // Retorna null se não encontrar o voluntário
     }
 
-    // Retorna voluntário de vendas
     public VoluntarioVendas getVoluntarioVendasPorNumeroAluno(int numeroAluno) {
         for (Voluntario voluntario : listaVoluntarios) {
             if (voluntario instanceof VoluntarioVendas && voluntario.getNumeroAluno() == numeroAluno) {
@@ -106,7 +100,6 @@ public class Instituicao {
         return null;
     }
 
-    // Retorna voluntário de stock
     public VoluntarioStock getVoluntarioStockPorNumeroAluno(int numeroAluno) {
         for (Voluntario voluntario : listaVoluntarios) {
             if (voluntario instanceof VoluntarioStock && voluntario.getNumeroAluno() == numeroAluno) {
@@ -116,7 +109,6 @@ public class Instituicao {
         return null;
     }
 
-    // Retorna qualquer voluntário
     public Voluntario getVoluntarioPorNumeroAluno(int numeroAluno) {
         for (Voluntario voluntario : listaVoluntarios) {
             if (voluntario.getNumeroAluno() == numeroAluno) {
@@ -125,9 +117,6 @@ public class Instituicao {
         }
         return null;
     }
-
-
-    // Metodo toString atualizado para detalhar melhor a federação
 
     @Override
     public String toString() {
