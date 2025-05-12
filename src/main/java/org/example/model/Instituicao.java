@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Instituicao {
     private String nome;
-    private final List<Voluntario> listaVoluntarios; // Lista de voluntários
+    private final List<Voluntario> listaVoluntarios;
     private final List<Produto> lstProdutos;
     private List<Barraca> barracas;
-    private List<EscalaDiaria> escalasDiarias; // Lista de escalas diárias// Inicializando a lista de barracas.
+    private List<EscalaDiaria> escalasDiarias;
 
 
     public Instituicao(String nome) {
@@ -57,15 +57,15 @@ public class Instituicao {
     }
 
     public boolean adicionarBarraca(Barraca barraca) {
-        if (!getBarracas().contains(barraca)) {  // Verifica se a barraca já existe na lista.
-            getBarracas().add(barraca);  // Se não existir, adiciona a barraca.
-            return true;  // Retorna verdadeiro se a barraca foi adicionada com sucesso.
+        if (!getBarracas().contains(barraca)) {
+            getBarracas().add(barraca);
+            return true;
         }
-        return false;  // Retorna falso se a barraca já existir na lista.
+        return false;
     }
 
     public boolean adicionarVoluntario(Voluntario voluntario) {
-        if (!listaContemVoluntario(voluntario.getNumeroAluno())) {  // Verifica com base no número
+        if (!listaContemVoluntario(voluntario.getNumeroAluno())) {
             listaVoluntarios.add(voluntario);
             return true;
         } else {
@@ -75,7 +75,7 @@ public class Instituicao {
 
     public boolean listaContemVoluntario(int numeroAluno) {
         for (Voluntario voluntario : listaVoluntarios) {
-            if (voluntario.getNumeroAluno() == numeroAluno) {  // Comparando número de aluno (agora int)
+            if (voluntario.getNumeroAluno() == numeroAluno) {
                 return true;
             }
         }
@@ -85,10 +85,10 @@ public class Instituicao {
     public Voluntario buscarVoluntarioPorNumeroAluno(int numeroAluno) {
         for (Voluntario v : listaVoluntarios) {
             if (v.getNumeroAluno() == numeroAluno) {
-                return v; // Retorna o voluntário se o número de aluno corresponder
+                return v;
             }
         }
-        return null; // Retorna null se não encontrar o voluntário
+        return null;
     }
 
     public VoluntarioVendas getVoluntarioVendasPorNumeroAluno(int numeroAluno) {
