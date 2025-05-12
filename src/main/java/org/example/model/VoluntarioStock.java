@@ -8,10 +8,10 @@ public class VoluntarioStock extends Voluntario {
 
     public VoluntarioStock(String nome, int numeroAluno, Instituicao instituicao) {
         super(nome, numeroAluno, instituicao);
-        this.produtosStock = new ArrayList<>(); // Inicializa a lista de produtos no stock
+        this.produtosStock = new ArrayList<>();
     }
 
-    // Metodo para repor um produto no stock
+
     public void reporProduto(String nomeProduto, int quantidade) {
         StockProdutos produto = encontrarProduto(nomeProduto);
         if (produto != null) {
@@ -28,7 +28,7 @@ public class VoluntarioStock extends Voluntario {
                 return produto;
             }
         }
-        return null; // Produto não encontrado
+        return null;
     }
 
 

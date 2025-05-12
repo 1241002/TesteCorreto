@@ -4,7 +4,7 @@ public abstract class Voluntario {
     private String nome;
     private int numeroAluno;
     private Instituicao instituicao;
-    private Barraca barracaAssociada;  // Campo para a barraca associada ao voluntário
+    private Barraca barracaAssociada;
 
     private static final String NOME_POR_OMISSAO = "Sem nome";
     private static final int NUMERO_ALUNO_POR_OMISSAO = 0;
@@ -14,21 +14,21 @@ public abstract class Voluntario {
         this.nome = nome;
         this.numeroAluno = numeroAluno;
         this.instituicao = instituicao;
-        this.barracaAssociada = null; // Inicializa a barracaAssociada como null
+        this.barracaAssociada = null;
     }
 
     public Voluntario() {
         this.nome = NOME_POR_OMISSAO;
         this.numeroAluno = NUMERO_ALUNO_POR_OMISSAO;
         this.instituicao = INSTITUICAO_POR_OMISSAO;
-        this.barracaAssociada = null;  // Inicializa a barracaAssociada como null
+        this.barracaAssociada = null;
     }
 
     public Voluntario(Voluntario v) {
         this.nome = v.nome;
         this.numeroAluno = v.numeroAluno;
         this.instituicao = v.instituicao;
-        this.barracaAssociada = v.barracaAssociada;  // Copia a barracaAssociada
+        this.barracaAssociada = v.barracaAssociada;
     }
 
     public String getNome() {

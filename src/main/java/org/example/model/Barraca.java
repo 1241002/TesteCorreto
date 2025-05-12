@@ -75,7 +75,7 @@ public class Barraca {
             if (v instanceof VoluntarioVendas) {
                 VoluntarioVendas vv = (VoluntarioVendas) v;
                 for (VendaProdutos venda : vv.getTodasVendas()) {
-                    totalVendas += venda.getValorTotal(); // Somar o valor de cada venda
+                    totalVendas += venda.getValorTotal();
                 }
             }
         }
