@@ -14,49 +14,30 @@ public class MenuInicial_UI {
 
     public void run() throws IOException {
         do {
-            System.out.println("###### MENU #####");
+            System.out.println("###### MENU INICIAL #####");
             System.out.println("1. Administrador");
             System.out.println("2. Voluntário de Stock");
             System.out.println("3. Voluntário de Vendas");
-            System.out.println("4. Gerenciar Barracas");
-            System.out.println("5. Gerenciar Voluntários");
-            System.out.println("6. Gerenciar Instituições");
-            System.out.println("7. Gerenciar Escalas Diárias");
-            System.out.println("8. Ver rankings");
             System.out.println("0. Sair");
 
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 
-            if (opcao.equals("1")) {
-                MenuAdministrador ui = new MenuAdministrador(federacao);
-                ui.run();
-            } else if (opcao.equals("2")) {
-                MenuVoluntarioStock ui = new MenuVoluntarioStock(federacao);
-                ui.run();
-            } else if (opcao.equals("3")) {
-                MenuVoluntarioVendas ui = new MenuVoluntarioVendas(federacao);
-                ui.run();
-            } else if (opcao.equals("4")) {
-                MenuBarraca ui = new MenuBarraca(federacao);
-                ui.run();
-            } else if (opcao.equals("5")) {
-                MenuVoluntarios ui = new MenuVoluntarios(federacao);
-                ui.run();
-            } else if (opcao.equals("6")) {
-                MenuInstituicao ui = new MenuInstituicao(federacao);
-                ui.run();
-            } else if (opcao.equals("7")) {
-                MenuEscalaDiaria ui = new MenuEscalaDiaria(federacao);
-                ui.run();
-            } else if (opcao.equals("8")) {
-                MenuRankings ui = new MenuRankings(federacao);
-                ui.run();
-            } else if (!opcao.equals("0")) {
-                System.out.println("Opção inválida! Tente novamente.");
+            switch (opcao) {
+                case "1":
+                    new MenuAdministrador(federacao).run();
+                    break;
+                case "2":
+                    new MenuVoluntarioStock(federacao).run();
+                    break;
+                case "3":
+                    new MenuVoluntarioVendas(federacao).run();
+                    break;
+                case "0":
+                    System.out.println("A sair do menu.");
+                    break;
+                default:
+                    System.out.println("Opção inválida! Tente novamente.");
             }
-
         } while (!opcao.equals("0"));
-
-        System.out.println("A sair do menu.");
     }
 }
