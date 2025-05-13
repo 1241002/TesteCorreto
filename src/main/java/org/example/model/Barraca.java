@@ -37,13 +37,11 @@ public class Barraca {
     }
 
     public boolean adicionarVoluntario(Voluntario voluntario) {
-        // Valida se o voluntário pertence à mesma instituição
         if (!this.instituicao.equals(voluntario.getInstituicao())) {
             System.out.println("Erro: O voluntário não pertence à mesma instituição da barraca.");
             return false;
         }
 
-        // Valida se o voluntário já está associado a outra barraca
         if (voluntario.getBarracaAssociada() != null) {
             System.out.println("Erro: O voluntário já está associado a outra barraca.");
             return false;
@@ -54,24 +52,19 @@ public class Barraca {
         return true;
     }
 
-    public void adicionarStock(String nomeProduto, int quantidade) {
-        // Tenta atualizar o stock existente ou adicionar um novo produto
+    public void adicionarStock(String nomeProduto, double precoUnitario, int quantidade) {
         for (StockProdutos sp : stock) {
             if (sp.getNome().equals(nomeProduto)) {
                 sp.setQuantidade(sp.getQuantidade() + quantidade);
                 return;
             }
         }
-
-        // Se o produto não existir no stock, adiciona um novo
-        StockProdutos novoProduto = new StockProdutos(nomeProduto, 0, quantidade);
+        StockProdutos novoProduto = new StockProdutos(nomeProduto, precoUnitario, quantidade);
         stock.add(novoProduto);
     }
 
     public double exportarVendas() {
         double totalVendas = 0.0;
-
-        // Somando o valor das vendas de todos os voluntários do tipo VoluntarioVendas
         for (Voluntario v : voluntarios) {
             if (v instanceof VoluntarioVendas) {
                 VoluntarioVendas vv = (VoluntarioVendas) v;
@@ -80,22 +73,17 @@ public class Barraca {
                 }
             }
         }
-
         return totalVendas;
     }
 
     public int exportarStockTotal() {
         int totalStock = 0;
-
-        // Somando o total de produtos no stock
         for (StockProdutos sp : stock) {
             totalStock += sp.getQuantidade();
         }
-
         return totalStock;
     }
 
-    // Calcula o total de produtos no stock (sem duplicação com exportarStockTotal)
     private int calcularTotalProdutos() {
         int total = 0;
         for (StockProdutos sp : stock) {
@@ -104,7 +92,6 @@ public class Barraca {
         return total;
     }
 
-    // Classifica a barraca com base no stock final
     public String classificar() {
         int stockFinal = exportarStockTotal();
         if (stockFinal > 100) {

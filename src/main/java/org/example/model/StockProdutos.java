@@ -28,6 +28,14 @@ public class StockProdutos extends Produto {
         this.quantidade = quantidade;
     }
 
+    public boolean reduzirQuantidade(int quantidadeVendida) {
+        if (quantidadeVendida <= quantidade) {
+            quantidade -= quantidadeVendida;
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();

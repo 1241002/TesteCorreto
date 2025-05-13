@@ -38,22 +38,18 @@ public class MenuRankings {
         EscalaDiaria escalaSelecionada = escalas.get(opcao - 1);
 
         mostrarVoluntariosOrdenados(escalaSelecionada);
-        mostrarBarracasAgrupadasPorCategoria(escalaSelecionada);
+        mostrarBarracasPorCategoria(escalaSelecionada);
     }
 
     private void mostrarVoluntariosOrdenados(EscalaDiaria escala) {
-        System.out.println("\n--- Voluntários por barraca (ordenados por número de aluno) ---");
+        System.out.println("\n--- Voluntários por barraca (ordenados por nº de aluno) ---");
 
-        List<Barraca> barracas = escala.getBarracas();
-
-        for (Barraca b : barracas) {
+        for (Barraca b : escala.getBarracas()) {
             System.out.println("Barraca: " + b.getNome());
 
             List<Voluntario> voluntarios = new ArrayList<>(b.getVoluntarios());
 
-            // Ordenar por número de aluno
             Collections.sort(voluntarios, new Comparator<Voluntario>() {
-                @Override
                 public int compare(Voluntario v1, Voluntario v2) {
                     return Integer.compare(v1.getNumeroAluno(), v2.getNumeroAluno());
                 }
@@ -70,42 +66,38 @@ public class MenuRankings {
         }
     }
 
-    private void mostrarBarracasAgrupadasPorCategoria(EscalaDiaria escala) {
-        System.out.println("\n--- Vendas das barracas agrupadas por categoria (ordem decrescente) ---");
+    private void mostrarBarracasPorCategoria(EscalaDiaria escala) {
+        System.out.println("\n--- Vendas das barracas agrupadas por categoria ---");
 
         List<Barraca> ouro = new ArrayList<>();
         List<Barraca> prata = new ArrayList<>();
         List<Barraca> bronze = new ArrayList<>();
 
-        List<Barraca> barracas = escala.getBarracas();
-
-        for (Barraca b : barracas) {
+        for (Barraca b : escala.getBarracas()) {
             String categoria = b.classificar();
             if (categoria.equals("Ouro")) {
                 ouro.add(b);
             } else if (categoria.equals("Prata")) {
                 prata.add(b);
-            } else if (categoria.equals("Bronze")) {
+            } else {
                 bronze.add(b);
             }
         }
 
-        ordenarEBarracas("Ouro", ouro);
-        ordenarEBarracas("Prata", prata);
-        ordenarEBarracas("Bronze", bronze);
+        mostrarCategoria("Ouro", ouro);
+        mostrarCategoria("Prata", prata);
+        mostrarCategoria("Bronze", bronze);
     }
 
-    private void ordenarEBarracas(String categoria, List<Barraca> lista) {
-        // Ordena por vendas decrescentes
-        Collections.sort(lista, new Comparator<Barraca>() {
-            @Override
+    private void mostrarCategoria(String nomeCategoria, List<Barraca> barracas) {
+        Collections.sort(barracas, new Comparator<Barraca>() {
             public int compare(Barraca b1, Barraca b2) {
                 return Double.compare(b2.exportarVendas(), b1.exportarVendas());
             }
         });
 
-        System.out.println("\nCategoria: " + categoria);
-        for (Barraca b : lista) {
+        System.out.println("\nCategoria: " + nomeCategoria);
+        for (Barraca b : barracas) {
             System.out.printf("\tBarraca: %s | Vendas: %.2f€\n", b.getNome(), b.exportarVendas());
         }
     }

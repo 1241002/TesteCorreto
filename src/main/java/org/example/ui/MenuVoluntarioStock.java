@@ -1,12 +1,8 @@
 package org.example.ui;
 
-import org.example.model.Federacao;
-import org.example.model.VoluntarioStock;
-import org.example.model.Barraca;
-import org.example.model.StockProdutos;
+import org.example.model.*;
 import org.example.utils.Utils;
 
-import java.io.IOException;
 import java.util.List;
 
 public class MenuVoluntarioStock {
@@ -17,18 +13,21 @@ public class MenuVoluntarioStock {
         this.federacao = federacao;
     }
 
-    public void run() throws IOException {
+    public void run() {
         do {
             System.out.println("\n###### MENU VOLUNTÁRIO STOCK #####");
-            System.out.println("1. Adicionar stock");
-            System.out.println("2. Ver stock atual");
+            System.out.println("1. Adicionar novo produto ao stock");
+            System.out.println("2. Repor stock existente");
+            System.out.println("3. Ver stock atual");
             System.out.println("0. Voltar");
 
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 
             if (opcao.equals("1")) {
-                adicionarStock();
+                adicionarNovoProduto();
             } else if (opcao.equals("2")) {
+                reporStock();
+            } else if (opcao.equals("3")) {
                 verStockAtual();
             } else if (!opcao.equals("0")) {
                 System.out.println("Opção inválida!");
@@ -37,8 +36,8 @@ public class MenuVoluntarioStock {
         } while (!opcao.equals("0"));
     }
 
-    private void adicionarStock() {
-        int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");
+    private void adicionarNovoProduto() {
+        int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
 
         if (voluntario == null) {
@@ -48,11 +47,49 @@ public class MenuVoluntarioStock {
 
         Barraca barraca = voluntario.getBarracaAssociada();
         if (barraca == null) {
-            System.out.println("Este voluntário não está associado a nenhuma barraca.");
+            System.out.println("Voluntário sem barraca.");
             return;
         }
 
-        String produto = Utils.readLineFromConsole("Nome do produto: ");
+        String nome = Utils.readLineFromConsole("Nome do produto: ");
+        double preco = Utils.readDoubleFromConsole("Preço unitário: ");
+        int quantidade = Utils.readIntFromConsole("Quantidade: ");
+
+        if (preco <= 0 || quantidade < 0) {
+            System.out.println("Dados inválidos.");
+            return;
+        }
+
+        List<StockProdutos> stock = barraca.getStock();
+        for (int i = 0; i < stock.size(); i++) {
+            if (stock.get(i).getNome().equalsIgnoreCase(nome)) {
+                System.out.println("Produto já existe.");
+                return;
+            }
+        }
+
+        StockProdutos novo = new StockProdutos(nome, preco, quantidade);
+        voluntario.adicionarProdutoAoStock(novo);
+        barraca.adicionarStock(nome, preco, quantidade);
+        System.out.println("Produto adicionado.");
+    }
+
+    private void reporStock() {
+        int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
+        VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
+
+        if (voluntario == null) {
+            System.out.println("Voluntário não encontrado.");
+            return;
+        }
+
+        Barraca barraca = voluntario.getBarracaAssociada();
+        if (barraca == null) {
+            System.out.println("Voluntário sem barraca.");
+            return;
+        }
+
+        String nome = Utils.readLineFromConsole("Nome do produto: ");
         int quantidade = Utils.readIntFromConsole("Quantidade a adicionar: ");
 
         if (quantidade <= 0) {
@@ -60,12 +97,11 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        barraca.adicionarStock(produto, quantidade);
-        System.out.println("Stock adicionado com sucesso.");
+        voluntario.reporProduto(nome, quantidade);
     }
 
     private void verStockAtual() {
-        int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");
+        int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
 
         if (voluntario == null) {
@@ -75,19 +111,19 @@ public class MenuVoluntarioStock {
 
         Barraca barraca = voluntario.getBarracaAssociada();
         if (barraca == null) {
-            System.out.println("Este voluntário não está associado a nenhuma barraca.");
+            System.out.println("Voluntário sem barraca.");
             return;
         }
 
         List<StockProdutos> stock = barraca.getStock();
-
-        System.out.println("### Stock atual da barraca " + barraca.getNome() + " ###");
+        System.out.println("### Stock da barraca " + barraca.getNome() + " ###");
 
         if (stock.isEmpty()) {
-            System.out.println("Ainda não há produtos registados.");
+            System.out.println("Sem produtos registados.");
         } else {
-            for (StockProdutos sp : stock) {
-                System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades");
+            for (int i = 0; i < stock.size(); i++) {
+                StockProdutos sp = stock.get(i);
+                System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades, Preço: " + sp.getPrecoUnitario() + "€");
             }
         }
     }

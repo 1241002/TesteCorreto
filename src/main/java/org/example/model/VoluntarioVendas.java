@@ -11,14 +11,38 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         this.vendasProdutos = new ArrayList<>();
     }
 
+    public boolean registarVenda(String nomeProduto, int quantidade) {
+        if (quantidade <= 0) {
+            System.out.println("Quantidade inválida.");
+            return false;
+        }
+
+        Barraca barraca = getBarracaAssociada();
+        if (barraca == null) {
+            System.out.println("O voluntário não está associado a nenhuma barraca.");
+            return false;
+        }
+
+        for (StockProdutos stock : barraca.getStock()) {
+            if (stock.getNome().equalsIgnoreCase(nomeProduto)) {
+                if (stock.reduzirQuantidade(quantidade)) {
+                    vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, stock.getPrecoUnitario()));
+                    System.out.printf("Venda registada: %s - %d x %.2f€\n", nomeProduto, quantidade, stock.getPrecoUnitario());
+                    return true;
+                } else {
+                    System.out.println("Quantidade insuficiente em stock.");
+                    return false;
+                }
+            }
+        }
+        System.out.println("Produto não encontrado no estoque.");
+        return false;
+    }
+
+    // Mantido para compatibilidade, mas não será usado diretamente
     public void registarVenda(String nomeProduto, int quantidade, double precoUnitario) {
         if (quantidade > 0 && precoUnitario > 0.0) {
-            Produto produto = buscarProdutoPorNome(nomeProduto);
-            if (produto != null) {
-                vendasProdutos.add(new VendaProdutos(produto.getNome(), quantidade, produto.getPrecoUnitario()));
-            } else {
-                System.out.println("Produto não encontrado: " + nomeProduto);
-            }
+            vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, precoUnitario));
         }
     }
 
@@ -28,7 +52,7 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
                 return produto;
             }
         }
-        return null; // Produto não encontrado
+        return null;
     }
 
     public boolean removerUltimaVenda() {
