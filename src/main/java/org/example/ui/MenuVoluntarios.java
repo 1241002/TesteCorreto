@@ -5,7 +5,9 @@ import org.example.model.Instituicao;
 import org.example.model.VoluntarioStock;
 import org.example.model.VoluntarioVendas;
 import org.example.utils.Utils;
+
 import java.io.IOException;
+import java.util.List;
 
 public class MenuVoluntarios {
     private Federacao federacao;
@@ -36,14 +38,15 @@ public class MenuVoluntarios {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         String nome = Utils.readLineFromConsole("Nome do voluntário: ");
 
-        // Escolher a instituição através do metodo
         Instituicao instituicaoEscolhida = escolherInstituicao();
+        if (instituicaoEscolhida == null) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
 
-        // Criação de voluntário de Stock e associação à instituição
         VoluntarioStock voluntario = new VoluntarioStock(nome, numeroAluno, instituicaoEscolhida);
-
-        // Adiciona à lista de voluntários da instituição
         instituicaoEscolhida.adicionarVoluntario(voluntario);
+
         System.out.println("Voluntário de Stock adicionado com sucesso à instituição " + instituicaoEscolhida.getNome());
     }
 
@@ -51,24 +54,36 @@ public class MenuVoluntarios {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         String nome = Utils.readLineFromConsole("Nome do voluntário: ");
 
-        // Escolher a instituição através do metodo
         Instituicao instituicaoEscolhida = escolherInstituicao();
+        if (instituicaoEscolhida == null) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
 
-        // Criação de voluntário de Vendas e associação à instituição
         VoluntarioVendas voluntario = new VoluntarioVendas(nome, numeroAluno, instituicaoEscolhida);
-
-        // Adiciona à lista de voluntários da instituição
         instituicaoEscolhida.adicionarVoluntario(voluntario);
+
         System.out.println("Voluntário de Vendas adicionado com sucesso à instituição " + instituicaoEscolhida.getNome());
     }
 
-    // Metodo para escolher a instituição
     private Instituicao escolherInstituicao() {
-        System.out.println("Escolha a instituição:");
-        for (int i = 0; i < federacao.getInstituicoes().size(); i++) {
-            System.out.println(i + 1 + ". " + federacao.getInstituicoes().get(i).getNome());
+        List<Instituicao> instituicoes = federacao.getInstituicoes();
+
+        if (instituicoes.isEmpty()) {
+            System.out.println("Não existem instituições registadas.");
+            return null;
         }
-        int opcaoInstituicao = Utils.readIntFromConsole("Escolha a instituição: ");
-        return federacao.getInstituicoes().get(opcaoInstituicao - 1);  // Retorna a instituição escolhida
+
+        System.out.println("Escolha a instituição:");
+        for (int i = 0; i < instituicoes.size(); i++) {
+            System.out.println((i + 1) + ". " + instituicoes.get(i).getNome());
+        }
+
+        int opcaoInstituicao = Utils.readIntFromConsole("Opção (0 para cancelar): ");
+        if (opcaoInstituicao < 1 || opcaoInstituicao > instituicoes.size()) {
+            return null;
+        }
+
+        return instituicoes.get(opcaoInstituicao - 1);
     }
 }

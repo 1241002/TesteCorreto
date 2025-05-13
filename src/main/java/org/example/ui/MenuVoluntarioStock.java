@@ -7,7 +7,7 @@ import org.example.model.StockProdutos;
 import org.example.utils.Utils;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 public class MenuVoluntarioStock {
     private Federacao federacao;
@@ -23,21 +23,17 @@ public class MenuVoluntarioStock {
             System.out.println("1. Adicionar stock");
             System.out.println("2. Ver stock atual");
             System.out.println("0. Voltar");
+
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 
-            switch (opcao) {
-                case "1":
-                    adicionarStock();
-                    break;
-                case "2":
-                    verStockAtual();
-                    break;
-                case "0":
-                    System.out.println("A voltar ao menu anterior...");
-                    break;
-                default:
-                    System.out.println("Opção inválida!");
+            if (opcao.equals("1")) {
+                adicionarStock();
+            } else if (opcao.equals("2")) {
+                verStockAtual();
+            } else if (!opcao.equals("0")) {
+                System.out.println("Opção inválida!");
             }
+
         } while (!opcao.equals("0"));
     }
 
@@ -50,7 +46,7 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        Barraca barraca = voluntario.getBarracaAssociada(); // Obtém a barraca associada ao voluntário
+        Barraca barraca = voluntario.getBarracaAssociada();
         if (barraca == null) {
             System.out.println("Este voluntário não está associado a nenhuma barraca.");
             return;
@@ -64,11 +60,9 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        // Chama o metodo da Barraca para adicionar o produto ao stock
         barraca.adicionarStock(produto, quantidade);
         System.out.println("Stock adicionado com sucesso.");
     }
-
 
     private void verStockAtual() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");
@@ -85,10 +79,16 @@ public class MenuVoluntarioStock {
             return;
         }
 
+        List<StockProdutos> stock = barraca.getStock();
+
         System.out.println("### Stock atual da barraca " + barraca.getNome() + " ###");
-        for (StockProdutos sp : barraca.getStock()) {  // Alteração aqui: Usando a lista de StockProdutos
-            System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades");
+
+        if (stock.isEmpty()) {
+            System.out.println("Ainda não há produtos registados.");
+        } else {
+            for (StockProdutos sp : stock) {
+                System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades");
+            }
         }
     }
-
 }

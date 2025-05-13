@@ -1,5 +1,5 @@
 package org.example.ui;
-import org.example.model.Produto;
+
 import org.example.model.*;
 import org.example.utils.Utils;
 import java.io.IOException;
@@ -20,22 +20,16 @@ public class MenuVoluntarioVendas {
             System.out.println("0. Voltar");
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
 
-            switch (opcao) {
-                case "1":
-                    fazerVenda();
-                    break;
-                case "2":
-                    verTotalVendas();
-                    break;
-                case "0":
-                    System.out.println("A voltar ao menu anterior...");
-                    break;
-                default:
-                    System.out.println("Opção inválida!");
+            if (opcao.equals("1")) {
+                fazerVenda();
+            } else if (opcao.equals("2")) {
+                verTotalVendas();
+            } else if (!opcao.equals("0")) {
+                System.out.println("Opção inválida!");
             }
+
         } while (!opcao.equals("0"));
     }
-
 
     private void fazerVenda() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");
@@ -55,25 +49,34 @@ public class MenuVoluntarioVendas {
         String nomeProduto = Utils.readLineFromConsole("Nome do produto a vender: ");
         int quantidade = Utils.readIntFromConsole("Quantidade vendida: ");
 
+        if (quantidade <= 0) {
+            System.out.println("Quantidade inválida.");
+            return;
+        }
+
+        boolean encontrado = false;
+
         for (StockProdutos stock : barraca.getStock()) {
             if (stock.getNome().equalsIgnoreCase(nomeProduto)) {
+                encontrado = true;
+
                 if (stock.getQuantidade() >= quantidade) {
-                    double preco = stock.getPrecoUnitario(); // diretamente da superclasse Produto
+                    double preco = stock.getPrecoUnitario();
                     stock.setQuantidade(stock.getQuantidade() - quantidade);
                     voluntario.registarVenda(nomeProduto, quantidade, preco);
                     System.out.printf("Venda registada: %s - %d x %.2f€\n", nomeProduto, quantidade, preco);
-                    return;
                 } else {
                     System.out.println("Quantidade insuficiente em stock.");
-                    return;
                 }
+
+                break;
             }
         }
 
-        System.out.println("Produto não encontrado.");
+        if (!encontrado) {
+            System.out.println("Produto não encontrado.");
+        }
     }
-
-
 
     private void verTotalVendas() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno do voluntário: ");
@@ -84,6 +87,7 @@ public class MenuVoluntarioVendas {
             return;
         }
 
-        System.out.println("Total de vendas: " + String.format("%.2f€", voluntario.getTotalVendas()));
+        double total = voluntario.getTotalVendas();
+        System.out.println("Total de vendas: " + String.format("%.2f€", total));
     }
 }
