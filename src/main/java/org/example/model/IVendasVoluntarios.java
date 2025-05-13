@@ -13,16 +13,15 @@ public interface IVendasVoluntarios {
 
      void setNumeroAluno(int numeroAluno);
 
-    default void verificarEExibirCategoria() {
-        String categoria;
+    default String getCategoria() {
         double totalVendas = getTotalVendas();
-        if (totalVendas < 500) {
-            categoria = "Bronze";
-        } else if (totalVendas >= 500 && totalVendas <= 1000) {
-            categoria = "Prata";
-        } else {
-            categoria = "Ouro";
-        }
-        System.out.println("Voluntário: " + getNome() + ", Total de Vendas: " + totalVendas + "€, Classificação: " + categoria);
+        if (totalVendas < 500) return "Bronze";
+        else if (totalVendas <= 1000) return "Prata";
+        else return "Ouro";
     }
+
+    default void verificarEExibirCategoria() {
+        System.out.println("Voluntário: " + getNome() + ", Total de Vendas: " + getTotalVendas() + "€, Classificação: " + getCategoria());
+    }
+
 }

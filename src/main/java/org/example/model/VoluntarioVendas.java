@@ -14,9 +14,24 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
 
     public void registarVenda(String nomeProduto, int quantidade, double precoUnitario) {
         if (quantidade > 0 && precoUnitario > 0.0) {
-            vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, precoUnitario));
+            Produto produto = buscarProdutoPorNome(nomeProduto);
+            if (produto != null) {
+                vendasProdutos.add(new VendaProdutos(produto.getNome(), quantidade, produto.getPrecoUnitario()));
+            } else {
+                System.out.println("Produto não encontrado: " + nomeProduto);
+            }
         }
     }
+
+    private Produto buscarProdutoPorNome(String nomeProduto) {
+        for (Produto produto : getInstituicao().getLstProdutos()) {
+            if (produto.getNome().equalsIgnoreCase(nomeProduto)) {
+                return produto;
+            }
+        }
+        return null; // Produto não encontrado
+    }
+
 
     public boolean removerUltimaVenda() {
         if (!vendasProdutos.isEmpty()) {
@@ -43,17 +58,6 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         vendasProdutos.clear();
     }
 
-
-    public String classificar() {
-        double totalVendas = getTotalVendas();
-        if (totalVendas < 500.0) {
-            return "Bronze";
-        } else if (totalVendas >= 500.0 && totalVendas <= 1000.0) {
-            return "Prata";
-        } else {
-            return "Ouro";
-        }
-    }
 
     @Override
     public String toString() {
