@@ -21,7 +21,7 @@ public class MenuInicial_UI {
             System.out.println("4. Gerenciar Barracas");
             System.out.println("5. Gerenciar Voluntários");
             System.out.println("6. Gerenciar Instituições");
-            System.out.println("7. Gerenciar EscalasDiarias");
+            System.out.println("7. Gerenciar Escalas Diárias");
             System.out.println("8. Ver rankings");
             System.out.println("0. Sair");
 
@@ -51,8 +51,12 @@ public class MenuInicial_UI {
             } else if (opcao.equals("8")) {
                 MenuRankings ui = new MenuRankings(federacao);
                 ui.run();
+            } else if (!opcao.equals("0")) {
+                System.out.println("Opção inválida! Tente novamente.");
             }
 
         } while (!opcao.equals("0"));
+
+        System.out.println("A sair do menu.");
     }
 }

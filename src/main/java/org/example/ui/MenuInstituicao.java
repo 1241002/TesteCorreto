@@ -13,11 +13,12 @@ public class MenuInstituicao {
     }
 
     public void run() {
-        System.out.println("\n### Menu Instituição ###");
+        System.out.println();
+        System.out.println("### Menu Instituição ###");
 
-        String nome = Utils.readLineFromConsole("Nome da nova instituição: ").trim();
+        String nome = Utils.readLineFromConsole("Nome da nova instituição: ");
 
-        if (nome.isEmpty()) {
+        if (nome == null || nome.equals("")) {
             System.out.println("O nome da instituição não pode estar vazio.");
             return;
         }
@@ -29,6 +30,6 @@ public class MenuInstituicao {
 
         Instituicao novaInstituicao = new Instituicao(nome);
         federacao.adicionarInstituicao(novaInstituicao);
-        System.out.println("Instituição '" + nome + "' adicionada com sucesso!");
+        System.out.println("Instituição '" + nome + "' adicionada com sucesso.");
     }
 }

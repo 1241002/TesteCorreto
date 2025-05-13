@@ -55,7 +55,7 @@ public class EscalaDiaria {
 
     @Override
     public String toString() {
-        return "\nEscalaDiaria [" +
+        return "EscalaDiaria [" +
                 "Data=" + data +
                 ", Nº Barracas=" + barracas.size() +
                 ", Total Vendas=" + vendasTotais + "€" +
@@ -63,4 +63,3 @@ public class EscalaDiaria {
                 ']';
     }
 }
-

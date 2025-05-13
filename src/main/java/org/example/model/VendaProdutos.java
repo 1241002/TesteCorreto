@@ -28,7 +28,13 @@ public class VendaProdutos {
     }
 
     @Override
-    public String toString() {
-        return nomeProduto + " - " + quantidade + " x " + precoUnitario + "€ = " + String.format("%.2f€", getValorTotal());
+    public String
+    toString() {
+        final StringBuilder sb = new StringBuilder("VendaProdutos{");
+        sb.append("nomeProduto='").append(nomeProduto).append('\'');
+        sb.append(", quantidade=").append(quantidade);
+        sb.append(", precoUnitario=").append(precoUnitario);
+        sb.append('}');
+        return sb.toString();
     }
 }

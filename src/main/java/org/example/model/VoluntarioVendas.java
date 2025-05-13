@@ -2,7 +2,6 @@ package org.example.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
     private List<VendaProdutos> vendasProdutos;
@@ -32,7 +31,6 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         return null; // Produto não encontrado
     }
 
-
     public boolean removerUltimaVenda() {
         if (!vendasProdutos.isEmpty()) {
             vendasProdutos.remove(vendasProdutos.size() - 1);
@@ -49,7 +47,6 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         return total;
     }
 
-
     public List<VendaProdutos> getTodasVendas() {
         return new ArrayList<>(vendasProdutos);
     }
@@ -58,6 +55,22 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         vendasProdutos.clear();
     }
 
+    public String getCategoria() {
+        double total = getTotalVendas();
+        if (total < 500) {
+            return "Bronze";
+        } else if (total <= 1000) {
+            return "Prata";
+        } else {
+            return "Ouro";
+        }
+    }
+
+    public void verificarEExibirCategoria() {
+        System.out.println("Voluntário: " + getNome()
+                + ", Total de Vendas: " + String.format("%.2f", getTotalVendas()) + "€"
+                + ", Classificação: " + getCategoria());
+    }
 
     @Override
     public String toString() {
@@ -69,8 +82,4 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         }
         return sb.toString();
     }
-
-
 }
-
-

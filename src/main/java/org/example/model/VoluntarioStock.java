@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VoluntarioStock extends Voluntario {
-    private List<StockProdutos> produtosStock;
+    private ArrayList<StockProdutos> produtosStock;
 
     public VoluntarioStock(String nome, int numeroAluno, Instituicao instituicao) {
         super(nome, numeroAluno, instituicao);
@@ -37,7 +37,7 @@ public class VoluntarioStock extends Voluntario {
         System.out.println("Produto " + produto.getNome() + " adicionado ao stock.");
     }
 
-    public List<StockProdutos> getProdutosStock() {
+    public ArrayList<StockProdutos> getProdutosStock() {
         return produtosStock;
     }
 

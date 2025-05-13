@@ -1,20 +1,22 @@
 package org.example.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Federacao {
     private String nome;
-    private final List<Produto> lstProdutos = new ArrayList<>();
-    private final List<Instituicao> instituicoes = new ArrayList<>();
+    private final List<Produto> lstProdutos;
+    private final List<Instituicao> instituicoes;
     private EscalaDiaria escalaAtual;
-    private final List<Barraca> todasBarracas = new ArrayList<>();
-    private final List<EscalaDiaria> escalas = new ArrayList<>();
+    private final List<Barraca> todasBarracas;
+    private final List<EscalaDiaria> escalas;
 
     public Federacao(String nome) {
         this.nome = nome;
+        this.lstProdutos = new ArrayList<>();
+        this.instituicoes = new ArrayList<>();
+        this.todasBarracas = new ArrayList<>();
+        this.escalas = new ArrayList<>();
     }
 
     // Produtos
@@ -27,11 +29,16 @@ public class Federacao {
     }
 
     public boolean listaContemProduto(String nomeProduto) {
-        return lstProdutos.stream().anyMatch(p -> p.getNome().equalsIgnoreCase(nomeProduto));
+        for (Produto p : lstProdutos) {
+            if (p.getNome().equalsIgnoreCase(nomeProduto)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Produto> getLstProdutos() {
-        return Collections.unmodifiableList(lstProdutos);
+        return new ArrayList<>(lstProdutos);
     }
 
     // Instituições
@@ -44,11 +51,16 @@ public class Federacao {
     }
 
     public List<Instituicao> getInstituicoes() {
-        return Collections.unmodifiableList(instituicoes);
+        return new ArrayList<>(instituicoes);
     }
 
     private boolean instituicaoExiste(String nome) {
-        return instituicoes.stream().anyMatch(i -> i.getNome().equalsIgnoreCase(nome));
+        for (Instituicao i : instituicoes) {
+            if (i.getNome().equalsIgnoreCase(nome)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean listaContemInstituicao(String nomeInstituicao) {
@@ -82,7 +94,7 @@ public class Federacao {
 
     // Escalas
     public List<EscalaDiaria> getEscalas() {
-        return Collections.unmodifiableList(escalas);
+        return new ArrayList<>(escalas);
     }
 
     public void adicionarEscala(EscalaDiaria escala) {
@@ -92,10 +104,12 @@ public class Federacao {
     }
 
     public EscalaDiaria buscarEscalaPorData(String data) {
-        return escalas.stream()
-                .filter(escala -> escala.getData().toString().equals(data))
-                .findFirst()
-                .orElse(null);
+        for (EscalaDiaria escala : escalas) {
+            if (escala.getData().toString().equals(data)) {
+                return escala;
+            }
+        }
+        return null;
     }
 
     public EscalaDiaria getEscalaAtual() {
@@ -116,18 +130,30 @@ public class Federacao {
         return nome;
     }
 
-    // toString para debug
+    // toString
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Federação: ").append(nome).append("\n");
+        StringBuilder sb = new StringBuilder("Federação: " + nome + "\n");
 
-        sb.append("Produtos: ");
-        sb.append(lstProdutos.isEmpty() ? "Nenhum\n" : lstProdutos.stream().map(Produto::toString).collect(Collectors.joining("\n\t- ")));
+        sb.append("Produtos:\n");
+        if (lstProdutos.isEmpty()) {
+            sb.append("\tNenhum\n");
+        } else {
+            for (Produto p : lstProdutos) {
+                sb.append("\t- ").append(p.toString()).append("\n");
+            }
+        }
 
-        sb.append("\nInstituições: ");
-        sb.append(instituicoes.isEmpty() ? "Nenhuma\n" : instituicoes.stream().map(Instituicao::getNome).collect(Collectors.joining("\n\t- ")));
+        sb.append("Instituições:\n");
+        if (instituicoes.isEmpty()) {
+            sb.append("\tNenhuma\n");
+        } else {
+            for (Instituicao i : instituicoes) {
+                sb.append("\t- ").append(i.getNome()).append("\n");
+            }
+        }
 
-        sb.append("\nNúmero de escalas: ").append(escalas.size());
+        sb.append("Número de escalas: ").append(escalas.size()).append("\n");
 
         return sb.toString();
     }
