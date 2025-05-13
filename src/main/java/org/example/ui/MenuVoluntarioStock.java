@@ -51,27 +51,40 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        String nome = Utils.readLineFromConsole("Nome do produto: ");
-        double preco = Utils.readDoubleFromConsole("Preço unitário: ");
-        int quantidade = Utils.readIntFromConsole("Quantidade: ");
-
-        if (preco <= 0 || quantidade < 0) {
-            System.out.println("Dados inválidos.");
+        // Listar produtos disponíveis na instituição
+        List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
+        if (produtosDisponiveis.isEmpty()) {
+            System.out.println("Nenhum produto registrado na instituição.");
             return;
         }
 
+        Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
+        Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
+        if (produtoSelecionado == null) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
+
+        int quantidade = Utils.readIntFromConsole("Quantidade: ");
+        if (quantidade < 0) {
+            System.out.println("Quantidade inválida.");
+            return;
+        }
+
+        // Verificar se o produto já existe no estoque da barraca
         List<StockProdutos> stock = barraca.getStock();
         for (int i = 0; i < stock.size(); i++) {
-            if (stock.get(i).getNome().equalsIgnoreCase(nome)) {
-                System.out.println("Produto já existe.");
+            if (stock.get(i).getNome().equalsIgnoreCase(produtoSelecionado.getNome())) {
+                System.out.println("Produto já existe no estoque. Use a opção de repor stock.");
                 return;
             }
         }
 
-        StockProdutos novo = new StockProdutos(nome, preco, quantidade);
+        // Criar e adicionar o StockProdutos
+        StockProdutos novo = new StockProdutos(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
         voluntario.adicionarProdutoAoStock(novo);
-        barraca.adicionarStock(nome, preco, quantidade);
-        System.out.println("Produto adicionado.");
+        barraca.adicionarStock(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
+        System.out.println("Produto adicionado ao estoque.");
     }
 
     private void reporStock() {
@@ -89,15 +102,41 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        String nome = Utils.readLineFromConsole("Nome do produto: ");
-        int quantidade = Utils.readIntFromConsole("Quantidade a adicionar: ");
+        // Listar produtos disponíveis na instituição
+        List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
+        if (produtosDisponiveis.isEmpty()) {
+            System.out.println("Nenhum produto registrado na instituição.");
+            return;
+        }
 
+        Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
+        Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
+        if (produtoSelecionado == null) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
+
+        int quantidade = Utils.readIntFromConsole("Quantidade a adicionar: ");
         if (quantidade <= 0) {
             System.out.println("Quantidade inválida.");
             return;
         }
 
-        voluntario.reporProduto(nome, quantidade);
+        // Verificar se o produto já existe no estoque da barraca
+        List<StockProdutos> stock = barraca.getStock();
+        for (int i = 0; i < stock.size(); i++) {
+            if (stock.get(i).getNome().equalsIgnoreCase(produtoSelecionado.getNome())) {
+                voluntario.reporProduto(produtoSelecionado.getNome(), quantidade);
+                System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado com " + quantidade + " unidades.");
+                return;
+            }
+        }
+
+        // Se o produto não existe no estoque, mas está na instituição, criar novo StockProdutos
+        StockProdutos novo = new StockProdutos(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
+        voluntario.adicionarProdutoAoStock(novo);
+        barraca.adicionarStock(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
+        System.out.println("Produto " + produtoSelecionado.getNome() + " adicionado ao estoque com " + quantidade + " unidades.");
     }
 
     private void verStockAtual() {

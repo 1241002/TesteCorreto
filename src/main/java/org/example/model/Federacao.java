@@ -23,6 +23,12 @@ public class Federacao {
     public boolean adicionarProduto(Produto produto) {
         if (!listaContemProduto(produto.getNome())) {
             lstProdutos.add(new Produto(produto));
+            // Propagar o produto para todas as instituições
+            for (Instituicao instituicao : instituicoes) {
+                if (!instituicao.getLstProdutos().stream().anyMatch(p -> p.getNome().equalsIgnoreCase(produto.getNome()))) {
+                    instituicao.getLstProdutos().add(new Produto(produto));
+                }
+            }
             return true;
         }
         return false;
@@ -37,7 +43,7 @@ public class Federacao {
         return false;
     }
 
-    public List<Produto> getLstProdutos() {
+    public List<Produto> getListaProdutos() {
         return new ArrayList<>(lstProdutos);
     }
 
@@ -45,6 +51,10 @@ public class Federacao {
     public boolean adicionarInstituicao(Instituicao instituicao) {
         if (!instituicaoExiste(instituicao.getNome())) {
             instituicoes.add(instituicao);
+            // Adicionar todos os produtos existentes à nova instituição
+            for (Produto produto : lstProdutos) {
+                instituicao.getLstProdutos().add(new Produto(produto));
+            }
             return true;
         }
         return false;
