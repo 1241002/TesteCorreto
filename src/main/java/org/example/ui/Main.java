@@ -8,6 +8,14 @@ public class Main {
             // Construção da federação
             Federacao fap = new Federacao("Federação Académica do Porto");
 
+            // Adicionar administradores
+            Administrador admin = new Administrador("Admin", 99999, "admin123", "Gestão");
+            fap.adicionarAdministrador(admin);
+
+
+            Administrador EXDIMA = new Administrador("EXDIMA", 99998, "EXDIMA123", "Engenharia"); // Número alterado para evitar duplicata
+            fap.adicionarAdministrador(EXDIMA);
+
             // Criar escala do dia automaticamente
             EscalaDiaria escalaAtual = EscalaDiaria.criarEscalaHoje();
             fap.setEscalaAtual(escalaAtual);
@@ -27,11 +35,11 @@ public class Main {
             escalaAtual.adicionarBarraca(barraca1);
             escalaAtual.adicionarBarraca(barraca2);
 
-            // Criando voluntários com curso
-            VoluntarioStock voluntarioStock1 = new VoluntarioStock("João Stock", 12345, instituicao1, "Engenharia");
-            VoluntarioVendas voluntarioVendas1 = new VoluntarioVendas("Maria Vendas", 12346, instituicao1, "Administração");
-            VoluntarioStock voluntarioStock2 = new VoluntarioStock("Ana Stock", 12347, instituicao2, "Ciências");
-            VoluntarioVendas voluntarioVendas2 = new VoluntarioVendas("Pedro Vendas", 12348, instituicao2, "Artes");
+            // Criando voluntários com curso e senha
+            VoluntarioStock voluntarioStock1 = new VoluntarioStock("João Stock", 12345, instituicao1, "Engenharia", "joao123");
+            VoluntarioVendas voluntarioVendas1 = new VoluntarioVendas("Maria Vendas", 12346, instituicao1, "Administração", "maria123");
+            VoluntarioStock voluntarioStock2 = new VoluntarioStock("Ana Stock", 12347, instituicao2, "Ciências", "ana123");
+            VoluntarioVendas voluntarioVendas2 = new VoluntarioVendas("Pedro Vendas", 12348, instituicao2, "Artes", "pedro123");
 
             // Adicionando voluntários às instituições
             instituicao1.adicionarVoluntario(voluntarioStock1);
@@ -88,8 +96,6 @@ public class Main {
             // Iniciar menu principal
             MenuInicial_UI uiMenu = new MenuInicial_UI(fap);
             uiMenu.run();
-
-            System.out.println(fap); // Mostrar estado final da federação
         } catch (Exception e) {
             e.printStackTrace();
         }

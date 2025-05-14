@@ -10,6 +10,7 @@ public class Federacao {
     private EscalaDiaria escalaAtual;
     private final List<Barraca> todasBarracas;
     private final List<EscalaDiaria> escalas;
+    private final List<Administrador> administradores;
 
     public Federacao(String nome) {
         this.nome = nome;
@@ -17,13 +18,53 @@ public class Federacao {
         this.instituicoes = new ArrayList<>();
         this.todasBarracas = new ArrayList<>();
         this.escalas = new ArrayList<>();
+        this.administradores = new ArrayList<>();
     }
 
-    // Produtos
+    public boolean adicionarAdministrador(Administrador admin) {
+        if (!administradorExiste(admin.getNumero())) {
+            administradores.add(admin);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean administradorExiste(int numero) {
+        for (Administrador admin : administradores) {
+            if (admin.getNumero() == numero) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean validarLoginAdministrador(String nome, int numero, String senha, String curso) {
+        for (Administrador admin : administradores) {
+            if (admin.getNumero() == numero &&
+                    admin.getNome().equalsIgnoreCase(nome) &&
+                    admin.getSenha().equals(senha) &&
+                    admin.getCurso().equalsIgnoreCase(curso)) { // Curso agora é case-insensitive
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean validarLoginVoluntario(String nome, int numero, String senha, String curso, Class<?> tipoVoluntario) {
+        Voluntario voluntario = buscarVoluntarioPorNumeroAluno(numero);
+        if (voluntario != null &&
+                tipoVoluntario.isInstance(voluntario) &&
+                voluntario.getNome().equalsIgnoreCase(nome) &&
+                voluntario.getSenha().equals(senha) &&
+                voluntario.getCurso().equalsIgnoreCase(curso)) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean adicionarProduto(Produto produto) {
         if (!listaContemProduto(produto.getNome())) {
             lstProdutos.add(new Produto(produto));
-            // Propagar o produto para todas as instituições
             for (Instituicao instituicao : instituicoes) {
                 if (!instituicao.getLstProdutos().stream().anyMatch(p -> p.getNome().equalsIgnoreCase(produto.getNome()))) {
                     instituicao.getLstProdutos().add(new Produto(produto));
@@ -47,11 +88,9 @@ public class Federacao {
         return new ArrayList<>(lstProdutos);
     }
 
-    // Instituições
     public boolean adicionarInstituicao(Instituicao instituicao) {
         if (!instituicaoExiste(instituicao.getNome())) {
             instituicoes.add(instituicao);
-            // Adicionar todos os produtos existentes à nova instituição
             for (Produto produto : lstProdutos) {
                 instituicao.getLstProdutos().add(new Produto(produto));
             }
@@ -77,7 +116,6 @@ public class Federacao {
         return instituicaoExiste(nomeInstituicao);
     }
 
-    // Procurar voluntários
     public VoluntarioVendas buscarVoluntarioVendasPorNumeroAluno(int numeroAluno) {
         for (Instituicao inst : instituicoes) {
             VoluntarioVendas v = inst.getVoluntarioVendasPorNumeroAluno(numeroAluno);
@@ -105,7 +143,6 @@ public class Federacao {
         return null;
     }
 
-    // Escalas
     public List<EscalaDiaria> getEscalas() {
         return new ArrayList<>(escalas);
     }
@@ -133,20 +170,26 @@ public class Federacao {
         this.escalaAtual = escalaAtual;
     }
 
-    // Barracas
     public List<Barraca> getTodasBarracas() {
         return todasBarracas;
     }
 
-    // Nome
     public String getNome() {
         return nome;
     }
 
-    // toString
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Federação: " + nome + "\n");
+
+        sb.append("Administradores:\n");
+        if (administradores.isEmpty()) {
+            sb.append("\tNenhum\n");
+        } else {
+            for (Administrador admin : administradores) {
+                sb.append("\t- ").append(admin.toString()).append("\n");
+            }
+        }
 
         sb.append("Produtos:\n");
         if (lstProdutos.isEmpty()) {

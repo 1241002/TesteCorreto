@@ -5,18 +5,21 @@ public abstract class Voluntario {
     private int numeroAluno;
     private Instituicao instituicao;
     private Barraca barracaAssociada;
-    private String curso; // Novo atributo
+    private String curso;
+    private String senha; // Novo atributo para senha
 
     private static final String NOME_POR_OMISSAO = "Sem nome";
     private static final int NUMERO_ALUNO_POR_OMISSAO = 0;
     private static final Instituicao INSTITUICAO_POR_OMISSAO = new Instituicao("");
     private static final String CURSO_POR_OMISSAO = "Sem curso";
+    private static final String SENHA_POR_OMISSAO = "sem_senha";
 
-    public Voluntario(String nome, int numeroAluno, Instituicao instituicao, String curso) {
+    public Voluntario(String nome, int numeroAluno, Instituicao instituicao, String curso, String senha) {
         this.nome = nome;
         this.numeroAluno = numeroAluno;
         this.instituicao = instituicao;
         this.curso = curso;
+        this.senha = senha;
         this.barracaAssociada = null;
     }
 
@@ -25,6 +28,7 @@ public abstract class Voluntario {
         this.numeroAluno = NUMERO_ALUNO_POR_OMISSAO;
         this.instituicao = INSTITUICAO_POR_OMISSAO;
         this.curso = CURSO_POR_OMISSAO;
+        this.senha = SENHA_POR_OMISSAO;
         this.barracaAssociada = null;
     }
 
@@ -33,6 +37,7 @@ public abstract class Voluntario {
         this.numeroAluno = v.numeroAluno;
         this.instituicao = v.instituicao;
         this.curso = v.curso;
+        this.senha = v.senha;
         this.barracaAssociada = v.barracaAssociada;
     }
 
@@ -46,6 +51,8 @@ public abstract class Voluntario {
     public void setBarracaAssociada(Barraca barracaAssociada) { this.barracaAssociada = barracaAssociada; }
     public String getCurso() { return curso; }
     public void setCurso(String curso) { this.curso = curso; }
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
 
     @Override
     public String toString() {

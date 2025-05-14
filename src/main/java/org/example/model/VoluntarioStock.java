@@ -1,8 +1,8 @@
 package org.example.model;
 
 public class VoluntarioStock extends Voluntario {
-    public VoluntarioStock(String nome, int numeroAluno, Instituicao instituicao, String curso) {
-        super(nome, numeroAluno, instituicao, curso);
+    public VoluntarioStock(String nome, int numeroAluno, Instituicao instituicao, String curso, String senha) {
+        super(nome, numeroAluno, instituicao, curso, senha);
     }
 
     public VoluntarioStock(VoluntarioStock vs) {

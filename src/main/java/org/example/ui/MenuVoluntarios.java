@@ -37,7 +37,8 @@ public class MenuVoluntarios {
     private void adicionarVoluntarioStock() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         String nome = Utils.readLineFromConsole("Nome do voluntário: ");
-        String curso = Utils.readLineFromConsole("Curso do voluntário: "); // Adiciona a coleta do curso
+        String curso = Utils.readLineFromConsole("Curso do voluntário: ");
+        String senha = Utils.readLineFromConsole("Senha do voluntário: "); // Adiciona a coleta da senha
 
         Instituicao instituicaoEscolhida = escolherInstituicao();
         if (instituicaoEscolhida == null) {
@@ -50,7 +51,7 @@ public class MenuVoluntarios {
             return;
         }
 
-        VoluntarioStock voluntario = new VoluntarioStock(nome, numeroAluno, instituicaoEscolhida, curso);
+        VoluntarioStock voluntario = new VoluntarioStock(nome, numeroAluno, instituicaoEscolhida, curso, senha);
         instituicaoEscolhida.adicionarVoluntario(voluntario);
 
         System.out.println("Voluntário de Stock adicionado com sucesso à instituição " + instituicaoEscolhida.getNome());
@@ -59,7 +60,8 @@ public class MenuVoluntarios {
     private void adicionarVoluntarioVendas() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         String nome = Utils.readLineFromConsole("Nome do voluntário: ");
-        String curso = Utils.readLineFromConsole("Curso do voluntário: "); // Adiciona a coleta do curso
+        String curso = Utils.readLineFromConsole("Curso do voluntário: ");
+        String senha = Utils.readLineFromConsole("Senha do voluntário: "); // Adiciona a coleta da senha
 
         Instituicao instituicaoEscolhida = escolherInstituicao();
         if (instituicaoEscolhida == null) {
@@ -72,11 +74,12 @@ public class MenuVoluntarios {
             return;
         }
 
-        VoluntarioVendas voluntario = new VoluntarioVendas(nome, numeroAluno, instituicaoEscolhida, curso);
+        VoluntarioVendas voluntario = new VoluntarioVendas(nome, numeroAluno, instituicaoEscolhida, curso, senha);
         instituicaoEscolhida.adicionarVoluntario(voluntario);
 
         System.out.println("Voluntário de Vendas adicionado com sucesso à instituição " + instituicaoEscolhida.getNome());
     }
+
     private Instituicao escolherInstituicao() {
         List<Instituicao> instituicoes = federacao.getInstituicoes();
 
