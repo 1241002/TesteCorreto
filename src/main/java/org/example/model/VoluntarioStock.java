@@ -11,6 +11,15 @@ public class VoluntarioStock extends Voluntario {
         this.produtosStock = new ArrayList<>();
     }
 
+    public VoluntarioStock(VoluntarioStock vs) {
+        super(vs);
+        this.produtosStock = new ArrayList<>(vs.produtosStock);
+    }
+
+    public VoluntarioStock() {
+        super();
+        this.produtosStock = new ArrayList<>();
+    }
 
     public void reporProduto(String nomeProduto, int quantidade) {
         StockProdutos produto = encontrarProduto(nomeProduto);

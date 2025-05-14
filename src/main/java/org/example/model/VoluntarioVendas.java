@@ -11,6 +11,16 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         this.vendasProdutos = new ArrayList<>();
     }
 
+    public VoluntarioVendas(VoluntarioVendas vv) {
+        super(vv);
+        this.vendasProdutos = new ArrayList<>(vv.vendasProdutos);
+    }
+
+    public VoluntarioVendas() {
+        super();
+        this.vendasProdutos = new ArrayList<>();
+    }
+
     public boolean registarVenda(String nomeProduto, int quantidade) {
         if (quantidade <= 0) {
             System.out.println("Quantidade inválida.");
