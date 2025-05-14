@@ -67,7 +67,7 @@ public class MenuRankings {
     }
 
     private void mostrarBarracasPorCategoria(EscalaDiaria escala) {
-        System.out.println("\n--- Vendas das barracas agrupadas por categoria ---");
+        System.out.println("\n--- Barracas agrupadas por categoria ---");
 
         List<Barraca> ouro = new ArrayList<>();
         List<Barraca> prata = new ArrayList<>();
@@ -98,7 +98,7 @@ public class MenuRankings {
 
         System.out.println("\nCategoria: " + nomeCategoria);
         for (Barraca b : barracas) {
-            System.out.printf("\tBarraca: %s | Vendas: %.2f€\n", b.getNome(), b.exportarVendas());
+            System.out.printf("\tBarraca: %s | Stock final: %d unidades\n", b.getNome(), b.exportarStockTotal());
         }
     }
 }

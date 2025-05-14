@@ -66,9 +66,9 @@ public class Main {
             }
 
             // Realizando algumas vendas iniciais
-            voluntarioVendas1.registarVenda("Bolo", 5); // Vende 5 Bolos da Barraca 1
-            voluntarioVendas1.registarVenda("Suco", 3); // Vende 3 Sucos da Barraca 1
-            voluntarioVendas2.registarVenda("Caneta", 10); // Vende 10 Canetas da Barraca 2
+            voluntarioVendas1.registarVenda("Bolo", 5); // Vende 5 Bolos da Barraca 1 (5 * 3.5 = 17.5€)
+            voluntarioVendas1.registarVenda("Suco", 3); // Vende 3 Sucos da Barraca 1 (3 * 2.0 = 6.0€)
+            voluntarioVendas2.registarVenda("Caneta", 10); // Vende 10 Canetas da Barraca 2 (10 * 1.5 = 15.0€)
 
             // Exibir stock após vendas
             System.out.println("\nStock da Barraca 1 após vendas:");
@@ -79,6 +79,11 @@ public class Main {
             for (StockProdutos sp : barraca2.getStock()) {
                 System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades, Preço: " + sp.getPrecoUnitario() + "€");
             }
+
+            // Exibir categorias das barracas
+            System.out.println("\nCategorias das barracas:");
+            System.out.println("Barraca 1: " + barraca1.classificar() + " (Stock: " + barraca1.exportarStockTotal() + ")");
+            System.out.println("Barraca 2: " + barraca2.classificar() + " (Stock: " + barraca2.exportarStockTotal() + ")");
 
             // Iniciar menu principal
             MenuInicial_UI uiMenu = new MenuInicial_UI(fap);
