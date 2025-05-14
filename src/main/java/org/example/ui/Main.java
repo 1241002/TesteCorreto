@@ -27,11 +27,11 @@ public class Main {
             escalaAtual.adicionarBarraca(barraca1);
             escalaAtual.adicionarBarraca(barraca2);
 
-            // Criando voluntários
-            VoluntarioStock voluntarioStock1 = new VoluntarioStock("João Stock", 12345, instituicao1);
-            VoluntarioVendas voluntarioVendas1 = new VoluntarioVendas("Maria Vendas", 12346, instituicao1);
-            VoluntarioStock voluntarioStock2 = new VoluntarioStock("Ana Stock", 12347, instituicao2);
-            VoluntarioVendas voluntarioVendas2 = new VoluntarioVendas("Pedro Vendas", 12348, instituicao2);
+            // Criando voluntários com curso
+            VoluntarioStock voluntarioStock1 = new VoluntarioStock("João Stock", 12345, instituicao1, "Engenharia");
+            VoluntarioVendas voluntarioVendas1 = new VoluntarioVendas("Maria Vendas", 12346, instituicao1, "Administração");
+            VoluntarioStock voluntarioStock2 = new VoluntarioStock("Ana Stock", 12347, instituicao2, "Ciências");
+            VoluntarioVendas voluntarioVendas2 = new VoluntarioVendas("Pedro Vendas", 12348, instituicao2, "Artes");
 
             // Adicionando voluntários às instituições
             instituicao1.adicionarVoluntario(voluntarioStock1);
@@ -66,9 +66,9 @@ public class Main {
             }
 
             // Realizando algumas vendas iniciais
-            voluntarioVendas1.registarVenda("Bolo", 5); // Vende 5 Bolos da Barraca 1 (5 * 3.5 = 17.5€)
-            voluntarioVendas1.registarVenda("Suco", 3); // Vende 3 Sucos da Barraca 1 (3 * 2.0 = 6.0€)
-            voluntarioVendas2.registarVenda("Caneta", 10); // Vende 10 Canetas da Barraca 2 (10 * 1.5 = 15.0€)
+            voluntarioVendas1.registarVenda("Bolo", 5);
+            voluntarioVendas1.registarVenda("Suco", 3);
+            voluntarioVendas2.registarVenda("Caneta", 10);
 
             // Exibir stock após vendas
             System.out.println("\nStock da Barraca 1 após vendas:");

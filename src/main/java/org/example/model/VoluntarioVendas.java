@@ -6,8 +6,8 @@ import java.util.List;
 public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
     private List<VendaProdutos> vendasProdutos;
 
-    public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao) {
-        super(nome, numeroAluno, instituicao);
+    public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao, String curso) {
+        super(nome, numeroAluno, instituicao, curso);
         this.vendasProdutos = new ArrayList<>();
     }
 

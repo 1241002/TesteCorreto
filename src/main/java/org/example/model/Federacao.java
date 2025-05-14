@@ -87,9 +87,12 @@ public class Federacao {
     }
 
     public VoluntarioStock buscarVoluntarioStockPorNumeroAluno(int numeroAluno) {
-        for (Instituicao inst : instituicoes) {
-            VoluntarioStock v = inst.getVoluntarioStockPorNumeroAluno(numeroAluno);
-            if (v != null) return v;
+        for (Instituicao instituicao : instituicoes) {
+            for (Voluntario voluntario : instituicao.getListaVoluntarios()) {
+                if (voluntario instanceof VoluntarioStock && voluntario.getNumeroAluno() == numeroAluno) {
+                    return (VoluntarioStock) voluntario;
+                }
+            }
         }
         return null;
     }
