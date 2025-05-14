@@ -1,38 +1,73 @@
 package org.example.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class VoluntarioStock extends Voluntario {
-    private ArrayList<StockProdutos> produtosStock;
-
     public VoluntarioStock(String nome, int numeroAluno, Instituicao instituicao) {
         super(nome, numeroAluno, instituicao);
-        this.produtosStock = new ArrayList<>();
     }
 
     public VoluntarioStock(VoluntarioStock vs) {
         super(vs);
-        this.produtosStock = new ArrayList<>(vs.produtosStock);
     }
 
     public VoluntarioStock() {
         super();
-        this.produtosStock = new ArrayList<>();
+    }
+
+    public void adicionarProdutoAoStock(String nomeProduto, double precoUnitario, int quantidade) {
+        Barraca barraca = getBarracaAssociada();
+        if (barraca == null) {
+            throw new IllegalStateException("Voluntário não está associado a nenhuma barraca.");
+        }
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
+        }
+        // Verificar se o produto existe na instituição
+        Produto produto = buscarProdutoPorNome(nomeProduto);
+        if (produto == null) {
+            throw new IllegalArgumentException("Produto não registrado na instituição.");
+        }
+        // Verificar se o produto já existe no stock
+        for (StockProdutos sp : barraca.getStock()) {
+            if (sp.getNome().equalsIgnoreCase(nomeProduto)) {
+                throw new IllegalStateException("Produto já existe no stock. Use a opção de repor stock.");
+            }
+        }
+        // Adicionar ao stock da barraca
+        barraca.adicionarStock(nomeProduto, precoUnitario, quantidade);
+        System.out.println("Produto " + nomeProduto + " adicionado ao stock da barraca " + barraca.getNome() + ".");
     }
 
     public void reporProduto(String nomeProduto, int quantidade) {
-        StockProdutos produto = encontrarProduto(nomeProduto);
-        if (produto != null) {
-            produto.setQuantidade(produto.getQuantidade() + quantidade);
-            System.out.println("Produto " + nomeProduto + " reposto com sucesso. Quantidade atual: " + produto.getQuantidade());
-        } else {
-            System.out.println("Produto " + nomeProduto + " não encontrado no stock.");
+        Barraca barraca = getBarracaAssociada();
+        if (barraca == null) {
+            throw new IllegalStateException("Voluntário não está associado a nenhuma barraca.");
+        }
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
+        }
+        // Verificar se o produto existe na instituição
+        Produto produto = buscarProdutoPorNome(nomeProduto);
+        if (produto == null) {
+            throw new IllegalArgumentException("Produto não registrado na instituição.");
+        }
+        // Tentar repor ou adicionar
+        boolean encontrado = false;
+        for (StockProdutos sp : barraca.getStock()) {
+            if (sp.getNome().equalsIgnoreCase(nomeProduto)) {
+                sp.setQuantidade(sp.getQuantidade() + quantidade);
+                encontrado = true;
+                System.out.println("Estoque de " + nomeProduto + " atualizado com " + quantidade + " unidades na barraca " + barraca.getNome() + ".");
+                break;
+            }
+        }
+        if (!encontrado) {
+            barraca.adicionarStock(nomeProduto, produto.getPrecoUnitario(), quantidade);
+            System.out.println("Produto " + nomeProduto + " adicionado ao stock da barraca " + barraca.getNome() + " com " + quantidade + " unidades.");
         }
     }
 
-    private StockProdutos encontrarProduto(String nomeProduto) {
-        for (StockProdutos produto : produtosStock) {
+    private Produto buscarProdutoPorNome(String nomeProduto) {
+        for (Produto produto : getInstituicao().getLstProdutos()) {
             if (produto.getNome().equalsIgnoreCase(nomeProduto)) {
                 return produto;
             }
@@ -40,23 +75,14 @@ public class VoluntarioStock extends Voluntario {
         return null;
     }
 
-
-    public void adicionarProdutoAoStock(StockProdutos produto) {
-        produtosStock.add(produto);
-        System.out.println("Produto " + produto.getNome() + " adicionado ao stock.");
-    }
-
-    public ArrayList<StockProdutos> getProdutosStock() {
-        return produtosStock;
-    }
-
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("\nVoluntario de Stock:");
-        sb.append(super.toString());
-        sb.append("\nProdutos de Stock: ").append(produtosStock);
-        sb.append("");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Voluntario de Stock: ").append(super.toString());
+        Barraca barraca = getBarracaAssociada();
+        if (barraca != null) {
+            sb.append("\nBarraca Associada: ").append(barraca.getNome());
+        }
         return sb.toString();
     }
 }

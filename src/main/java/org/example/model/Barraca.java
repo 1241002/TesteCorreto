@@ -36,6 +36,15 @@ public class Barraca {
         this.stock = stock;
     }
 
+    public StockProdutos getStockProduto(String nomeProduto) {
+        for (StockProdutos sp : stock) {
+            if (sp.getNome().equalsIgnoreCase(nomeProduto)) {
+                return sp;
+            }
+        }
+        return null;
+    }
+
     public boolean adicionarVoluntario(Voluntario voluntario) {
         if (!this.instituicao.equals(voluntario.getInstituicao())) {
             System.out.println("Erro: O voluntário não pertence à mesma instituição da barraca.");
@@ -53,8 +62,11 @@ public class Barraca {
     }
 
     public void adicionarStock(String nomeProduto, double precoUnitario, int quantidade) {
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
+        }
         for (StockProdutos sp : stock) {
-            if (sp.getNome().equals(nomeProduto)) {
+            if (sp.getNome().equalsIgnoreCase(nomeProduto)) {
                 sp.setQuantidade(sp.getQuantidade() + quantidade);
                 return;
             }
@@ -85,11 +97,7 @@ public class Barraca {
     }
 
     private int calcularTotalProdutos() {
-        int total = 0;
-        for (StockProdutos sp : stock) {
-            total += sp.getQuantidade();
-        }
-        return total;
+        return exportarStockTotal();
     }
 
     public String classificar() {
@@ -101,5 +109,22 @@ public class Barraca {
         } else {
             return "Ouro";
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Barraca: ").append(nome);
+        sb.append("\nInstituição: ").append(instituicao.getNome());
+        sb.append("\nStock:\n");
+        if (stock.isEmpty()) {
+            sb.append("\tNenhum produto em stock\n");
+        } else {
+            for (StockProdutos sp : stock) {
+                sb.append("\t- ").append(sp.getNome()).append(": ").append(sp.getQuantidade())
+                        .append(" unidades, Preço: ").append(sp.getPrecoUnitario()).append("€\n");
+            }
+        }
+        return sb.toString();
     }
 }

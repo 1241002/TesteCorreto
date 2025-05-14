@@ -20,7 +20,8 @@ public class MenuAdministrador {
             System.out.println("3. Gerenciar Voluntários");
             System.out.println("4. Gerenciar Instituições");
             System.out.println("5. Gerenciar Escalas Diárias");
-            System.out.println("6. Ver Rankings");
+            System.out.println("6. Gerenciar Stock");
+            System.out.println("7. Ver Rankings");
             System.out.println("0. Voltar");
 
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
@@ -42,6 +43,9 @@ public class MenuAdministrador {
                     new MenuEscalaDiaria(federacao).run();
                     break;
                 case "6":
+                    new MenuStock_UI(federacao).run();
+                    break;
+                case "7":
                     new MenuRankings(federacao).run();
                     break;
                 case "0":

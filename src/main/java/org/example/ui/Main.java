@@ -22,8 +22,8 @@ public class Main {
             // Criando barracas
             Barraca barraca1 = new Barraca("Barraca 1", instituicao1);
             Barraca barraca2 = new Barraca("Barraca 2", instituicao2);
-            fap.getTodasBarracas().add(barraca1);
-            fap.getTodasBarracas().add(barraca2);
+            instituicao1.adicionarBarraca(barraca1);
+            instituicao2.adicionarBarraca(barraca2);
             escalaAtual.adicionarBarraca(barraca1);
             escalaAtual.adicionarBarraca(barraca2);
 
@@ -45,21 +45,40 @@ public class Main {
             barraca2.adicionarVoluntario(voluntarioStock2);
             barraca2.adicionarVoluntario(voluntarioVendas2);
 
-            // Adicionando produtos ao estoque das barracas
-            StockProdutos produto1 = new StockProdutos("Bolo", 3.5, 50);
-            StockProdutos produto2 = new StockProdutos("Suco", 2.0, 30);
-            StockProdutos produto3 = new StockProdutos("Caneta", 1.5, 100);
-            barraca1.adicionarStock("Bolo", 3.5, 50);
-            barraca1.adicionarStock("Suco", 2.0, 30);
-            barraca2.adicionarStock("Caneta", 1.5, 100);
-            voluntarioStock1.adicionarProdutoAoStock(produto1);
-            voluntarioStock1.adicionarProdutoAoStock(produto2);
-            voluntarioStock2.adicionarProdutoAoStock(produto3);
+            // Adicionando produtos à federação
+            fap.adicionarProduto(new Produto("Bolo", 3.5));
+            fap.adicionarProduto(new Produto("Suco", 2.0));
+            fap.adicionarProduto(new Produto("Caneta", 1.5));
+
+            // Adicionando produtos ao stock das barracas via voluntários
+            voluntarioStock1.adicionarProdutoAoStock("Bolo", 3.5, 50);
+            voluntarioStock1.adicionarProdutoAoStock("Suco", 2.0, 30);
+            voluntarioStock2.adicionarProdutoAoStock("Caneta", 1.5, 100);
+
+            // Exibir stock inicial para verificação
+            System.out.println("\nStock inicial da Barraca 1:");
+            for (StockProdutos sp : barraca1.getStock()) {
+                System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades, Preço: " + sp.getPrecoUnitario() + "€");
+            }
+            System.out.println("\nStock inicial da Barraca 2:");
+            for (StockProdutos sp : barraca2.getStock()) {
+                System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades, Preço: " + sp.getPrecoUnitario() + "€");
+            }
 
             // Realizando algumas vendas iniciais
             voluntarioVendas1.registarVenda("Bolo", 5); // Vende 5 Bolos da Barraca 1
             voluntarioVendas1.registarVenda("Suco", 3); // Vende 3 Sucos da Barraca 1
-            voluntarioVendas2.registarVenda("Caneta", 10);
+            voluntarioVendas2.registarVenda("Caneta", 10); // Vende 10 Canetas da Barraca 2
+
+            // Exibir stock após vendas
+            System.out.println("\nStock da Barraca 1 após vendas:");
+            for (StockProdutos sp : barraca1.getStock()) {
+                System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades, Preço: " + sp.getPrecoUnitario() + "€");
+            }
+            System.out.println("\nStock da Barraca 2 após vendas:");
+            for (StockProdutos sp : barraca2.getStock()) {
+                System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades, Preço: " + sp.getPrecoUnitario() + "€");
+            }
 
             // Iniciar menu principal
             MenuInicial_UI uiMenu = new MenuInicial_UI(fap);

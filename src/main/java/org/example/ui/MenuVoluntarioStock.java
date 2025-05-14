@@ -37,106 +37,75 @@ public class MenuVoluntarioStock {
     }
 
     private void adicionarNovoProduto() {
-        int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
-        VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
+        try {
+            int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
+            VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
 
-        if (voluntario == null) {
-            System.out.println("Voluntário não encontrado.");
-            return;
-        }
-
-        Barraca barraca = voluntario.getBarracaAssociada();
-        if (barraca == null) {
-            System.out.println("Voluntário sem barraca.");
-            return;
-        }
-
-        // Listar produtos disponíveis na instituição
-        List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
-        if (produtosDisponiveis.isEmpty()) {
-            System.out.println("Nenhum produto registrado na instituição.");
-            return;
-        }
-
-        Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
-        Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
-        if (produtoSelecionado == null) {
-            System.out.println("Operação cancelada.");
-            return;
-        }
-
-        int quantidade = Utils.readIntFromConsole("Quantidade: ");
-        if (quantidade < 0) {
-            System.out.println("Quantidade inválida.");
-            return;
-        }
-
-        // Verificar se o produto já existe no estoque da barraca
-        List<StockProdutos> stock = barraca.getStock();
-        for (int i = 0; i < stock.size(); i++) {
-            if (stock.get(i).getNome().equalsIgnoreCase(produtoSelecionado.getNome())) {
-                System.out.println("Produto já existe no estoque. Use a opção de repor stock.");
+            if (voluntario == null) {
+                System.out.println("Voluntário não encontrado.");
                 return;
             }
-        }
 
-        // Criar e adicionar o StockProdutos
-        StockProdutos novo = new StockProdutos(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
-        voluntario.adicionarProdutoAoStock(novo);
-        barraca.adicionarStock(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
-        System.out.println("Produto adicionado ao estoque.");
+            Barraca barraca = voluntario.getBarracaAssociada();
+            if (barraca == null) {
+                System.out.println("Voluntário sem barraca associada.");
+                return;
+            }
+
+            List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
+            if (produtosDisponiveis.isEmpty()) {
+                System.out.println("Nenhum produto registrado na instituição.");
+                return;
+            }
+
+            Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
+            Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
+            if (produtoSelecionado == null) {
+                System.out.println("Operação cancelada.");
+                return;
+            }
+
+            int quantidade = Utils.readIntFromConsole("Quantidade: ");
+            voluntario.adicionarProdutoAoStock(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
     private void reporStock() {
-        int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
-        VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
+        try {
+            int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
+            VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
 
-        if (voluntario == null) {
-            System.out.println("Voluntário não encontrado.");
-            return;
-        }
-
-        Barraca barraca = voluntario.getBarracaAssociada();
-        if (barraca == null) {
-            System.out.println("Voluntário sem barraca.");
-            return;
-        }
-
-        // Listar produtos disponíveis na instituição
-        List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
-        if (produtosDisponiveis.isEmpty()) {
-            System.out.println("Nenhum produto registrado na instituição.");
-            return;
-        }
-
-        Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
-        Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
-        if (produtoSelecionado == null) {
-            System.out.println("Operação cancelada.");
-            return;
-        }
-
-        int quantidade = Utils.readIntFromConsole("Quantidade a adicionar: ");
-        if (quantidade <= 0) {
-            System.out.println("Quantidade inválida.");
-            return;
-        }
-
-        // Verificar se o produto já existe no estoque da barraca
-        List<StockProdutos> stock = barraca.getStock();
-        for (int i = 0; i < stock.size(); i++) {
-            if (stock.get(i).getNome().equalsIgnoreCase(produtoSelecionado.getNome())) {
-                voluntario.reporProduto(produtoSelecionado.getNome(), quantidade);
-                System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado com " + quantidade + " unidades.");
+            if (voluntario == null) {
+                System.out.println("Voluntário não encontrado.");
                 return;
             }
-        }
 
-        // Se o produto não existe no estoque, mas está na instituição, criar novo StockProdutos
-        StockProdutos novo = new StockProdutos(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
-        voluntario.adicionarProdutoAoStock(novo);
-        barraca.adicionarStock(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
-        System.out.println("Produto " + produtoSelecionado.getNome() + " adicionado ao estoque com " + quantidade + " unidades.");
+            Barraca barraca = voluntario.getBarracaAssociada();
+            if (barraca == null) {
+                System.out.println("Voluntário sem barraca associada.");
+                return;
+            }
+
+            List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
+            if (produtosDisponiveis.isEmpty()) {
+                System.out.println("Nenhum produto registrado na instituição.");
+                return;
+            }
+
+            Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
+            Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
+            if (produtoSelecionado == null) {
+                System.out.println("Operação cancelada.");
+                return;
+            }
+
+            int quantidade = Utils.readIntFromConsole("Quantidade a adicionar: ");
+            voluntario.reporProduto(produtoSelecionado.getNome(), quantidade);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
     private void verStockAtual() {
@@ -150,7 +119,7 @@ public class MenuVoluntarioStock {
 
         Barraca barraca = voluntario.getBarracaAssociada();
         if (barraca == null) {
-            System.out.println("Voluntário sem barraca.");
+            System.out.println("Voluntário sem barraca associada.");
             return;
         }
 
@@ -160,8 +129,7 @@ public class MenuVoluntarioStock {
         if (stock.isEmpty()) {
             System.out.println("Sem produtos registados.");
         } else {
-            for (int i = 0; i < stock.size(); i++) {
-                StockProdutos sp = stock.get(i);
+            for (StockProdutos sp : stock) {
                 System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades, Preço: " + sp.getPrecoUnitario() + "€");
             }
         }
