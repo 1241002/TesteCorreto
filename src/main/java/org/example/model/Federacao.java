@@ -43,7 +43,7 @@ public class Federacao {
             if (admin.getNumero() == numero &&
                     admin.getNome().equalsIgnoreCase(nome) &&
                     admin.getSenha().equals(senha) &&
-                    admin.getCurso().equalsIgnoreCase(curso)) { // Curso agora é case-insensitive
+                    admin.getCurso().equalsIgnoreCase(curso)) {
                 return true;
             }
         }
@@ -94,6 +94,20 @@ public class Federacao {
             for (Produto produto : lstProdutos) {
                 instituicao.getLstProdutos().add(new Produto(produto));
             }
+            // Configurar a referência à federação na instituição
+            instituicao.setFederacao(this);
+            // Adicionar barracas existentes da instituição
+            for (Barraca barraca : instituicao.getBarracas()) {
+                adicionarBarraca(barraca);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean adicionarBarraca(Barraca barraca) {
+        if (!todasBarracas.contains(barraca)) {
+            todasBarracas.add(barraca);
             return true;
         }
         return false;
@@ -171,11 +185,15 @@ public class Federacao {
     }
 
     public List<Barraca> getTodasBarracas() {
-        return todasBarracas;
+        return new ArrayList<>(todasBarracas);
     }
 
     public String getNome() {
         return nome;
+    }
+
+    public List<Administrador> getAdministradores() {
+        return new ArrayList<>(administradores);
     }
 
     @Override

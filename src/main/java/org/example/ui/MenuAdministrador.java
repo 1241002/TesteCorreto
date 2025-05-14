@@ -2,6 +2,7 @@ package org.example.ui;
 
 import org.example.model.Federacao;
 import org.example.utils.Utils;
+
 import java.io.IOException;
 
 public class MenuAdministrador {
@@ -22,6 +23,7 @@ public class MenuAdministrador {
             System.out.println("5. Gerenciar Escalas Diárias");
             System.out.println("6. Gerenciar Stock");
             System.out.println("7. Ver Rankings");
+            System.out.println("8. Ver Lista de Todos os Dados");
             System.out.println("0. Voltar");
 
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
@@ -47,6 +49,9 @@ public class MenuAdministrador {
                     break;
                 case "7":
                     new MenuRankings(federacao).run();
+                    break;
+                case "8":
+                    new MenuDados_UI(federacao).mostrarTodosOsDados();
                     break;
                 case "0":
                     System.out.println("A voltar ao menu inicial...");

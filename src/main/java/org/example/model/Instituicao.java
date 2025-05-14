@@ -9,7 +9,7 @@ public class Instituicao {
     private final List<Produto> lstProdutos;
     private List<Barraca> barracas;
     private List<EscalaDiaria> escalasDiarias;
-
+    private Federacao federacao;
 
     public Instituicao(String nome) {
         this.nome = nome;
@@ -17,6 +17,7 @@ public class Instituicao {
         this.lstProdutos = new ArrayList<>();
         this.barracas = new ArrayList<>();
         this.escalasDiarias = new ArrayList<>();
+        this.federacao = null;
     }
 
     public List<EscalaDiaria> getEscalasDiarias() {
@@ -35,7 +36,6 @@ public class Instituicao {
         return this.barracas;
     }
 
-
     public List<Produto> getLstProdutos() {
         return lstProdutos;
     }
@@ -52,6 +52,10 @@ public class Instituicao {
         return listaVoluntarios;
     }
 
+    public void setFederacao(Federacao federacao) {
+        this.federacao = federacao;
+    }
+
     public void adicionarEscalaDiaria(EscalaDiaria escala) {
         escalasDiarias.add(escala);
     }
@@ -59,6 +63,10 @@ public class Instituicao {
     public boolean adicionarBarraca(Barraca barraca) {
         if (!getBarracas().contains(barraca)) {
             getBarracas().add(barraca);
+            // Notificar a federação, se existir
+            if (federacao != null) {
+                federacao.adicionarBarraca(barraca);
+            }
             return true;
         }
         return false;
