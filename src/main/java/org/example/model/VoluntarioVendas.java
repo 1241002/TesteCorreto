@@ -4,72 +4,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
-    private List<VendaProdutos> vendasProdutos;
+    // Variáveis de instância
+    private final List<VendaProdutos> vendasProdutos;
 
+    // Construtor completo
     public VoluntarioVendas(String nome, int numeroAluno, Instituicao instituicao, String curso, String senha) {
         super(nome, numeroAluno, instituicao, curso, senha);
         this.vendasProdutos = new ArrayList<>();
     }
 
-    public VoluntarioVendas(VoluntarioVendas vv) {
-        super(vv.getNome(), vv.getNumeroAluno(), vv.getInstituicao(), vv.getCurso(), vv.getSenha());
-        this.vendasProdutos = new ArrayList<>(vv.vendasProdutos);
-    }
-
+    // Construtor vazio
     public VoluntarioVendas() {
-        super("", 0, null, "", "");
+        super();
         this.vendasProdutos = new ArrayList<>();
     }
 
+    // Construtor de cópia
+    public VoluntarioVendas(VoluntarioVendas outro) {
+        super(outro);
+        if (outro == null) {
+            throw new IllegalArgumentException("VoluntárioVendas não pode ser nulo");
+        }
+        this.vendasProdutos = new ArrayList<>(outro.vendasProdutos);
+    }
+
+    // Métodos de instância
     public boolean registarVenda(String nomeProduto, int quantidade) {
+        if (nomeProduto == null) {
+            throw new IllegalArgumentException("Nome do produto não pode ser nulo");
+        }
         if (quantidade <= 0) {
-            System.out.println("Quantidade inválida.");
-            return false;
+            throw new IllegalArgumentException("Quantidade deve ser maior que zero");
         }
-
-        Barraca barraca = getBarracaAssociada();
+        Barraca barraca = this.getBarracaAssociada();
         if (barraca == null) {
-            System.out.println("O voluntário não está associado a nenhuma barraca.");
-            return false;
+            throw new IllegalStateException("Voluntário não está associado a nenhuma barraca");
         }
-
+        Produto produto = this.buscarProdutoPorNome(nomeProduto);
+        if (produto == null) {
+            throw new IllegalArgumentException("Produto não registrado na instituição");
+        }
         for (StockProdutos stock : barraca.getStock()) {
-            if (stock.getNome().equalsIgnoreCase(nomeProduto)) {
+            if (stock.getNome() != null && stock.getNome().equalsIgnoreCase(nomeProduto)) {
+                if (Double.compare(stock.getPrecoUnitario(), produto.getPrecoUnitario()) != 0) {
+                    throw new IllegalArgumentException("Preço unitário do estoque não corresponde ao registrado no produto");
+                }
                 if (barraca.reduzirStock(nomeProduto, quantidade)) {
                     double valorTotal = quantidade * stock.getPrecoUnitario();
-                    vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, valorTotal));
-                    System.out.printf("Venda registada: %s - %d x %.2f€ (Total: %.2f€)\n",
-                            nomeProduto, quantidade, stock.getPrecoUnitario(), valorTotal);
+                    this.vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, valorTotal));
                     return true;
                 } else {
-                    System.out.println("Quantidade insuficiente em stock.");
-                    return false;
+                    throw new IllegalStateException("Quantidade insuficiente em stock");
                 }
             }
         }
-        System.out.println("Produto não encontrado no estoque.");
-        return false;
-    }
-
-    public void registarVenda(String nomeProduto, int quantidade, double precoUnitario) {
-        if (quantidade > 0 && precoUnitario > 0.0) {
-            double valorTotal = quantidade * precoUnitario;
-            vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, valorTotal));
-        }
-    }
-
-    private Produto buscarProdutoPorNome(String nomeProduto) {
-        for (Produto produto : getInstituicao().getLstProdutos()) {
-            if (produto.getNome().equalsIgnoreCase(nomeProduto)) {
-                return produto;
-            }
-        }
-        return null;
+        throw new IllegalArgumentException("Produto não encontrado no estoque da barraca");
     }
 
     public boolean removerUltimaVenda() {
-        if (!vendasProdutos.isEmpty()) {
-            vendasProdutos.remove(vendasProdutos.size() - 1);
+        if (!this.vendasProdutos.isEmpty()) {
+            VendaProdutos ultimaVenda = this.vendasProdutos.remove(this.vendasProdutos.size() - 1);
+            Barraca barraca = this.getBarracaAssociada();
+            if (barraca != null) {
+                barraca.adicionarStock(new StockProdutos(ultimaVenda.getNomeProduto(), ultimaVenda.getValorTotal() / ultimaVenda.getQuantidade(), ultimaVenda.getQuantidade()));
+            }
             return true;
         }
         return false;
@@ -77,22 +75,22 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
 
     public double getTotalVendas() {
         double total = 0.0;
-        for (VendaProdutos venda : vendasProdutos) {
+        for (VendaProdutos venda : this.vendasProdutos) {
             total += venda.getValorTotal();
         }
         return total;
     }
 
     public List<VendaProdutos> getTodasVendas() {
-        return new ArrayList<>(vendasProdutos);
+        return new ArrayList<>(this.vendasProdutos);
     }
 
     public void limparVendas() {
-        vendasProdutos.clear();
+        this.vendasProdutos.clear();
     }
 
     public String getCategoria() {
-        double total = getTotalVendas();
+        double total = this.getTotalVendas();
         if (total < 500) {
             return "Bronze";
         } else if (total <= 1000) {
@@ -102,20 +100,46 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         }
     }
 
-    public void verificarEExibirCategoria() {
-        System.out.println("Voluntário: " + getNome()
-                + ", Total de Vendas: " + String.format("%.2f", getTotalVendas()) + "€"
-                + ", Classificação: " + getCategoria());
+    public String verificarCategoria() {
+        return "Voluntário: " + this.getNome() +
+                ", Total de Vendas: " + String.format("%.2f€", this.getTotalVendas()) +
+                ", Classificação: " + this.getCategoria();
     }
 
+    private Produto buscarProdutoPorNome(String nomeProduto) {
+        if (nomeProduto == null || this.getInstituicao() == null) {
+            return null;
+        }
+        for (Produto produto : this.getInstituicao().getLstProdutos()) {
+            if (produto.getNome() != null && produto.getNome().equalsIgnoreCase(nomeProduto)) {
+                return produto;
+            }
+        }
+        return null;
+    }
+
+    // Método equals
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VoluntarioVendas)) return false;
+        VoluntarioVendas that = (VoluntarioVendas) o;
+        return super.equals(o) && this.vendasProdutos.equals(that.vendasProdutos);
+    }
+
+    // Método toString
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("VoluntarioVendas: ").append(super.toString());
-        sb.append("Total de Vendas: ").append(String.format("%.2f€", getTotalVendas())).append("\n");
-        for (VendaProdutos v : vendasProdutos) {
-            sb.append(" - ").append(v.toString()).append("\n");
+        StringBuilder sb = new StringBuilder("VoluntarioVendas{");
+        sb.append(super.toString());
+        sb.append(", totalVendas=").append(String.format("%.2f€", this.getTotalVendas()));
+        sb.append(", vendas=");
+        if (this.vendasProdutos.isEmpty()) {
+            sb.append("nenhuma");
+        } else {
+            sb.append(this.vendasProdutos.size()).append(" vendas");
         }
+        sb.append('}');
         return sb.toString();
     }
 }
