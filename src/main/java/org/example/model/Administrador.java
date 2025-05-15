@@ -30,7 +30,29 @@ public class Administrador {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Administrador)) return false;
+        Administrador that = (Administrador) o;
+        return numero == that.numero &&
+                nome.equalsIgnoreCase(that.nome) &&
+                curso.equalsIgnoreCase(that.curso);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nome.toLowerCase().hashCode();
+        result = 31 * result + numero;
+        result = 31 * result + curso.toLowerCase().hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
-        return "Nome: " + nome + ", Número: " + numero + ", Curso: " + curso;
+        return "Administrador{" +
+                "nome='" + nome + '\'' +
+                ", numero=" + numero +
+                ", curso='" + curso + '\'' +
+                '}';
     }
 }

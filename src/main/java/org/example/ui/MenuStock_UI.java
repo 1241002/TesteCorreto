@@ -65,8 +65,10 @@ public class MenuStock_UI {
             }
 
             // Verificar se o produto já existe no stock
-            if (barracaSelecionada.getStockProduto(produtoSelecionado.getNome()) != null) {
-                throw new IllegalStateException("Produto já existe no stock. Use a opção de repor stock.");
+            for (StockProdutos sp : barracaSelecionada.getStock()) {
+                if (sp.getNome().equalsIgnoreCase(produtoSelecionado.getNome())) {
+                    throw new IllegalStateException("Produto já existe no stock. Use a opção de repor stock.");
+                }
             }
 
             int quantidade = Utils.readIntFromConsole("Quantidade: ");
@@ -74,7 +76,8 @@ public class MenuStock_UI {
                 throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
             }
 
-            barracaSelecionada.adicionarStock(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
+            StockProdutos novoStock = new StockProdutos(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
+            barracaSelecionada.adicionarStock(novoStock);
             System.out.println("Produto " + produtoSelecionado.getNome() + " adicionado ao stock da barraca " + barracaSelecionada.getNome() + ".");
         } catch (IllegalArgumentException | IllegalStateException e) {
             System.out.println("Erro: " + e.getMessage());
@@ -114,35 +117,51 @@ public class MenuStock_UI {
                 throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
             }
 
-            barracaSelecionada.adicionarStock(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
-            System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado com " + quantidade + " unidades na barraca " + barracaSelecionada.getNome() + ".");
+            boolean encontrado = false;
+            for (StockProdutos sp : barracaSelecionada.getStock()) {
+                if (sp.getNome().equalsIgnoreCase(produtoSelecionado.getNome())) {
+                    sp.setQuantidade(sp.getQuantidade() + quantidade);
+                    encontrado = true;
+                    System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado com " + quantidade + " unidades na barraca " + barracaSelecionada.getNome() + ".");
+                    break;
+                }
+            }
+            if (!encontrado) {
+                StockProdutos novoStock = new StockProdutos(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
+                barracaSelecionada.adicionarStock(novoStock);
+                System.out.println("Produto " + produtoSelecionado.getNome() + " adicionado ao stock da barraca " + barracaSelecionada.getNome() + " com " + quantidade + " unidades.");
+            }
         } catch (IllegalArgumentException e) {
             System.out.println("Erro: " + e.getMessage());
         }
     }
 
     private void verStock() {
-        List<Barraca> barracas = federacao.getTodasBarracas();
-        if (barracas.isEmpty()) {
-            System.out.println("Nenhuma barraca registrada.");
-            return;
-        }
-
-        Utils.apresentaLista(barracas, "Barracas disponíveis:");
-        Barraca barracaSelecionada = (Barraca) Utils.selecionaObject(barracas);
-        if (barracaSelecionada == null) {
-            System.out.println("Operação cancelada.");
-            return;
-        }
-
-        List<StockProdutos> stock = barracaSelecionada.getStock();
-        System.out.println("### Stock da barraca " + barracaSelecionada.getNome() + " ###");
-        if (stock.isEmpty()) {
-            System.out.println("Sem produtos registados.");
-        } else {
-            for (StockProdutos sp : stock) {
-                System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades, Preço: " + sp.getPrecoUnitario() + "€");
+        try {
+            List<Barraca> barracas = federacao.getTodasBarracas();
+            if (barracas.isEmpty()) {
+                System.out.println("Nenhuma barraca registrada.");
+                return;
             }
+
+            Utils.apresentaLista(barracas, "Barracas disponíveis:");
+            Barraca barracaSelecionada = (Barraca) Utils.selecionaObject(barracas);
+            if (barracaSelecionada == null) {
+                System.out.println("Operação cancelada.");
+                return;
+            }
+
+            List<StockProdutos> stock = barracaSelecionada.getStock();
+            System.out.println("### Stock da barraca " + barracaSelecionada.getNome() + " ###");
+            if (stock.isEmpty()) {
+                System.out.println("Sem produtos registados.");
+            } else {
+                for (StockProdutos sp : stock) {
+                    System.out.println(sp.getNome() + ": " + sp.getQuantidade() + " unidades, Preço: " + sp.getPrecoUnitario() + "€");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 }

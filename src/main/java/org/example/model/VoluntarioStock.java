@@ -6,11 +6,11 @@ public class VoluntarioStock extends Voluntario {
     }
 
     public VoluntarioStock(VoluntarioStock vs) {
-        super(vs);
+        super(vs.getNome(), vs.getNumeroAluno(), vs.getInstituicao(), vs.getCurso(), vs.getSenha());
     }
 
     public VoluntarioStock() {
-        super();
+        super("", 0, null, "", "");
     }
 
     public void adicionarProdutoAoStock(String nomeProduto, double precoUnitario, int quantidade) {
@@ -21,19 +21,19 @@ public class VoluntarioStock extends Voluntario {
         if (quantidade <= 0) {
             throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
         }
-        // Verificar se o produto existe na instituição
         Produto produto = buscarProdutoPorNome(nomeProduto);
         if (produto == null) {
             throw new IllegalArgumentException("Produto não registrado na instituição.");
         }
-        // Verificar se o produto já existe no stock
+        if (Double.compare(precoUnitario, produto.getPrecoUnitario()) != 0) {
+            throw new IllegalArgumentException("Preço unitário não corresponde ao registrado no produto.");
+        }
         for (StockProdutos sp : barraca.getStock()) {
             if (sp.getNome().equalsIgnoreCase(nomeProduto)) {
                 throw new IllegalStateException("Produto já existe no stock. Use a opção de repor stock.");
             }
         }
-        // Adicionar ao stock da barraca
-        barraca.adicionarStock(nomeProduto, precoUnitario, quantidade);
+        barraca.adicionarStock(new StockProdutos(nomeProduto, precoUnitario, quantidade));
         System.out.println("Produto " + nomeProduto + " adicionado ao stock da barraca " + barraca.getNome() + ".");
     }
 
@@ -45,12 +45,10 @@ public class VoluntarioStock extends Voluntario {
         if (quantidade <= 0) {
             throw new IllegalArgumentException("Quantidade deve ser maior que zero.");
         }
-        // Verificar se o produto existe na instituição
         Produto produto = buscarProdutoPorNome(nomeProduto);
         if (produto == null) {
             throw new IllegalArgumentException("Produto não registrado na instituição.");
         }
-        // Tentar repor ou adicionar
         boolean encontrado = false;
         for (StockProdutos sp : barraca.getStock()) {
             if (sp.getNome().equalsIgnoreCase(nomeProduto)) {
@@ -61,7 +59,7 @@ public class VoluntarioStock extends Voluntario {
             }
         }
         if (!encontrado) {
-            barraca.adicionarStock(nomeProduto, produto.getPrecoUnitario(), quantidade);
+            barraca.adicionarStock(new StockProdutos(nomeProduto, produto.getPrecoUnitario(), quantidade));
             System.out.println("Produto " + nomeProduto + " adicionado ao stock da barraca " + barraca.getNome() + " com " + quantidade + " unidades.");
         }
     }

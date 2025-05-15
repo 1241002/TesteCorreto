@@ -2,6 +2,7 @@ package org.example.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Instituicao {
     private String nome;
@@ -63,7 +64,6 @@ public class Instituicao {
     public boolean adicionarBarraca(Barraca barraca) {
         if (!getBarracas().contains(barraca)) {
             getBarracas().add(barraca);
-            // Notificar a federação, se existir
             if (federacao != null) {
                 federacao.adicionarBarraca(barraca);
             }
@@ -76,9 +76,8 @@ public class Instituicao {
         if (!listaContemVoluntario(voluntario.getNumeroAluno())) {
             listaVoluntarios.add(voluntario);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public boolean listaContemVoluntario(int numeroAluno) {
@@ -124,6 +123,19 @@ public class Instituicao {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Instituicao)) return false;
+        Instituicao that = (Instituicao) o;
+        return nome.equalsIgnoreCase(that.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome.toLowerCase());
     }
 
     @Override

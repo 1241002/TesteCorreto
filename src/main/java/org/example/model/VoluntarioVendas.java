@@ -12,12 +12,12 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
     }
 
     public VoluntarioVendas(VoluntarioVendas vv) {
-        super(vv);
+        super(vv.getNome(), vv.getNumeroAluno(), vv.getInstituicao(), vv.getCurso(), vv.getSenha());
         this.vendasProdutos = new ArrayList<>(vv.vendasProdutos);
     }
 
     public VoluntarioVendas() {
-        super();
+        super("", 0, null, "", "");
         this.vendasProdutos = new ArrayList<>();
     }
 
@@ -35,9 +35,11 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
 
         for (StockProdutos stock : barraca.getStock()) {
             if (stock.getNome().equalsIgnoreCase(nomeProduto)) {
-                if (stock.reduzirQuantidade(quantidade)) {
-                    vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, stock.getPrecoUnitario()));
-                    System.out.printf("Venda registada: %s - %d x %.2f€\n", nomeProduto, quantidade, stock.getPrecoUnitario());
+                if (barraca.reduzirStock(nomeProduto, quantidade)) {
+                    double valorTotal = quantidade * stock.getPrecoUnitario();
+                    vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, valorTotal));
+                    System.out.printf("Venda registada: %s - %d x %.2f€ (Total: %.2f€)\n",
+                            nomeProduto, quantidade, stock.getPrecoUnitario(), valorTotal);
                     return true;
                 } else {
                     System.out.println("Quantidade insuficiente em stock.");
@@ -49,10 +51,10 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         return false;
     }
 
-    // Mantido para compatibilidade, mas não será usado diretamente
     public void registarVenda(String nomeProduto, int quantidade, double precoUnitario) {
         if (quantidade > 0 && precoUnitario > 0.0) {
-            vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, precoUnitario));
+            double valorTotal = quantidade * precoUnitario;
+            vendasProdutos.add(new VendaProdutos(nomeProduto, quantidade, valorTotal));
         }
     }
 
@@ -108,7 +110,7 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append("VoluntarioVendas: ").append(super.toString());
         sb.append("Total de Vendas: ").append(String.format("%.2f€", getTotalVendas())).append("\n");
         for (VendaProdutos v : vendasProdutos) {

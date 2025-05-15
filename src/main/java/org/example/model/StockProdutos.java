@@ -1,23 +1,20 @@
 package org.example.model;
 
-public class StockProdutos extends Produto {
-    private int quantidade;
+import java.util.Objects;
 
-    private static final int QUANTIDADE_POR_OMISSAO = 0;
+public class StockProdutos {
+    private String nome;
+    private int quantidade;
+    private double precoUnitario;
 
     public StockProdutos(String nome, double precoUnitario, int quantidade) {
-        super(nome, precoUnitario);
+        this.nome = nome;
+        this.precoUnitario = precoUnitario;
         this.quantidade = quantidade;
     }
 
-    public StockProdutos() {
-        super();
-        this.quantidade = QUANTIDADE_POR_OMISSAO;
-    }
-
-    public StockProdutos(StockProdutos stock) {
-        super(stock);
-        this.quantidade = stock.quantidade;
+    public String getNome() {
+        return nome;
     }
 
     public int getQuantidade() {
@@ -28,19 +25,39 @@ public class StockProdutos extends Produto {
         this.quantidade = quantidade;
     }
 
-    public boolean reduzirQuantidade(int quantidadeVendida) {
-        if (quantidadeVendida <= quantidade) {
-            quantidade -= quantidadeVendida;
+    public double getPrecoUnitario() {
+        return precoUnitario;
+    }
+
+    public boolean reduzirQuantidade(int quantidade) {
+        if (this.quantidade >= quantidade) {
+            this.quantidade -= quantidade;
             return true;
         }
         return false;
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StockProdutos)) return false;
+        StockProdutos that = (StockProdutos) o;
+        return quantidade == that.quantidade &&
+                Double.compare(that.precoUnitario, precoUnitario) == 0 &&
+                nome.equalsIgnoreCase(that.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome.toLowerCase(), quantidade, precoUnitario);
+    }
+
+    @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(super.toString());
-        sb.append("\nQuantidade: ").append(quantidade);
-        return sb.toString();
+        return "StockProdutos{" +
+                "nome='" + nome + '\'' +
+                ", quantidade=" + quantidade +
+                ", precoUnitario=" + precoUnitario +
+                '}';
     }
 }
