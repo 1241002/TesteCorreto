@@ -5,7 +5,6 @@ import org.example.model.Instituicao;
 import org.example.utils.Utils;
 
 public class MenuInstituicao {
-
     private final Federacao federacao;
 
     public MenuInstituicao(Federacao federacao) {
@@ -13,12 +12,10 @@ public class MenuInstituicao {
     }
 
     public void run() {
-        System.out.println();
-        System.out.println("### Menu Instituição ###");
-
+        System.out.println("\n### Menu Instituição ###");
         String nome = Utils.readLineFromConsole("Nome da nova instituição: ");
 
-        if (nome == null || nome.equals("")) {
+        if (nome == null || nome.isEmpty()) {
             System.out.println("O nome da instituição não pode estar vazio.");
             return;
         }

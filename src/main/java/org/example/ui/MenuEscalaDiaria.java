@@ -13,7 +13,7 @@ public class MenuEscalaDiaria {
 
     public MenuEscalaDiaria(Federacao federacao) {
         this.federacao = federacao;
-        this.escalas = federacao.getEscalas(); // Usa a lista de escalas da federação
+        this.escalas = federacao.getEscalas();
     }
 
     public void run() {
@@ -52,7 +52,6 @@ public class MenuEscalaDiaria {
             return;
         }
 
-        // Simula guardar dados das barracas
         for (Barraca barraca : escalaAtual.getBarracas()) {
             double totalVendas = barraca.exportarVendas();
             int stockFinal = barraca.exportarStockTotal();
@@ -67,7 +66,6 @@ public class MenuEscalaDiaria {
         Data novaData = Utils.readDateFromConsole("Insira a data da nova escala (formato DD-MM-AAAA): ");
         EscalaDiaria novaEscala = new EscalaDiaria(novaData);
 
-        // Adiciona todas as barracas existentes à nova escala
         for (Barraca b : federacao.getTodasBarracas()) {
             novaEscala.adicionarBarraca(b);
         }

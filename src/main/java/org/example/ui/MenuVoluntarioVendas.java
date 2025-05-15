@@ -27,7 +27,6 @@ public class MenuVoluntarioVendas {
             } else if (!opcao.equals("0")) {
                 System.out.println("Opção inválida!");
             }
-
         } while (!opcao.equals("0"));
     }
 
@@ -47,14 +46,19 @@ public class MenuVoluntarioVendas {
         }
 
         String nomeProduto = Utils.readLineFromConsole("Nome do produto: ");
-        int quantidade = Utils.readIntFromConsole("Quantidade vendida: ");
+        if (nomeProduto == null || nomeProduto.isEmpty()) {
+            System.out.println("Nome do produto inválido.");
+            return;
+        }
 
+        int quantidade = Utils.readIntFromConsole("Quantidade vendida: ");
         if (quantidade <= 0) {
             System.out.println("Quantidade inválida.");
             return;
         }
 
         voluntario.registarVenda(nomeProduto, quantidade);
+        System.out.println("Venda registrada com sucesso.");
     }
 
     private void verTotalVendas() {

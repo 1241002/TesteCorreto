@@ -1,9 +1,7 @@
 package org.example.ui;
 
-import org.example.model.*;
+import org.example.model.Federacao;
 import org.example.utils.Utils;
-
-import java.io.IOException;
 
 public class MenuInicial_UI {
     private Federacao federacao;
@@ -13,7 +11,7 @@ public class MenuInicial_UI {
         this.federacao = federacao;
     }
 
-    public void run() throws IOException {
+    public void run() {
         do {
             System.out.println("###### MENU INICIAL #####");
             System.out.println("1. Administrador");
@@ -32,14 +30,14 @@ public class MenuInicial_UI {
                     }
                     break;
                 case "2":
-                    if (realizarLoginVoluntario(VoluntarioStock.class)) {
+                    if (realizarLoginVoluntario(false)) {
                         new MenuVoluntarioStock(federacao).run();
                     } else {
                         System.out.println("Login inválido. Verifique nome, número, senha, curso ou tipo de voluntário e tente novamente.");
                     }
                     break;
                 case "3":
-                    if (realizarLoginVoluntario(VoluntarioVendas.class)) {
+                    if (realizarLoginVoluntario(true)) {
                         new MenuVoluntarioVendas(federacao).run();
                     } else {
                         System.out.println("Login inválido. Verifique nome, número, senha, curso ou tipo de voluntário e tente novamente.");
@@ -64,13 +62,13 @@ public class MenuInicial_UI {
         return federacao.validarLoginAdministrador(nome, numero, senha, curso);
     }
 
-    private boolean realizarLoginVoluntario(Class<?> tipoVoluntario) {
+    private boolean realizarLoginVoluntario(boolean isVendas) {
         System.out.println("\n### Login Voluntário ###");
         String nome = Utils.readLineFromConsole("Nome: ");
         int numero = Utils.readIntFromConsole("Número de aluno: ");
         String senha = Utils.readLineFromConsole("Senha: ");
         String curso = Utils.readLineFromConsole("Curso: ");
 
-        return federacao.validarLoginVoluntario(nome, numero, senha, curso, tipoVoluntario);
+        return federacao.validarLoginVoluntario(nome, numero, senha, curso, isVendas);
     }
 }

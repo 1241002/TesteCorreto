@@ -7,7 +7,6 @@ import org.example.model.Federacao;
 import org.example.utils.Utils;
 
 public class MenuBarraca {
-
     private Federacao federacao;
 
     public MenuBarraca(Federacao federacao) {
@@ -36,20 +35,24 @@ public class MenuBarraca {
                 default:
                     System.out.println("Opção inválida!");
             }
-
         } while (!opcao.equals("0"));
     }
 
     private void criarBarraca() {
         String nomeBarraca = Utils.readLineFromConsole("Digite o nome da barraca: ");
+        if (nomeBarraca == null || nomeBarraca.isEmpty()) {
+            System.out.println("Nome da barraca inválido.");
+            return;
+        }
 
-        // Escolher instituição
         Instituicao instituicaoSelecionada = escolherInstituicao();
+        if (instituicaoSelecionada == null) {
+            System.out.println("Instituição não selecionada.");
+            return;
+        }
 
-        // Criar a barraca
         Barraca novaBarraca = new Barraca(nomeBarraca, instituicaoSelecionada);
 
-        // Adicionar pelo menos 2 voluntários
         while (novaBarraca.getVoluntarios().size() < 2) {
             System.out.println("Adicione voluntários à barraca:");
             adicionarVoluntario(novaBarraca);
@@ -58,9 +61,6 @@ public class MenuBarraca {
         instituicaoSelecionada.adicionarBarraca(novaBarraca);
         System.out.println("Barraca criada com sucesso!");
 
-        // Adicionar a barraca à lista geral
-        federacao.getTodasBarracas().add(novaBarraca);
-
         if (federacao.getEscalaAtual() != null) {
             federacao.getEscalaAtual().adicionarBarraca(novaBarraca);
             System.out.println("Barraca adicionada à escala atual do dia: " + federacao.getEscalaAtual().getData());
@@ -68,6 +68,11 @@ public class MenuBarraca {
     }
 
     private Instituicao escolherInstituicao() {
+        if (federacao.getInstituicoes().isEmpty()) {
+            System.out.println("Nenhuma instituição disponível.");
+            return null;
+        }
+
         System.out.println("Escolha a instituição:");
         int i = 1;
         for (Instituicao instituicao : federacao.getInstituicoes()) {
@@ -76,26 +81,34 @@ public class MenuBarraca {
         }
 
         int opcaoInstituicao = Utils.readIntFromConsole("Escolha a instituição: ");
+        if (opcaoInstituicao < 1 || opcaoInstituicao > federacao.getInstituicoes().size()) {
+            System.out.println("Opção inválida.");
+            return null;
+        }
         return federacao.getInstituicoes().get(opcaoInstituicao - 1);
     }
 
     private void adicionarVoluntariosBarracaExistente() {
-        // Escolher a instituição da barraca
         Instituicao instituicao = escolherInstituicao();
+        if (instituicao == null) {
+            return;
+        }
 
         if (instituicao.getBarracas().isEmpty()) {
             System.out.println("Essa instituição ainda não tem barracas.");
             return;
         }
 
-        // Escolher a barraca
         Barraca barraca = escolherBarraca(instituicao);
+        if (barraca == null) {
+            return;
+        }
 
-        // Adicionar voluntários
         boolean continuar;
         do {
             adicionarVoluntario(barraca);
-            continuar = Utils.readLineFromConsole("Deseja adicionar outro voluntário? (s/n): ").equalsIgnoreCase("s");
+            String resposta = Utils.readLineFromConsole("Deseja adicionar outro voluntário? (s/n): ");
+            continuar = resposta != null && resposta.equalsIgnoreCase("s");
         } while (continuar);
     }
 
@@ -108,6 +121,10 @@ public class MenuBarraca {
         }
 
         int escolhaBarraca = Utils.readIntFromConsole("Escolha: ");
+        if (escolhaBarraca < 1 || escolhaBarraca > instituicao.getBarracas().size()) {
+            System.out.println("Opção inválida.");
+            return null;
+        }
         return instituicao.getBarracas().get(escolhaBarraca - 1);
     }
 

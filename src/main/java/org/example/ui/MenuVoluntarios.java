@@ -1,12 +1,8 @@
 package org.example.ui;
 
-import org.example.model.Federacao;
-import org.example.model.Instituicao;
-import org.example.model.VoluntarioStock;
-import org.example.model.VoluntarioVendas;
+import org.example.model.*;
 import org.example.utils.Utils;
 
-import java.io.IOException;
 import java.util.List;
 
 public class MenuVoluntarios {
@@ -17,7 +13,7 @@ public class MenuVoluntarios {
         this.federacao = federacao;
     }
 
-    public void run() throws IOException {
+    public void run() {
         do {
             System.out.println("###### MENU VOLUNTÁRIOS #####");
             System.out.println("1. Adicionar Voluntário de Stock");
@@ -38,7 +34,7 @@ public class MenuVoluntarios {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         String nome = Utils.readLineFromConsole("Nome do voluntário: ");
         String curso = Utils.readLineFromConsole("Curso do voluntário: ");
-        String senha = Utils.readLineFromConsole("Senha do voluntário: "); // Adiciona a coleta da senha
+        String senha = Utils.readLineFromConsole("Senha do voluntário: ");
 
         Instituicao instituicaoEscolhida = escolherInstituicao();
         if (instituicaoEscolhida == null) {
@@ -61,7 +57,7 @@ public class MenuVoluntarios {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         String nome = Utils.readLineFromConsole("Nome do voluntário: ");
         String curso = Utils.readLineFromConsole("Curso do voluntário: ");
-        String senha = Utils.readLineFromConsole("Senha do voluntário: "); // Adiciona a coleta da senha
+        String senha = Utils.readLineFromConsole("Senha do voluntário: ");
 
         Instituicao instituicaoEscolhida = escolherInstituicao();
         if (instituicaoEscolhida == null) {
@@ -82,7 +78,6 @@ public class MenuVoluntarios {
 
     private Instituicao escolherInstituicao() {
         List<Instituicao> instituicoes = federacao.getInstituicoes();
-
         if (instituicoes.isEmpty()) {
             System.out.println("Não existem instituições registadas.");
             return null;

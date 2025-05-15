@@ -32,80 +32,83 @@ public class MenuVoluntarioStock {
             } else if (!opcao.equals("0")) {
                 System.out.println("Opção inválida!");
             }
-
         } while (!opcao.equals("0"));
     }
 
     private void adicionarNovoProduto() {
-        try {
-            int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
-            VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
+        int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
+        VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
 
-            if (voluntario == null) {
-                System.out.println("Voluntário não encontrado.");
-                return;
-            }
-
-            Barraca barraca = voluntario.getBarracaAssociada();
-            if (barraca == null) {
-                System.out.println("Voluntário sem barraca associada.");
-                return;
-            }
-
-            List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
-            if (produtosDisponiveis.isEmpty()) {
-                System.out.println("Nenhum produto registrado na instituição.");
-                return;
-            }
-
-            Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
-            Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
-            if (produtoSelecionado == null) {
-                System.out.println("Operação cancelada.");
-                return;
-            }
-
-            int quantidade = Utils.readIntFromConsole("Quantidade: ");
-            voluntario.adicionarProdutoAoStock(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            System.out.println("Erro: " + e.getMessage());
+        if (voluntario == null) {
+            System.out.println("Voluntário não encontrado.");
+            return;
         }
+
+        Barraca barraca = voluntario.getBarracaAssociada();
+        if (barraca == null) {
+            System.out.println("Voluntário sem barraca associada.");
+            return;
+        }
+
+        List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
+        if (produtosDisponiveis.isEmpty()) {
+            System.out.println("Nenhum produto registrado na instituição.");
+            return;
+        }
+
+        Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
+        Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
+        if (produtoSelecionado == null) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
+
+        int quantidade = Utils.readIntFromConsole("Quantidade: ");
+        if (quantidade <= 0) {
+            System.out.println("Quantidade deve ser maior que zero.");
+            return;
+        }
+
+        voluntario.adicionarProdutoAoStock(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
+        System.out.println("Produto " + produtoSelecionado.getNome() + " adicionado ao stock.");
     }
 
     private void reporStock() {
-        try {
-            int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
-            VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
+        int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
+        VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
 
-            if (voluntario == null) {
-                System.out.println("Voluntário não encontrado.");
-                return;
-            }
-
-            Barraca barraca = voluntario.getBarracaAssociada();
-            if (barraca == null) {
-                System.out.println("Voluntário sem barraca associada.");
-                return;
-            }
-
-            List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
-            if (produtosDisponiveis.isEmpty()) {
-                System.out.println("Nenhum produto registrado na instituição.");
-                return;
-            }
-
-            Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
-            Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
-            if (produtoSelecionado == null) {
-                System.out.println("Operação cancelada.");
-                return;
-            }
-
-            int quantidade = Utils.readIntFromConsole("Quantidade a adicionar: ");
-            voluntario.reporProduto(produtoSelecionado.getNome(), quantidade);
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            System.out.println("Erro: " + e.getMessage());
+        if (voluntario == null) {
+            System.out.println("Voluntário não encontrado.");
+            return;
         }
+
+        Barraca barraca = voluntario.getBarracaAssociada();
+        if (barraca == null) {
+            System.out.println("Voluntário sem barraca associada.");
+            return;
+        }
+
+        List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
+        if (produtosDisponiveis.isEmpty()) {
+            System.out.println("Nenhum produto registrado na instituição.");
+            return;
+        }
+
+        Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
+        Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
+        if (produtoSelecionado == null) {
+            System.out.println("Operação cancelada.");
+            return;
+        }
+
+        int quantidade = Utils.readIntFromConsole("Quantidade a adicionar: ");
+        if (quantidade <= 0) {
+            System.out.println("Quantidade deve ser maior que zero.");
+            return;
+        }
+
+        voluntario.reporProduto(produtoSelecionado.getNome(), quantidade);
+        System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado.");
     }
 
     private void verStockAtual() {
@@ -125,7 +128,6 @@ public class MenuVoluntarioStock {
 
         List<StockProdutos> stock = barraca.getStock();
         System.out.println("### Stock da barraca " + barraca.getNome() + " ###");
-
         if (stock.isEmpty()) {
             System.out.println("Sem produtos registados.");
         } else {

@@ -3,8 +3,6 @@ package org.example.ui;
 import org.example.model.Federacao;
 import org.example.utils.Utils;
 
-import java.io.IOException;
-
 public class MenuAdministrador {
     private Federacao federacao;
     private String opcao;
@@ -13,7 +11,7 @@ public class MenuAdministrador {
         this.federacao = federacao;
     }
 
-    public void run() throws IOException {
+    public void run() {
         do {
             System.out.println("###### MENU ADMINISTRADOR #####");
             System.out.println("1. Gerenciar Produtos");

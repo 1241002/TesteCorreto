@@ -26,7 +26,7 @@ public class Administrador implements Comparable<Administrador> {
     // Construtor de cópia
     public Administrador(Administrador admin) {
         this.nome = admin.nome;
-        this.numero = admin.numero;
+        this.numero = numero;
         this.senha = admin.senha;
         this.curso = admin.curso;
     }
@@ -65,22 +65,22 @@ public class Administrador implements Comparable<Administrador> {
         this.curso = curso;
     }
 
-    // Método equals
+    // Metodo equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Administrador)) return false;
         Administrador that = (Administrador) o;
         return this.numero == that.numero &&
-                (this.nome == null ? that.nome == null : this.nome.equalsIgnoreCase(that.nome)) &&
-                (this.curso == null ? that.curso == null : this.curso.equalsIgnoreCase(that.curso)) &&
-                (this.senha == null ? that.senha == null : this.senha.equals(that.senha));
+                this.nome.equals(that.nome) &&
+                this.curso.equals(that.curso) &&
+                this.senha.equals(that.senha);
     }
 
-    // Implementação de Comparable (ordena por número)
+    // Implementação de Comparable (ordena por nome, como em MenuDados_UI)
     @Override
     public int compareTo(Administrador outro) {
-        return Integer.compare(this.numero, outro.numero);
+        return this.nome.compareToIgnoreCase(outro.nome);
     }
 
     // Método toString
@@ -90,7 +90,7 @@ public class Administrador implements Comparable<Administrador> {
                 "nome='" + nome + '\'' +
                 ", numero=" + numero +
                 ", curso='" + curso + '\'' +
-                ", senha='[protegida]'" +
+                ", senha='" + senha + '\'' +
                 '}';
     }
 }

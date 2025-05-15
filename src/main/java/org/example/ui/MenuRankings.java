@@ -25,11 +25,10 @@ public class MenuRankings {
 
         System.out.println("Escolha uma escala pela data:");
         for (int i = 0; i < escalas.size(); i++) {
-            System.out.println((i + 1) + " - " + escalas.get(i).getData());
+            System.out.println((i + 1) + ". " + escalas.get(i).getData());
         }
 
         int opcao = Utils.readIntFromConsole("Opção: ");
-
         if (opcao < 1 || opcao > escalas.size()) {
             System.out.println("Opção inválida.");
             return;
@@ -46,21 +45,14 @@ public class MenuRankings {
 
         for (Barraca b : escala.getBarracas()) {
             System.out.println("Barraca: " + b.getNome());
-
             List<Voluntario> voluntarios = new ArrayList<>(b.getVoluntarios());
-
-            Collections.sort(voluntarios, new Comparator<Voluntario>() {
-                public int compare(Voluntario v1, Voluntario v2) {
-                    return Integer.compare(v1.getNumeroAluno(), v2.getNumeroAluno());
-                }
-            });
+            Collections.sort(voluntarios, Comparator.comparingInt(Voluntario::getNumeroAluno));
 
             for (Voluntario v : voluntarios) {
                 System.out.println("\t" + v.getNome() + " (nº " + v.getNumeroAluno() + ")");
-                if (v instanceof IVendasVoluntarios) {
-                    IVendasVoluntarios vendedor = (IVendasVoluntarios) v;
-                    System.out.print("\t\t");
-                    vendedor.verificarEExibirCategoria();
+                if (v instanceof VoluntarioVendas) {
+                    VoluntarioVendas vendedor = (VoluntarioVendas) v;
+                    System.out.println("\t\t" + vendedor.verificarCategoria());
                 }
             }
         }
@@ -90,12 +82,7 @@ public class MenuRankings {
     }
 
     private void mostrarCategoria(String nomeCategoria, List<Barraca> barracas) {
-        Collections.sort(barracas, new Comparator<Barraca>() {
-            public int compare(Barraca b1, Barraca b2) {
-                return Double.compare(b2.exportarVendas(), b1.exportarVendas());
-            }
-        });
-
+        Collections.sort(barracas, Comparator.comparingDouble(Barraca::exportarVendas).reversed());
         System.out.println("\nCategoria: " + nomeCategoria);
         for (Barraca b : barracas) {
             System.out.printf("\tBarraca: %s | Stock final: %d unidades\n", b.getNome(), b.exportarStockTotal());

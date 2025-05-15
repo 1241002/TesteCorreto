@@ -9,7 +9,6 @@ public class Barraca implements Comparable<Barraca> {
     private Instituicao instituicao;
     private List<Voluntario> voluntarios;
     private List<StockProdutos> stock;
-    private List<VendaProdutos> vendas;
 
     // Construtor completo
     public Barraca(String nome, Instituicao instituicao) {
@@ -17,7 +16,6 @@ public class Barraca implements Comparable<Barraca> {
         this.instituicao = instituicao;
         this.voluntarios = new ArrayList<>();
         this.stock = new ArrayList<>();
-        this.vendas = new ArrayList<>();
     }
 
     // Construtor vazio
@@ -26,16 +24,14 @@ public class Barraca implements Comparable<Barraca> {
         this.instituicao = null;
         this.voluntarios = new ArrayList<>();
         this.stock = new ArrayList<>();
-        this.vendas = new ArrayList<>();
     }
 
     // Construtor de cópia
     public Barraca(Barraca b) {
         this.nome = b.nome;
-        this.instituicao = b.instituicao; // Assume-se referência partilhada
+        this.instituicao = b.instituicao;
         this.voluntarios = new ArrayList<>(b.voluntarios);
         this.stock = new ArrayList<>(b.stock);
-        this.vendas = new ArrayList<>(b.vendas);
     }
 
     // Seletores
@@ -55,10 +51,6 @@ public class Barraca implements Comparable<Barraca> {
         return new ArrayList<>(stock);
     }
 
-    public List<VendaProdutos> getVendas() {
-        return new ArrayList<>(vendas);
-    }
-
     // Modificadores
     public void setNome(String nome) {
         this.nome = nome;
@@ -68,24 +60,20 @@ public class Barraca implements Comparable<Barraca> {
         this.instituicao = instituicao;
     }
 
-    // Métodos de instância
     public boolean adicionarVoluntario(Voluntario voluntario) {
-        if (voluntario == null) return false;
-        if (voluntario.getInstituicao() != null &&
-                voluntario.getInstituicao().equals(this.instituicao) &&
-                voluntario.getBarracaAssociada() == null) {
-            this.voluntarios.add(voluntario);
-            voluntario.setBarracaAssociada(this);
-            return true;
+        if (voluntario == null || voluntarios.contains(voluntario) || voluntario.getBarracaAssociada() != null) {
+            return false; // Volunteer not added (null, already in list, or associated with another barraca)
         }
-        return false;
+        voluntarios.add(voluntario);
+        voluntario.setBarracaAssociada(this);
+        return true; // Volunteer added successfully
     }
 
     public String classificar() {
-        int stockTotal = this.exportarStockTotal();
-        if (stockTotal <= 10) {
+        double vendasTotal = this.exportarVendas();
+        if (vendasTotal >= 1000) {
             return "Ouro";
-        } else if (stockTotal <= 100) {
+        } else if (vendasTotal >= 500) {
             return "Prata";
         } else {
             return "Bronze";
@@ -100,8 +88,8 @@ public class Barraca implements Comparable<Barraca> {
         return total;
     }
 
-    public float exportarVendas() {
-        float total = 0;
+    public double exportarVendas() {
+        double total = 0;
         for (Voluntario v : this.voluntarios) {
             if (v instanceof VoluntarioVendas) {
                 for (VendaProdutos vp : ((VoluntarioVendas) v).getTodasVendas()) {
@@ -112,38 +100,28 @@ public class Barraca implements Comparable<Barraca> {
         return total;
     }
 
-    public boolean adicionarStock(StockProdutos stockProdutos) {
-        if (stockProdutos == null) return false;
+    public void adicionarStock(StockProdutos stockProdutos) {
         for (StockProdutos sp : this.stock) {
-            if (sp.getNome() != null &&
-                    sp.getNome().equalsIgnoreCase(stockProdutos.getNome())) {
+            if (sp.getNome().equals(stockProdutos.getNome())) {
                 sp.setQuantidade(sp.getQuantidade() + stockProdutos.getQuantidade());
-                return true;
+                return;
             }
         }
         this.stock.add(stockProdutos);
-        return true;
     }
 
-    public boolean reduzirStock(String nomeProduto, int quantidade) {
-        if (nomeProduto == null || quantidade < 0) return false;
+    public void reduzirStock(String nomeProduto, int quantidade) {
         for (StockProdutos sp : this.stock) {
-            if (sp.getNome() != null &&
-                    sp.getNome().equalsIgnoreCase(nomeProduto) &&
-                    sp.getQuantidade() >= quantidade) {
+            if (sp.getNome().equals(nomeProduto)) {
                 sp.setQuantidade(sp.getQuantidade() - quantidade);
-                return true;
+                return;
             }
         }
-        return false;
     }
 
     // Implementação de Comparable (ordena por nome)
     @Override
     public int compareTo(Barraca outra) {
-        if (this.nome == null && outra.nome == null) return 0;
-        if (this.nome == null) return -1;
-        if (outra.nome == null) return 1;
         return this.nome.compareToIgnoreCase(outra.nome);
     }
 
@@ -153,15 +131,15 @@ public class Barraca implements Comparable<Barraca> {
         if (this == o) return true;
         if (!(o instanceof Barraca)) return false;
         Barraca barraca = (Barraca) o;
-        return (this.nome == null ? barraca.nome == null : this.nome.equalsIgnoreCase(barraca.nome)) &&
-                (this.instituicao == null ? barraca.instituicao == null : this.instituicao.equals(barraca.instituicao));
+        return this.nome.equals(barraca.nome) &&
+                this.instituicao.equals(barraca.instituicao);
     }
 
     // Método toString
     @Override
     public String toString() {
         return "Barraca{" +
-                "nome='" + (nome == null ? "" : nome) + '\'' +
+                "nome='" + nome + '\'' +
                 ", instituicao=" + (instituicao == null ? "N/A" : instituicao.getNome()) +
                 ", voluntarios=" + voluntarios.size() +
                 ", stockTotal=" + exportarStockTotal() +
