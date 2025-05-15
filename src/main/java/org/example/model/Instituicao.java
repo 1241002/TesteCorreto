@@ -2,17 +2,21 @@ package org.example.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class Instituicao {
+public class Instituicao implements Comparable<Instituicao> {
+    // Variáveis de instância
     private String nome;
     private final List<Voluntario> listaVoluntarios;
     private final List<Produto> lstProdutos;
-    private List<Barraca> barracas;
-    private List<EscalaDiaria> escalasDiarias;
+    private final List<Barraca> barracas;
+    private final List<EscalaDiaria> escalasDiarias;
     private Federacao federacao;
 
+    // Construtor completo
     public Instituicao(String nome) {
+        if (nome == null) {
+            throw new IllegalArgumentException("Nome não pode ser nulo");
+        }
         this.nome = nome;
         this.listaVoluntarios = new ArrayList<>();
         this.lstProdutos = new ArrayList<>();
@@ -21,67 +25,93 @@ public class Instituicao {
         this.federacao = null;
     }
 
-    public List<EscalaDiaria> getEscalasDiarias() {
-        return escalasDiarias;
+    // Construtor vazio
+    public Instituicao() {
+        this.nome = "";
+        this.listaVoluntarios = new ArrayList<>();
+        this.lstProdutos = new ArrayList<>();
+        this.barracas = new ArrayList<>();
+        this.escalasDiarias = new ArrayList<>();
+        this.federacao = null;
     }
 
-    public void setEscalasDiarias(List<EscalaDiaria> escalasDiarias) {
-        this.escalasDiarias = escalasDiarias;
+    // Construtor de cópia
+    public Instituicao(Instituicao outra) {
+        this.nome = outra.nome;
+        this.listaVoluntarios = new ArrayList<>(outra.listaVoluntarios);
+        this.lstProdutos = new ArrayList<>(outra.lstProdutos);
+        this.barracas = new ArrayList<>(outra.barracas);
+        this.escalasDiarias = new ArrayList<>(outra.escalasDiarias);
+        this.federacao = outra.federacao; // Referência partilhada
     }
 
-    public void setBarracas(List<Barraca> barracas) {
-        this.barracas = barracas;
-    }
-
-    public List<Barraca> getBarracas() {
-        return this.barracas;
-    }
-
-    public List<Produto> getLstProdutos() {
-        return lstProdutos;
-    }
-
+    // Seletores
     public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+        return this.nome;
     }
 
     public List<Voluntario> getListaVoluntarios() {
-        return listaVoluntarios;
+        return new ArrayList<>(this.listaVoluntarios);
+    }
+
+    public List<Produto> getLstProdutos() {
+        return new ArrayList<>(this.lstProdutos);
+    }
+
+    public List<Barraca> getBarracas() {
+        return new ArrayList<>(this.barracas);
+    }
+
+    public List<EscalaDiaria> getEscalasDiarias() {
+        return new ArrayList<>(this.escalasDiarias);
+    }
+
+    public Federacao getFederacao() {
+        return this.federacao;
+    }
+
+    // Modificadores
+    public void setNome(String nome) {
+        if (nome == null) {
+            throw new IllegalArgumentException("Nome não pode ser nulo");
+        }
+        this.nome = nome;
     }
 
     public void setFederacao(Federacao federacao) {
         this.federacao = federacao;
     }
 
-    public void adicionarEscalaDiaria(EscalaDiaria escala) {
-        escalasDiarias.add(escala);
-    }
-
-    public boolean adicionarBarraca(Barraca barraca) {
-        if (!getBarracas().contains(barraca)) {
-            getBarracas().add(barraca);
-            if (federacao != null) {
-                federacao.adicionarBarraca(barraca);
-            }
-            return true;
+    public void setEscalasDiarias(List<EscalaDiaria> escalasDiarias) {
+        if (escalasDiarias == null) {
+            throw new IllegalArgumentException("Lista de escalas não pode ser nula");
         }
-        return false;
+        this.escalasDiarias.clear();
+        this.escalasDiarias.addAll(escalasDiarias);
     }
 
+    public void setBarracas(List<Barraca> barracas) {
+        if (barracas == null) {
+            throw new IllegalArgumentException("Lista de barracas não pode ser nula");
+        }
+        this.barracas.clear();
+        this.barracas.addAll(barracas);
+    }
+
+    // Métodos de instância
     public boolean adicionarVoluntario(Voluntario voluntario) {
-        if (!listaContemVoluntario(voluntario.getNumeroAluno())) {
-            listaVoluntarios.add(voluntario);
+        if (voluntario == null) {
+            throw new IllegalArgumentException("Voluntário não pode ser nulo");
+        }
+        if (!this.listaContemVoluntario(voluntario.getNumeroAluno())) {
+            this.listaVoluntarios.add(voluntario);
             return true;
         }
         return false;
     }
 
     public boolean listaContemVoluntario(int numeroAluno) {
-        for (Voluntario voluntario : listaVoluntarios) {
+        for (Voluntario voluntario : this.listaVoluntarios) {
             if (voluntario.getNumeroAluno() == numeroAluno) {
                 return true;
             }
@@ -90,7 +120,7 @@ public class Instituicao {
     }
 
     public Voluntario buscarVoluntarioPorNumeroAluno(int numeroAluno) {
-        for (Voluntario v : listaVoluntarios) {
+        for (Voluntario v : this.listaVoluntarios) {
             if (v.getNumeroAluno() == numeroAluno) {
                 return v;
             }
@@ -99,7 +129,7 @@ public class Instituicao {
     }
 
     public VoluntarioVendas getVoluntarioVendasPorNumeroAluno(int numeroAluno) {
-        for (Voluntario voluntario : listaVoluntarios) {
+        for (Voluntario voluntario : this.listaVoluntarios) {
             if (voluntario instanceof VoluntarioVendas && voluntario.getNumeroAluno() == numeroAluno) {
                 return (VoluntarioVendas) voluntario;
             }
@@ -108,7 +138,7 @@ public class Instituicao {
     }
 
     public VoluntarioStock getVoluntarioStockPorNumeroAluno(int numeroAluno) {
-        for (Voluntario voluntario : listaVoluntarios) {
+        for (Voluntario voluntario : this.listaVoluntarios) {
             if (voluntario instanceof VoluntarioStock && voluntario.getNumeroAluno() == numeroAluno) {
                 return (VoluntarioStock) voluntario;
             }
@@ -116,34 +146,62 @@ public class Instituicao {
         return null;
     }
 
-    public Voluntario getVoluntarioPorNumeroAluno(int numeroAluno) {
-        for (Voluntario voluntario : listaVoluntarios) {
-            if (voluntario.getNumeroAluno() == numeroAluno) {
-                return voluntario;
-            }
+    public boolean adicionarBarraca(Barraca barraca) {
+        if (barraca == null) {
+            throw new IllegalArgumentException("Barraca não pode ser nula");
         }
-        return null;
+        if (!this.barracas.contains(barraca)) {
+            this.barracas.add(barraca);
+            if (this.federacao != null) {
+                this.federacao.adicionarBarraca(barraca);
+            }
+            return true;
+        }
+        return false;
     }
 
+    public void adicionarEscalaDiaria(EscalaDiaria escala) {
+        if (escala == null) {
+            throw new IllegalArgumentException("Escala não pode ser nula");
+        }
+        if (!this.escalasDiarias.contains(escala)) {
+            this.escalasDiarias.add(escala);
+        }
+    }
+
+    // Implementação de Comparable (ordena por nome)
+    @Override
+    public int compareTo(Instituicao outra) {
+        if (this.nome == null && outra.nome == null) return 0;
+        if (this.nome == null) return -1;
+        if (outra.nome == null) return 1;
+        return this.nome.compareToIgnoreCase(outra.nome);
+    }
+
+    // Método equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Instituicao)) return false;
         Instituicao that = (Instituicao) o;
-        return nome.equalsIgnoreCase(that.nome);
+        if (this.nome == null) {
+            return that.nome == null;
+        } else if (that.nome == null) {
+            return false;
+        } else {
+            return this.nome.equalsIgnoreCase(that.nome);
+        }
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(nome.toLowerCase());
-    }
-
+    // Método toString
     @Override
     public String toString() {
         return "Instituicao{" +
-                "nome='" + nome + '\'' +
-                ", listaVoluntarios=" + listaVoluntarios +
-                ", lstProdutos=" + lstProdutos +
+                "nome='" + (nome == null ? "" : nome) + '\'' +
+                ", numVoluntarios=" + listaVoluntarios.size() +
+                ", numProdutos=" + lstProdutos.size() +
+                ", numBarracas=" + barracas.size() +
+                ", numEscalas=" + escalasDiarias.size() +
                 '}';
     }
 }
