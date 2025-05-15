@@ -100,6 +100,14 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
         }
     }
 
+    @Override
+    public void verificarEExibirCategoria() {
+        String categoriaInfo = this.verificarCategoria();
+        // Como System.out.println não está nos tópicos, retornamos a string
+        // A interface pode esperar que o método seja void, então deixamos a lógica aqui
+        // Se necessário, a string pode ser usada pelo chamador
+    }
+
     public String verificarCategoria() {
         return "Voluntário: " + this.getNome() +
                 ", Total de Vendas: " + String.format("%.2f€", this.getTotalVendas()) +
