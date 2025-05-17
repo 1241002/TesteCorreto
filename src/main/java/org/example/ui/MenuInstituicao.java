@@ -4,6 +4,8 @@ import org.example.model.Federacao;
 import org.example.model.Instituicao;
 import org.example.utils.Utils;
 
+import java.io.Serializable;
+
 /**
  * Classe que representa o menu de gestão de instituições dentro da federação.
  * Permite ao utilizador adicionar novas instituições, garantindo que não haja

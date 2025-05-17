@@ -6,7 +6,9 @@ import org.example.model.Voluntario;
 import org.example.model.Federacao;
 import org.example.utils.Utils;
 
-public class MenuBarraca {
+import java.io.Serializable;
+
+public class MenuBarraca{
     private Federacao federacao;
 
     public MenuBarraca(Federacao federacao) {

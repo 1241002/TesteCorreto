@@ -1,5 +1,6 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.example.utils.Data;
@@ -8,7 +9,7 @@ import org.example.utils.Data;
  * Representa uma escala diária com barracas associadas, total de vendas e stock final.
  * Serve para registar os dados de funcionamento de um dia específico.
  */
-public class EscalaDiaria implements Comparable<EscalaDiaria> {
+public class EscalaDiaria implements Comparable<EscalaDiaria>, Serializable {
     private Data data;
     private List<Barraca> barracas;
     private double vendasTotais;

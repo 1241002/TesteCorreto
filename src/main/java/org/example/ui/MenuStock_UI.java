@@ -12,29 +12,13 @@ import java.util.List;
  */
 public class MenuStock_UI {
 
-    /**
-     * Instância da federação que contém as barracas e produtos.
-     */
     private Federacao federacao;
-
-    /**
-     * Opção escolhida pelo utilizador no menu.
-     */
     private String opcao;
 
-    /**
-     * Construtor que recebe a federação onde as operações serão realizadas.
-     *
-     * @param federacao Instância da federação com barracas e produtos.
-     */
     public MenuStock_UI(Federacao federacao) {
         this.federacao = federacao;
     }
 
-    /**
-     * Executa o menu principal de gestão de stock, exibindo opções ao utilizador
-     * até que este escolha sair.
-     */
     public void run() {
         do {
             System.out.println("\n###### MENU GERENCIAR STOCK #####");
@@ -57,10 +41,6 @@ public class MenuStock_UI {
         } while (!opcao.equals("0"));
     }
 
-    /**
-     * Adiciona um novo produto ao stock de uma barraca selecionada pelo utilizador.
-     * Verifica se o produto já não existe no stock antes de adicionar.
-     */
     private void adicionarNovoProduto() {
         List<Barraca> barracas = federacao.getTodasBarracas();
         if (barracas.isEmpty()) {
@@ -75,24 +55,16 @@ public class MenuStock_UI {
             return;
         }
 
-        List<Produto> produtosDisponiveis = barracaSelecionada.getInstituicao().getLstProdutos();
-        if (produtosDisponiveis.isEmpty()) {
-            System.out.println("Nenhum produto registrado na instituição.");
+        String nomeProduto = Utils.readLineFromConsole("Nome do produto: ");
+        if (nomeProduto == null || nomeProduto.trim().isEmpty()) {
+            System.out.println("Nome do produto não pode ser vazio.");
             return;
         }
 
-        Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
-        Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
-        if (produtoSelecionado == null) {
-            System.out.println("Operação cancelada.");
+        double precoUnitario = Utils.readDoubleFromConsole("Preço unitário: ");
+        if (precoUnitario <= 0) {
+            System.out.println("Preço deve ser maior que zero.");
             return;
-        }
-
-        for (StockProdutos sp : barracaSelecionada.getStock()) {
-            if (sp.getNome().equals(produtoSelecionado.getNome())) {
-                System.out.println("Produto já existe no stock. Use a opção de repor stock.");
-                return;
-            }
         }
 
         int quantidade = Utils.readIntFromConsole("Quantidade: ");
@@ -101,15 +73,18 @@ public class MenuStock_UI {
             return;
         }
 
-        StockProdutos novoStock = new StockProdutos(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
+        for (StockProdutos sp : barracaSelecionada.getStock()) {
+            if (sp.getNome().equals(nomeProduto)) {
+                System.out.println("Produto já existe no stock. Use a opção de repor stock.");
+                return;
+            }
+        }
+
+        StockProdutos novoStock = new StockProdutos(nomeProduto, precoUnitario, quantidade);
         barracaSelecionada.adicionarStock(novoStock);
-        System.out.println("Produto " + produtoSelecionado.getNome() + " adicionado ao stock da barraca " + barracaSelecionada.getNome() + ".");
+        System.out.println("Produto " + nomeProduto + " adicionado ao stock da barraca " + barracaSelecionada.getNome() + ".");
     }
 
-    /**
-     * Repor o stock de um produto já existente numa barraca.
-     * Se o produto não existir no stock, adiciona-o como novo.
-     */
     private void reporStock() {
         List<Barraca> barracas = federacao.getTodasBarracas();
         if (barracas.isEmpty()) {
@@ -124,14 +99,14 @@ public class MenuStock_UI {
             return;
         }
 
-        List<Produto> produtosDisponiveis = barracaSelecionada.getInstituicao().getLstProdutos();
-        if (produtosDisponiveis.isEmpty()) {
-            System.out.println("Nenhum produto registrado na instituição.");
+        List<StockProdutos> stock = barracaSelecionada.getStock();
+        if (stock.isEmpty()) {
+            System.out.println("Nenhum produto registrado no stock da barraca.");
             return;
         }
 
-        Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
-        Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
+        Utils.apresentaLista(stock, "Produtos no stock:");
+        StockProdutos produtoSelecionado = (StockProdutos) Utils.selecionaObject(stock);
         if (produtoSelecionado == null) {
             System.out.println("Operação cancelada.");
             return;
@@ -143,25 +118,10 @@ public class MenuStock_UI {
             return;
         }
 
-        boolean encontrado = false;
-        for (StockProdutos sp : barracaSelecionada.getStock()) {
-            if (sp.getNome().equals(produtoSelecionado.getNome())) {
-                sp.setQuantidade(sp.getQuantidade() + quantidade);
-                encontrado = true;
-                System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado com " + quantidade + " unidades na barraca " + barracaSelecionada.getNome() + ".");
-                break;
-            }
-        }
-        if (!encontrado) {
-            StockProdutos novoStock = new StockProdutos(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
-            barracaSelecionada.adicionarStock(novoStock);
-            System.out.println("Produto " + produtoSelecionado.getNome() + " adicionado ao stock da barraca " + barracaSelecionada.getNome() + " com " + quantidade + " unidades.");
-        }
+        produtoSelecionado.setQuantidade(produtoSelecionado.getQuantidade() + quantidade);
+        System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado com " + quantidade + " unidades na barraca " + barracaSelecionada.getNome() + ".");
     }
 
-    /**
-     * Mostra o stock atual de produtos de uma barraca selecionada pelo utilizador.
-     */
     private void verStock() {
         List<Barraca> barracas = federacao.getTodasBarracas();
         if (barracas.isEmpty()) {

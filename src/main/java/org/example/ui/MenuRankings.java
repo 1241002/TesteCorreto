@@ -3,6 +3,7 @@ package org.example.ui;
 import org.example.model.*;
 import org.example.utils.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

@@ -1,6 +1,8 @@
 package org.example.ui;
 
 import org.example.model.*;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,7 +18,7 @@ import org.example.utils.Utils;
  * A exibição é feita no console e os dados são organizados e
  * ordenados para melhor visualização.
  */
-public class MenuDados_UI {
+public class MenuDados_UI{
 
     /**
      * A federação que contém todos os dados a serem exibidos.

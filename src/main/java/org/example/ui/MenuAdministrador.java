@@ -1,7 +1,10 @@
 package org.example.ui;
 
 import org.example.model.Federacao;
+import org.example.model.IVendasVoluntarios;
 import org.example.utils.Utils;
+
+import java.io.Serializable;
 
 /**
  * Classe que representa o menu do administrador,

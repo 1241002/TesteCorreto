@@ -1,5 +1,6 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * contendo voluntários e um conjunto de produtos em stock.
  * Pode ser classificada com base nas vendas (Bronze, Prata ou Ouro).
  */
-public class Barraca implements Comparable<Barraca> {
+public class Barraca implements Comparable<Barraca>, Serializable {
 
     private String nome;
     private Instituicao instituicao;

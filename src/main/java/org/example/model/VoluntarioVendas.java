@@ -1,5 +1,6 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * Mantém uma lista das vendas realizadas, permite registar, remover vendas e calcular totais.
  * Implementa categorização baseada no total acumulado de vendas.
  */
-public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios {
+public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios, Serializable {
     private final List<VendaProdutos> vendasProdutos;
 
     /**

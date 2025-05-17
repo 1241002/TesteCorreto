@@ -1,5 +1,6 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,9 @@ import java.util.List;
  * Representa a federação responsável por gerir as instituições, barracas, produtos,
  * administradores, escalas e voluntários.
  */
-public class Federacao implements Comparable<Federacao> {
+public class Federacao implements Comparable<Federacao>, Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String nome;
     private final List<Produto> lstProdutos;
     private final List<Instituicao> instituicoes;
@@ -98,7 +101,9 @@ public class Federacao implements Comparable<Federacao> {
      * @param admin Administrador a adicionar.
      */
     public void adicionarAdministrador(Administrador admin) {
-        this.administradores.add(admin);
+        if (admin != null && !administradores.contains(admin)) {
+            this.administradores.add(admin);
+        }
     }
 
     /**
@@ -132,15 +137,18 @@ public class Federacao implements Comparable<Federacao> {
      * Adiciona um produto à lista da federação.
      */
     public void adicionarProduto(Produto produto) {
-        this.lstProdutos.add(new Produto(produto));
+        if (produto != null && !listaContemProduto(produto.getNome())) {
+            this.lstProdutos.add(new Produto(produto));
+        }
     }
 
     /**
      * Verifica se a federação já contém um produto com esse nome.
      */
     public boolean listaContemProduto(String nomeProduto) {
+        if (nomeProduto == null) return false;
         for (Produto p : this.lstProdutos) {
-            if (p.getNome().equals(nomeProduto)) {
+            if (p.getNome().equalsIgnoreCase(nomeProduto)) {
                 return true;
             }
         }
@@ -151,10 +159,12 @@ public class Federacao implements Comparable<Federacao> {
      * Adiciona uma instituição à federação e associa as suas barracas.
      */
     public void adicionarInstituicao(Instituicao instituicao) {
-        this.instituicoes.add(instituicao);
-        instituicao.setFederacao(this);
-        for (Barraca barraca : instituicao.getBarracas()) {
-            this.adicionarBarraca(barraca);
+        if (instituicao != null && !listaContemInstituicao(instituicao.getNome())) {
+            this.instituicoes.add(instituicao);
+            instituicao.setFederacao(this);
+            for (Barraca barraca : instituicao.getBarracas()) {
+                this.adicionarBarraca(barraca);
+            }
         }
     }
 
@@ -162,15 +172,18 @@ public class Federacao implements Comparable<Federacao> {
      * Adiciona uma barraca à federação.
      */
     public void adicionarBarraca(Barraca barraca) {
-        this.todasBarracas.add(barraca);
+        if (barraca != null && !todasBarracas.contains(barraca)) {
+            this.todasBarracas.add(barraca);
+        }
     }
 
     /**
      * Verifica se já existe uma instituição com o nome indicado.
      */
     public boolean listaContemInstituicao(String nomeInstituicao) {
+        if (nomeInstituicao == null) return false;
         for (Instituicao i : this.instituicoes) {
-            if (i.getNome().equals(nomeInstituicao)) {
+            if (i.getNome().equalsIgnoreCase(nomeInstituicao)) {
                 return true;
             }
         }
@@ -207,7 +220,9 @@ public class Federacao implements Comparable<Federacao> {
      * Adiciona uma nova escala à federação.
      */
     public void adicionarEscala(EscalaDiaria escala) {
-        this.escalas.add(escala);
+        if (escala != null && !escalas.contains(escala)) {
+            this.escalas.add(escala);
+        }
     }
 
     /**
@@ -216,6 +231,7 @@ public class Federacao implements Comparable<Federacao> {
      * @return Escala correspondente ou null.
      */
     public EscalaDiaria buscarEscalaPorData(String data) {
+        if (data == null) return null;
         for (EscalaDiaria escala : this.escalas) {
             if (escala.getData().toString().equals(data)) {
                 return escala;
@@ -240,6 +256,8 @@ public class Federacao implements Comparable<Federacao> {
         Federacao that = (Federacao) o;
         return this.nome.equals(that.nome);
     }
+
+    // toString
 
     @Override
     public String toString() {

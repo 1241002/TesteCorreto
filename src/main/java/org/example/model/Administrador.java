@@ -1,11 +1,13 @@
 package org.example.model;
 
+import java.io.Serializable;
+
 /**
  * Representa um administrador da aplicação.
  * Um administrador tem nome, número de aluno, curso e senha.
  * Pode ser comparado por nome (ordem alfabética).
  */
-public class Administrador implements Comparable<Administrador> {
+public class Administrador implements Comparable<Administrador>, Serializable {
 
     // Variáveis de instância
     private String nome;

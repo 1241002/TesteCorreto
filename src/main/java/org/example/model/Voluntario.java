@@ -1,10 +1,12 @@
 package org.example.model;
 
+import java.io.Serializable;
+
 /**
  * Representa um voluntário, com dados pessoais e associação a uma barraca e instituição.
  * Classe abstrata para ser estendida por tipos concretos de voluntários.
  */
-public abstract class Voluntario implements Comparable<Voluntario> {
+public abstract class Voluntario implements Comparable<Voluntario>, Serializable {
     private String nome;
     private int numeroAluno;
     private String curso;

@@ -4,6 +4,7 @@ import org.example.model.*;
 import org.example.utils.Data;
 import org.example.utils.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

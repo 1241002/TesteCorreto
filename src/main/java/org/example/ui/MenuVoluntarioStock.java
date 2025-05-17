@@ -49,7 +49,7 @@ public class MenuVoluntarioStock {
 
     /**
      * Permite ao voluntário adicionar um novo produto ao stock da sua barraca.
-     * Valida se o voluntário existe, se tem barraca associada e se o produto está disponível na instituição.
+     * Solicita nome, preço unitário e quantidade diretamente, sem depender da instituição.
      */
     private void adicionarNovoProduto() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
@@ -66,16 +66,15 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
-        if (produtosDisponiveis.isEmpty()) {
-            System.out.println("Nenhum produto registrado na instituição.");
+        String nomeProduto = Utils.readLineFromConsole("Nome do produto: ");
+        if (nomeProduto == null || nomeProduto.trim().isEmpty()) {
+            System.out.println("Nome do produto não pode ser vazio.");
             return;
         }
 
-        Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
-        Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
-        if (produtoSelecionado == null) {
-            System.out.println("Operação cancelada.");
+        double precoUnitario = Utils.readDoubleFromConsole("Preço unitário: ");
+        if (precoUnitario <= 0) {
+            System.out.println("Preço deve ser maior que zero.");
             return;
         }
 
@@ -85,13 +84,22 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        voluntario.adicionarProdutoAoStock(produtoSelecionado.getNome(), produtoSelecionado.getPrecoUnitario(), quantidade);
-        System.out.println("Produto " + produtoSelecionado.getNome() + " adicionado ao stock.");
+        // Verificar se o produto já existe no estoque
+        for (StockProdutos sp : barraca.getStock()) {
+            if (sp.getNome().equals(nomeProduto)) {
+                System.out.println("Produto já existe no stock. Use a opção de repor stock.");
+                return;
+            }
+        }
+
+        StockProdutos novoStock = new StockProdutos(nomeProduto, precoUnitario, quantidade);
+        barraca.adicionarStock(novoStock);
+        System.out.println("Produto " + nomeProduto + " adicionado ao stock da barraca " + barraca.getNome() + ".");
     }
 
     /**
      * Permite ao voluntário repor a quantidade de um produto já existente no stock da sua barraca.
-     * Valida se o voluntário e a barraca existem, e se o produto está disponível na instituição.
+     * Lista os produtos já no estoque da barraca.
      */
     private void reporStock() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
@@ -108,14 +116,14 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        List<Produto> produtosDisponiveis = voluntario.getInstituicao().getLstProdutos();
-        if (produtosDisponiveis.isEmpty()) {
-            System.out.println("Nenhum produto registrado na instituição.");
+        List<StockProdutos> stock = barraca.getStock();
+        if (stock.isEmpty()) {
+            System.out.println("Nenhum produto registrado no stock da barraca.");
             return;
         }
 
-        Utils.apresentaLista(produtosDisponiveis, "Produtos disponíveis:");
-        Produto produtoSelecionado = (Produto) Utils.selecionaObject(produtosDisponiveis);
+        Utils.apresentaLista(stock, "Produtos no stock:");
+        StockProdutos produtoSelecionado = (StockProdutos) Utils.selecionaObject(stock);
         if (produtoSelecionado == null) {
             System.out.println("Operação cancelada.");
             return;
@@ -127,8 +135,8 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        voluntario.reporProduto(produtoSelecionado.getNome(), quantidade);
-        System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado.");
+        produtoSelecionado.setQuantidade(produtoSelecionado.getQuantidade() + quantidade);
+        System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado na barraca " + barraca.getNome() + ".");
     }
 
     /**

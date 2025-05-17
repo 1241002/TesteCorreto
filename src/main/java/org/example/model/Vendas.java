@@ -1,9 +1,11 @@
 package org.example.model;
 
+import java.io.Serializable;
+
 /**
  * Representa uma venda de um produto em stock, com a quantidade vendida.
  */
-public class Vendas implements Comparable<Vendas> {
+public class Vendas implements Comparable<Vendas>, Serializable {
     private StockProdutos produtos;
     private int quantidade;
 

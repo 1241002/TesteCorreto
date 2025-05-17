@@ -1,5 +1,6 @@
 package org.example.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Representa uma instituição participante na federação.
  * Cada instituição tem voluntários, barracas, produtos e escalas diárias associadas.
  */
-public class Instituicao implements Comparable<Instituicao> {
+public class Instituicao implements Comparable<Instituicao>, Serializable {
     private String nome;
     private final List<Voluntario> listaVoluntarios;
     private final List<Produto> lstProdutos;

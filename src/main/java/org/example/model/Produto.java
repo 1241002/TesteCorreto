@@ -1,11 +1,13 @@
 package org.example.model;
 
+import java.io.Serializable;
+
 /**
  * Representa um produto com nome e preço unitário.
  * Esta classe implementa a interface {@link Comparable} para permitir comparação
  * baseada no nome do produto, ignorando maiúsculas/minúsculas.
  */
-public class Produto implements Comparable<Produto> {
+public class Produto implements Comparable<Produto>, Serializable {
     private String nome;
     private double precoUnitario;
 

@@ -1,10 +1,12 @@
 package org.example.model;
 
+import java.io.Serializable;
+
 /**
  * Representa um voluntário especializado em gestão de stock de produtos.
  * Permite adicionar produtos e repor quantidades na barraca associada.
  */
-public class VoluntarioStock extends Voluntario {
+public class VoluntarioStock extends Voluntario implements Serializable {
 
     /**
      * Construtor completo.
