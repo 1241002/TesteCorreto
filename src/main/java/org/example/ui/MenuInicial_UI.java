@@ -1,6 +1,6 @@
 package org.example.ui;
 
-import org.example.model.Federacao;
+import org.example.model.*;
 import org.example.utils.PersistenciaDados;
 import org.example.utils.Utils;
 
@@ -31,7 +31,11 @@ public class MenuInicial_UI {
      * @param federacao Instância da federação usada para validação e gestão.
      */
     public MenuInicial_UI(Federacao federacao) {
+        if (federacao == null) {
+            throw new IllegalArgumentException("Federação não pode ser nula");
+        }
         this.federacao = federacao;
+        this.opcao = "";
     }
 
     /**
@@ -59,47 +63,62 @@ public class MenuInicial_UI {
         }
 
         do {
-            System.out.println("###### MENU INICIAL #####");
-            System.out.println("1. Administrador");
-            System.out.println("2. Voluntário de Stock");
-            System.out.println("3. Voluntário de Vendas");
-            System.out.println("0. Sair");
+            try {
+                System.out.println("\n###### MENU INICIAL #####");
+                System.out.println("1. Administrador");
+                System.out.println("2. Voluntário de Stock");
+                System.out.println("3. Voluntário de Vendas");
+                System.out.println("0. Sair");
 
-            opcao = Utils.readLineFromConsole("Escolha uma opção: ");
+                opcao = Utils.readLineFromConsole("Escolha uma opção: ");
+                if (opcao == null) {
+                    throw new IllegalArgumentException("Opção não pode ser nula");
+                }
 
-            switch (opcao) {
-                case "1":
-                    if (realizarLoginAdministrador()) {
-                        new MenuAdministrador(federacao).run();
-                        salvarDados(); // Salvar após alterações administrativas
-                    } else {
-                        System.out.println("Login inválido. Verifique nome, número, senha ou curso e tente novamente.");
-                    }
-                    break;
-                case "2":
-                    if (realizarLoginVoluntario(false)) {
-                        new MenuVoluntarioStock(federacao).run();
-                        salvarDados(); // Salvar após alterações de stock
-                    } else {
-                        System.out.println("Login inválido. Verifique nome, número, senha, curso ou tipo de voluntário e tente novamente.");
-                    }
-                    break;
-                case "3":
-                    if (realizarLoginVoluntario(true)) {
-                        new MenuVoluntarioVendas(federacao).run();
-                        salvarDados(); // Salvar após alterações de vendas
-                    } else {
-                        System.out.println("Login inválido. Verifique nome, número, senha, curso ou tipo de voluntário e tente novamente.");
-                    }
-                    break;
-                case "0":
-                    salvarDados(); // Salvar antes de sair
-                    System.out.println("A sair do menu.");
-                    break;
-                default:
-                    System.out.println("Opção inválida! Tente novamente.");
+                switch (opcao.trim()) {
+                    case "1":
+                        if (realizarLoginAdministrador()) {
+                            new MenuAdministrador(federacao).run();
+                            salvarDados(); // Salvar após alterações administrativas
+                        } else {
+                            System.out.println("Login inválido. Verifique nome, número, senha ou curso e tente novamente.");
+                        }
+                        break;
+                    case "2":
+                        if (realizarLoginVoluntario(false)) {
+                            new MenuVoluntarioStock(federacao).run();
+                            salvarDados(); // Salvar após alterações de stock
+                        } else {
+                            throw new ExcecaoVoluntarioStockNaoExistente("Login inválido para voluntário de stock. Verifique nome, número, senha, curso ou tipo de voluntário.");
+                        }
+                        break;
+                    case "3":
+                        if (realizarLoginVoluntario(true)) {
+                            new MenuVoluntarioVendas(federacao).run();
+                            salvarDados(); // Salvar após alterações de vendas
+                        } else {
+                            throw new ExcecaoVoluntarioVendasNaoExistente("Login inválido para voluntário de vendas. Verifique nome, número, senha, curso ou tipo de voluntário.");
+                        }
+                        break;
+                    case "0":
+                        salvarDados(); // Salvar antes de sair
+                        System.out.println("A sair do menu.");
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Por favor, escolha 0, 1, 2 ou 3.");
+                }
+
+                if (!opcao.trim().equals("0")) {
+                    Utils.readLineFromConsole("Pressione Enter para continuar...");
+                }
+            } catch (ExcecaoVoluntarioStockNaoExistente | ExcecaoVoluntarioVendasNaoExistente e) {
+                System.out.println("Erro no login: " + e.getMessage());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro de entrada: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
             }
-        } while (!opcao.equals("0"));
+        } while (!opcao.trim().equals("0"));
     }
 
     /**
@@ -123,13 +142,55 @@ public class MenuInicial_UI {
      * @return true se o login for válido, false caso contrário.
      */
     private boolean realizarLoginAdministrador() {
-        System.out.println("\n### Login Administrador ###");
-        String nome = Utils.readLineFromConsole("Nome: ");
-        int numero = Utils.readIntFromConsole("Número: ");
-        String senha = Utils.readLineFromConsole("Senha: ");
-        String curso = Utils.readLineFromConsole("Curso: ");
+        try {
+            System.out.println("\n### Login Administrador ###");
+            String nome = Utils.readLineFromConsole("Nome: ");
+            if (nome == null || nome.trim().isEmpty()) {
+                throw new ExcecaoNome("Nome do administrador não pode ser vazio");
+            }
+            if (!nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
+                throw new ExcecaoNome();
+            }
 
-        return federacao.validarLoginAdministrador(nome, numero, senha, curso);
+            String numeroStr = Utils.readLineFromConsole("Número: ");
+            if (numeroStr == null || numeroStr.trim().isEmpty()) {
+                throw new ExcecaoNumeroAluno("Número do administrador não pode ser vazio");
+            }
+            if (!numeroStr.matches("\\d+")) {
+                throw new ExcecaoNumeroAluno();
+            }
+            int numero = Integer.parseInt(numeroStr);
+            if (numero <= 0) {
+                throw new ExcecaoNumeroAluno("Número do administrador deve ser positivo");
+            }
+
+            String senha = Utils.readLineFromConsole("Senha: ");
+            if (senha == null || senha.trim().isEmpty()) {
+                throw new IllegalArgumentException("Senha não pode ser vazia");
+            }
+
+            String curso = Utils.readLineFromConsole("Curso: ");
+            if (curso == null || curso.trim().isEmpty()) {
+                throw new IllegalArgumentException("Curso não pode ser vazio");
+            }
+
+            return federacao.validarLoginAdministrador(nome, numero, senha, curso);
+        } catch (ExcecaoNome e) {
+            System.out.println("Erro no nome: " + e.getMessage());
+            return false;
+        } catch (ExcecaoNumeroAluno e) {
+            System.out.println("Erro no número: " + e.getMessage());
+            return false;
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Número deve ser um valor numérico válido");
+            return false;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro de entrada: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
+            return false;
+        }
     }
 
     /**
@@ -140,12 +201,54 @@ public class MenuInicial_UI {
      * @return true se o login for válido, false caso contrário.
      */
     private boolean realizarLoginVoluntario(boolean isVendas) {
-        System.out.println("\n### Login Voluntário ###");
-        String nome = Utils.readLineFromConsole("Nome: ");
-        int numero = Utils.readIntFromConsole("Número de aluno: ");
-        String senha = Utils.readLineFromConsole("Senha: ");
-        String curso = Utils.readLineFromConsole("Curso: ");
+        try {
+            System.out.println("\n### Login Voluntário ###");
+            String nome = Utils.readLineFromConsole("Nome: ");
+            if (nome == null || nome.trim().isEmpty()) {
+                throw new ExcecaoNome("Nome do voluntário não pode ser vazio");
+            }
+            if (!nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
+                throw new ExcecaoNome();
+            }
 
-        return federacao.validarLoginVoluntario(nome, numero, senha, curso, isVendas);
+            String numeroStr = Utils.readLineFromConsole("Número de aluno: ");
+            if (numeroStr == null || numeroStr.trim().isEmpty()) {
+                throw new ExcecaoNumeroAluno("Número de aluno não pode ser vazio");
+            }
+            if (!numeroStr.matches("\\d+")) {
+                throw new ExcecaoNumeroAluno();
+            }
+            int numero = Integer.parseInt(numeroStr);
+            if (numero <= 0) {
+                throw new ExcecaoNumeroAluno("Número de aluno deve ser positivo");
+            }
+
+            String senha = Utils.readLineFromConsole("Senha: ");
+            if (senha == null || senha.trim().isEmpty()) {
+                throw new IllegalArgumentException("Senha não pode ser vazia");
+            }
+
+            String curso = Utils.readLineFromConsole("Curso: ");
+            if (curso == null || curso.trim().isEmpty()) {
+                throw new IllegalArgumentException("Curso não pode ser vazio");
+            }
+
+            return federacao.validarLoginVoluntario(nome, numero, senha, curso, isVendas);
+        } catch (ExcecaoNome e) {
+            System.out.println("Erro no nome: " + e.getMessage());
+            return false;
+        } catch (ExcecaoNumeroAluno e) {
+            System.out.println("Erro no número: " + e.getMessage());
+            return false;
+        } catch (NumberFormatException e) {
+            System.out.println("Erro: Número de aluno deve ser um valor numérico válido");
+            return false;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro de entrada: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
+            return false;
+        }
     }
 }
