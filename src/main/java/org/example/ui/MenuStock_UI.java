@@ -5,14 +5,36 @@ import org.example.utils.Utils;
 
 import java.util.List;
 
+/**
+ * Interface de utilizador para gerir o stock de produtos nas barracas da federação.
+ * Permite adicionar novos produtos ao stock, repor stock existente e visualizar o stock
+ * de uma barraca específica.
+ */
 public class MenuStock_UI {
+
+    /**
+     * Instância da federação que contém as barracas e produtos.
+     */
     private Federacao federacao;
+
+    /**
+     * Opção escolhida pelo utilizador no menu.
+     */
     private String opcao;
 
+    /**
+     * Construtor que recebe a federação onde as operações serão realizadas.
+     *
+     * @param federacao Instância da federação com barracas e produtos.
+     */
     public MenuStock_UI(Federacao federacao) {
         this.federacao = federacao;
     }
 
+    /**
+     * Executa o menu principal de gestão de stock, exibindo opções ao utilizador
+     * até que este escolha sair.
+     */
     public void run() {
         do {
             System.out.println("\n###### MENU GERENCIAR STOCK #####");
@@ -35,6 +57,10 @@ public class MenuStock_UI {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Adiciona um novo produto ao stock de uma barraca selecionada pelo utilizador.
+     * Verifica se o produto já não existe no stock antes de adicionar.
+     */
     private void adicionarNovoProduto() {
         List<Barraca> barracas = federacao.getTodasBarracas();
         if (barracas.isEmpty()) {
@@ -80,6 +106,10 @@ public class MenuStock_UI {
         System.out.println("Produto " + produtoSelecionado.getNome() + " adicionado ao stock da barraca " + barracaSelecionada.getNome() + ".");
     }
 
+    /**
+     * Repor o stock de um produto já existente numa barraca.
+     * Se o produto não existir no stock, adiciona-o como novo.
+     */
     private void reporStock() {
         List<Barraca> barracas = federacao.getTodasBarracas();
         if (barracas.isEmpty()) {
@@ -129,6 +159,9 @@ public class MenuStock_UI {
         }
     }
 
+    /**
+     * Mostra o stock atual de produtos de uma barraca selecionada pelo utilizador.
+     */
     private void verStock() {
         List<Barraca> barracas = federacao.getTodasBarracas();
         if (barracas.isEmpty()) {

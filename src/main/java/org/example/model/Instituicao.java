@@ -3,6 +3,10 @@ package org.example.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa uma instituição participante na federação.
+ * Cada instituição tem voluntários, barracas, produtos e escalas diárias associadas.
+ */
 public class Instituicao implements Comparable<Instituicao> {
     private String nome;
     private final List<Voluntario> listaVoluntarios;
@@ -11,6 +15,10 @@ public class Instituicao implements Comparable<Instituicao> {
     private final List<EscalaDiaria> escalasDiarias;
     private Federacao federacao;
 
+    /**
+     * Construtor completo com nome.
+     * @param nome Nome da instituição.
+     */
     public Instituicao(String nome) {
         this.nome = nome;
         this.listaVoluntarios = new ArrayList<>();
@@ -20,15 +28,17 @@ public class Instituicao implements Comparable<Instituicao> {
         this.federacao = null;
     }
 
+    /**
+     * Construtor por omissão.
+     */
     public Instituicao() {
-        this.nome = "";
-        this.listaVoluntarios = new ArrayList<>();
-        this.lstProdutos = new ArrayList<>();
-        this.barracas = new ArrayList<>();
-        this.escalasDiarias = new ArrayList<>();
-        this.federacao = null;
+        this("");
     }
 
+    /**
+     * Construtor de cópia.
+     * @param outra Instituição a copiar.
+     */
     public Instituicao(Instituicao outra) {
         this.nome = outra.nome;
         this.listaVoluntarios = new ArrayList<>(outra.listaVoluntarios);
@@ -37,6 +47,8 @@ public class Instituicao implements Comparable<Instituicao> {
         this.escalasDiarias = new ArrayList<>(outra.escalasDiarias);
         this.federacao = outra.federacao;
     }
+
+    // Getters
 
     public String getNome() {
         return this.nome;
@@ -62,6 +74,8 @@ public class Instituicao implements Comparable<Instituicao> {
         return this.federacao;
     }
 
+    // Setters
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -70,10 +84,21 @@ public class Instituicao implements Comparable<Instituicao> {
         this.federacao = federacao;
     }
 
+    // Operações
+
+    /**
+     * Adiciona um voluntário à instituição.
+     * @param voluntario Voluntário a adicionar.
+     */
     public void adicionarVoluntario(Voluntario voluntario) {
         this.listaVoluntarios.add(voluntario);
     }
 
+    /**
+     * Verifica se já existe um voluntário com o número de aluno indicado.
+     * @param numeroAluno Número do aluno.
+     * @return true se já existe, false caso contrário.
+     */
     public boolean listaContemVoluntario(int numeroAluno) {
         for (Voluntario voluntario : this.listaVoluntarios) {
             if (voluntario.getNumeroAluno() == numeroAluno) {
@@ -83,6 +108,11 @@ public class Instituicao implements Comparable<Instituicao> {
         return false;
     }
 
+    /**
+     * Procura um voluntário pelo número de aluno.
+     * @param numeroAluno Número do aluno.
+     * @return Voluntário correspondente ou null.
+     */
     public Voluntario buscarVoluntarioPorNumeroAluno(int numeroAluno) {
         for (Voluntario v : this.listaVoluntarios) {
             if (v.getNumeroAluno() == numeroAluno) {
@@ -92,6 +122,9 @@ public class Instituicao implements Comparable<Instituicao> {
         return null;
     }
 
+    /**
+     * Retorna o voluntário de vendas com o número de aluno indicado.
+     */
     public VoluntarioVendas getVoluntarioVendasPorNumeroAluno(int numeroAluno) {
         for (Voluntario voluntario : this.listaVoluntarios) {
             if (voluntario instanceof VoluntarioVendas && voluntario.getNumeroAluno() == numeroAluno) {
@@ -101,6 +134,9 @@ public class Instituicao implements Comparable<Instituicao> {
         return null;
     }
 
+    /**
+     * Retorna o voluntário de stock com o número de aluno indicado.
+     */
     public VoluntarioStock getVoluntarioStockPorNumeroAluno(int numeroAluno) {
         for (Voluntario voluntario : this.listaVoluntarios) {
             if (voluntario instanceof VoluntarioStock && voluntario.getNumeroAluno() == numeroAluno) {
@@ -110,6 +146,10 @@ public class Instituicao implements Comparable<Instituicao> {
         return null;
     }
 
+    /**
+     * Adiciona uma barraca à instituição e à federação (se existir).
+     * @param barraca Barraca a adicionar.
+     */
     public void adicionarBarraca(Barraca barraca) {
         this.barracas.add(barraca);
         if (this.federacao != null) {
@@ -117,14 +157,22 @@ public class Instituicao implements Comparable<Instituicao> {
         }
     }
 
+    /**
+     * Adiciona uma escala diária à instituição.
+     * @param escala Escala a adicionar.
+     */
     public void adicionarEscalaDiaria(EscalaDiaria escala) {
         this.escalasDiarias.add(escala);
     }
+
+    // Comparable
 
     @Override
     public int compareTo(Instituicao outra) {
         return this.nome.compareToIgnoreCase(outra.nome);
     }
+
+    // Equals
 
     @Override
     public boolean equals(Object o) {
@@ -133,6 +181,8 @@ public class Instituicao implements Comparable<Instituicao> {
         Instituicao that = (Instituicao) o;
         return this.nome.equals(that.nome);
     }
+
+    // toString
 
     @Override
     public String toString() {

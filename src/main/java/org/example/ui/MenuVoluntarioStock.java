@@ -5,14 +5,26 @@ import org.example.utils.Utils;
 
 import java.util.List;
 
+/**
+ * Classe responsável pelo menu interativo para voluntários do stock,
+ * permitindo adicionar novos produtos ao stock, repor stock existente e visualizar o stock atual.
+ */
 public class MenuVoluntarioStock {
     private Federacao federacao;
     private String opcao;
 
+    /**
+     * Construtor que recebe a federação para gerir os voluntários e instituições.
+     *
+     * @param federacao Instância da federação que contém as instituições e voluntários.
+     */
     public MenuVoluntarioStock(Federacao federacao) {
         this.federacao = federacao;
     }
 
+    /**
+     * Método principal que executa o menu, mostrando opções até o utilizador escolher sair.
+     */
     public void run() {
         do {
             System.out.println("\n###### MENU VOLUNTÁRIO STOCK #####");
@@ -35,6 +47,10 @@ public class MenuVoluntarioStock {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Permite ao voluntário adicionar um novo produto ao stock da sua barraca.
+     * Valida se o voluntário existe, se tem barraca associada e se o produto está disponível na instituição.
+     */
     private void adicionarNovoProduto() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
@@ -73,6 +89,10 @@ public class MenuVoluntarioStock {
         System.out.println("Produto " + produtoSelecionado.getNome() + " adicionado ao stock.");
     }
 
+    /**
+     * Permite ao voluntário repor a quantidade de um produto já existente no stock da sua barraca.
+     * Valida se o voluntário e a barraca existem, e se o produto está disponível na instituição.
+     */
     private void reporStock() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);
@@ -111,6 +131,10 @@ public class MenuVoluntarioStock {
         System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado.");
     }
 
+    /**
+     * Mostra o stock atual da barraca associada ao voluntário identificado pelo número de aluno.
+     * Exibe nome, quantidade e preço unitário de cada produto em stock.
+     */
     private void verStockAtual() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioStock voluntario = federacao.buscarVoluntarioStockPorNumeroAluno(numeroAluno);

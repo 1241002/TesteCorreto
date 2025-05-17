@@ -4,13 +4,27 @@ import org.example.model.Federacao;
 import org.example.model.Produto;
 import org.example.utils.Utils;
 
+/**
+ * Interface de utilizador para registar um novo produto na federação.
+ * Permite introduzir os dados do produto, apresentar para confirmação e, se confirmado,
+ * adicionar o produto à lista da federação.
+ */
 public class RegistarProduto_UI {
     private Federacao federacao;
 
+    /**
+     * Construtor que recebe a instância da federação onde o produto será registado.
+     *
+     * @param federacao Instância da federação para adicionar o produto.
+     */
     public RegistarProduto_UI(Federacao federacao) {
         this.federacao = federacao;
     }
 
+    /**
+     * Executa o processo de registo de um novo produto.
+     * Solicita os dados, apresenta-os para confirmação e guarda o produto se confirmado.
+     */
     public void run() {
         System.out.println("Novo Produto:");
 
@@ -28,6 +42,12 @@ public class RegistarProduto_UI {
         }
     }
 
+    /**
+     * Solicita ao utilizador a introdução dos dados do produto: nome e preço.
+     * Faz validações básicas dos dados, retornando null se inválidos.
+     *
+     * @return Produto criado com os dados introduzidos ou null se dados inválidos.
+     */
     private static Produto introduzDados() {
         String nome = Utils.readLineFromConsole("Introduza o nome do produto: ");
         if (nome == null || nome.trim().isEmpty()) {
@@ -44,6 +64,11 @@ public class RegistarProduto_UI {
         return new Produto(nome, preco);
     }
 
+    /**
+     * Apresenta os dados do produto para revisão pelo utilizador.
+     *
+     * @param produto Produto cujos dados serão apresentados.
+     */
     private void apresentaDados(Produto produto) {
         System.out.printf("Produto: %s, Preço: %.2f€%n", produto.getNome(), produto.getPrecoUnitario());
     }

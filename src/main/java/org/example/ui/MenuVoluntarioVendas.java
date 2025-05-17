@@ -3,14 +3,26 @@ package org.example.ui;
 import org.example.model.*;
 import org.example.utils.Utils;
 
+/**
+ * Classe que implementa o menu interativo para os voluntários responsáveis pelas vendas,
+ * permitindo fazer vendas e consultar o total de vendas realizadas por um voluntário.
+ */
 public class MenuVoluntarioVendas {
     private Federacao federacao;
     private String opcao;
 
+    /**
+     * Construtor que recebe a federação para gerir voluntários e as respetivas barracas.
+     *
+     * @param federacao Instância da federação que contém os voluntários.
+     */
     public MenuVoluntarioVendas(Federacao federacao) {
         this.federacao = federacao;
     }
 
+    /**
+     * Método principal que apresenta o menu e executa as ações até o utilizador escolher sair.
+     */
     public void run() {
         do {
             System.out.println("\n###### MENU VOLUNTÁRIO VENDAS #####");
@@ -30,6 +42,10 @@ public class MenuVoluntarioVendas {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Permite ao voluntário registrar uma venda de um produto.
+     * Valida se o voluntário e a barraca existem, e verifica a validade dos dados fornecidos.
+     */
     private void fazerVenda() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioVendas voluntario = federacao.buscarVoluntarioVendasPorNumeroAluno(numeroAluno);
@@ -61,6 +77,9 @@ public class MenuVoluntarioVendas {
         System.out.println("Venda registrada com sucesso.");
     }
 
+    /**
+     * Mostra o total acumulado de vendas efetuadas por um voluntário.
+     */
     private void verTotalVendas() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioVendas voluntario = federacao.buscarVoluntarioVendasPorNumeroAluno(numeroAluno);

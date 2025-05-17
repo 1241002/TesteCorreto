@@ -3,14 +3,24 @@ package org.example.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa uma barraca associada a uma instituição,
+ * contendo voluntários e um conjunto de produtos em stock.
+ * Pode ser classificada com base nas vendas (Bronze, Prata ou Ouro).
+ */
 public class Barraca implements Comparable<Barraca> {
-    // Variáveis de instância
+
     private String nome;
     private Instituicao instituicao;
     private List<Voluntario> voluntarios;
     private List<StockProdutos> stock;
 
-    // Construtor completo
+    /**
+     * Construtor completo.
+     *
+     * @param nome Nome da barraca.
+     * @param instituicao Instituição à qual a barraca pertence.
+     */
     public Barraca(String nome, Instituicao instituicao) {
         this.nome = nome;
         this.instituicao = instituicao;
@@ -18,7 +28,9 @@ public class Barraca implements Comparable<Barraca> {
         this.stock = new ArrayList<>();
     }
 
-    // Construtor vazio
+    /**
+     * Construtor por omissão.
+     */
     public Barraca() {
         this.nome = "";
         this.instituicao = null;
@@ -26,7 +38,11 @@ public class Barraca implements Comparable<Barraca> {
         this.stock = new ArrayList<>();
     }
 
-    // Construtor de cópia
+    /**
+     * Construtor de cópia.
+     *
+     * @param b Barraca a copiar.
+     */
     public Barraca(Barraca b) {
         this.nome = b.nome;
         this.instituicao = b.instituicao;
@@ -34,41 +50,80 @@ public class Barraca implements Comparable<Barraca> {
         this.stock = new ArrayList<>(b.stock);
     }
 
-    // Seletores
+    /**
+     * Obtém o nome da barraca.
+     *
+     * @return Nome da barraca.
+     */
     public String getNome() {
         return nome;
     }
 
-    public Instituicao getInstituicao() {
-        return instituicao;
-    }
-
-    public List<Voluntario> getVoluntarios() {
-        return new ArrayList<>(voluntarios);
-    }
-
-    public List<StockProdutos> getStock() {
-        return new ArrayList<>(stock);
-    }
-
-    // Modificadores
+    /**
+     * Define o nome da barraca.
+     *
+     * @param nome Novo nome.
+     */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
+    /**
+     * Obtém a instituição associada à barraca.
+     *
+     * @return Instituição da barraca.
+     */
+    public Instituicao getInstituicao() {
+        return instituicao;
+    }
+
+    /**
+     * Define a instituição da barraca.
+     *
+     * @param instituicao Instituição a associar.
+     */
     public void setInstituicao(Instituicao instituicao) {
         this.instituicao = instituicao;
     }
 
+    /**
+     * Retorna uma cópia da lista de voluntários associados à barraca.
+     *
+     * @return Lista de voluntários.
+     */
+    public List<Voluntario> getVoluntarios() {
+        return new ArrayList<>(voluntarios);
+    }
+
+    /**
+     * Retorna uma cópia da lista de produtos em stock.
+     *
+     * @return Lista de produtos em stock.
+     */
+    public List<StockProdutos> getStock() {
+        return new ArrayList<>(stock);
+    }
+
+    /**
+     * Adiciona um voluntário à barraca.
+     *
+     * @param voluntario Voluntário a adicionar.
+     * @return true se foi adicionado com sucesso, false caso contrário.
+     */
     public boolean adicionarVoluntario(Voluntario voluntario) {
         if (voluntario == null || voluntarios.contains(voluntario) || voluntario.getBarracaAssociada() != null) {
-            return false; // Volunteer not added (null, already in list, or associated with another barraca)
+            return false;
         }
         voluntarios.add(voluntario);
         voluntario.setBarracaAssociada(this);
-        return true; // Volunteer added successfully
+        return true;
     }
 
+    /**
+     * Classifica a barraca com base nas suas vendas.
+     *
+     * @return "Ouro", "Prata" ou "Bronze".
+     */
     public String classificar() {
         double vendasTotal = this.exportarVendas();
         if (vendasTotal >= 1000) {
@@ -80,6 +135,11 @@ public class Barraca implements Comparable<Barraca> {
         }
     }
 
+    /**
+     * Calcula o total de unidades em stock.
+     *
+     * @return Quantidade total de produtos em stock.
+     */
     public int exportarStockTotal() {
         int total = 0;
         for (StockProdutos sp : this.stock) {
@@ -88,6 +148,11 @@ public class Barraca implements Comparable<Barraca> {
         return total;
     }
 
+    /**
+     * Calcula o total de vendas da barraca com base nos voluntários de vendas.
+     *
+     * @return Valor total das vendas.
+     */
     public double exportarVendas() {
         double total = 0;
         for (Voluntario v : this.voluntarios) {
@@ -100,6 +165,12 @@ public class Barraca implements Comparable<Barraca> {
         return total;
     }
 
+    /**
+     * Adiciona um produto ao stock da barraca.
+     * Se o produto já existir, apenas aumenta a sua quantidade.
+     *
+     * @param stockProdutos Produto a adicionar.
+     */
     public void adicionarStock(StockProdutos stockProdutos) {
         for (StockProdutos sp : this.stock) {
             if (sp.getNome().equals(stockProdutos.getNome())) {
@@ -110,6 +181,12 @@ public class Barraca implements Comparable<Barraca> {
         this.stock.add(stockProdutos);
     }
 
+    /**
+     * Reduz a quantidade de um produto do stock.
+     *
+     * @param nomeProduto Nome do produto.
+     * @param quantidade Quantidade a reduzir.
+     */
     public void reduzirStock(String nomeProduto, int quantidade) {
         for (StockProdutos sp : this.stock) {
             if (sp.getNome().equals(nomeProduto)) {
@@ -119,13 +196,23 @@ public class Barraca implements Comparable<Barraca> {
         }
     }
 
-    // Implementação de Comparable (ordena por nome)
+    /**
+     * Compara barracas com base no nome (ordem alfabética).
+     *
+     * @param outra Outra barraca a comparar.
+     * @return Resultado da comparação.
+     */
     @Override
     public int compareTo(Barraca outra) {
         return this.nome.compareToIgnoreCase(outra.nome);
     }
 
-    // Método equals
+    /**
+     * Verifica se duas barracas são iguais.
+     *
+     * @param o Objeto a comparar.
+     * @return true se forem iguais, false caso contrário.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -135,7 +222,11 @@ public class Barraca implements Comparable<Barraca> {
                 this.instituicao.equals(barraca.instituicao);
     }
 
-    // Método toString
+    /**
+     * Representação textual da barraca.
+     *
+     * @return String com informações da barraca.
+     */
     @Override
     public String toString() {
         return "Barraca{" +

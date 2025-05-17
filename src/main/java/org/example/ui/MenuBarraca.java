@@ -16,7 +16,7 @@ public class MenuBarraca {
     public void run() {
         String opcao;
         do {
-            System.out.println("###### MENU BARRACA #####");
+            System.out.println("\n###### MENU BARRACA #####");
             System.out.println("1. Criar uma nova barraca");
             System.out.println("2. Adicionar voluntários a uma barraca existente");
             System.out.println("0. Voltar ao menu principal");
@@ -35,12 +35,16 @@ public class MenuBarraca {
                 default:
                     System.out.println("Opção inválida!");
             }
+
+            if (!opcao.equals("0")) {
+                Utils.readLineFromConsole("Pressione Enter para continuar...");
+            }
         } while (!opcao.equals("0"));
     }
 
     private void criarBarraca() {
         String nomeBarraca = Utils.readLineFromConsole("Digite o nome da barraca: ");
-        if (nomeBarraca == null || nomeBarraca.isEmpty()) {
+        if (nomeBarraca == null || nomeBarraca.trim().isEmpty()) {
             System.out.println("Nome da barraca inválido.");
             return;
         }
@@ -53,9 +57,17 @@ public class MenuBarraca {
 
         Barraca novaBarraca = new Barraca(nomeBarraca, instituicaoSelecionada);
 
+        // Pedir pelo menos 2 voluntários
         while (novaBarraca.getVoluntarios().size() < 2) {
-            System.out.println("Adicione voluntários à barraca:");
+            System.out.println("Adicione voluntários à barraca (" + novaBarraca.getVoluntarios().size() + "/2):");
             adicionarVoluntario(novaBarraca);
+        }
+
+        // Confirmação final antes de adicionar
+        String confirma = Utils.readLineFromConsole("Confirmar criação da barraca? (s/n): ");
+        if (confirma == null || !confirma.equalsIgnoreCase("s")) {
+            System.out.println("Criação da barraca cancelada.");
+            return;
         }
 
         instituicaoSelecionada.adicionarBarraca(novaBarraca);
@@ -90,9 +102,7 @@ public class MenuBarraca {
 
     private void adicionarVoluntariosBarracaExistente() {
         Instituicao instituicao = escolherInstituicao();
-        if (instituicao == null) {
-            return;
-        }
+        if (instituicao == null) return;
 
         if (instituicao.getBarracas().isEmpty()) {
             System.out.println("Essa instituição ainda não tem barracas.");
@@ -100,9 +110,7 @@ public class MenuBarraca {
         }
 
         Barraca barraca = escolherBarraca(instituicao);
-        if (barraca == null) {
-            return;
-        }
+        if (barraca == null) return;
 
         boolean continuar;
         do {
@@ -136,7 +144,7 @@ public class MenuBarraca {
             if (barraca.adicionarVoluntario(voluntario)) {
                 System.out.println("Voluntário " + voluntario.getNome() + " adicionado com sucesso!");
             } else {
-                System.out.println("Erro: voluntário já pode estar associado ou não é elegível.");
+                System.out.println("Erro: voluntário já está associado ou não é elegível.");
             }
         } else {
             System.out.println("Voluntário com número de aluno " + numeroAluno + " não encontrado.");

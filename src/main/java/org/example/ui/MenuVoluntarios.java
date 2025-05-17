@@ -5,14 +5,28 @@ import org.example.utils.Utils;
 
 import java.util.List;
 
+/**
+ * Classe que implementa o menu para gerir voluntários,
+ * permitindo adicionar voluntários de stock e de vendas
+ * às instituições da federação.
+ */
 public class MenuVoluntarios {
     private Federacao federacao;
     private String opcao;
 
+    /**
+     * Construtor da classe MenuVoluntarios.
+     *
+     * @param federacao Objeto Federacao que contém as instituições e voluntários.
+     */
     public MenuVoluntarios(Federacao federacao) {
         this.federacao = federacao;
     }
 
+    /**
+     * Executa o loop do menu, mostrando as opções e
+     * respondendo às escolhas do utilizador.
+     */
     public void run() {
         do {
             System.out.println("###### MENU VOLUNTÁRIOS #####");
@@ -30,52 +44,94 @@ public class MenuVoluntarios {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Método para adicionar um voluntário do tipo Stock a uma instituição.
+     * Realiza validação do número do aluno e nome, escolhe instituição e adiciona o voluntário.
+     * Trata exceções específicas para entrada inválida.
+     */
     private void adicionarVoluntarioStock() {
-        int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
-        String nome = Utils.readLineFromConsole("Nome do voluntário: ");
-        String curso = Utils.readLineFromConsole("Curso do voluntário: ");
-        String senha = Utils.readLineFromConsole("Senha do voluntário: ");
+        try {
+            String numStr = Utils.readLineFromConsole("Número do aluno: ");
+            if (!numStr.matches("\\d+")) {
+                throw new ExcecaoNumeroAluno();
+            }
+            int numeroAluno = Integer.parseInt(numStr);
 
-        Instituicao instituicaoEscolhida = escolherInstituicao();
-        if (instituicaoEscolhida == null) {
-            System.out.println("Operação cancelada.");
-            return;
+            String nome = Utils.readLineFromConsole("Nome do voluntário: ");
+            if (!nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
+                throw new ExcecaoNome();
+            }
+
+            String curso = Utils.readLineFromConsole("Curso do voluntário: ");
+            String senha = Utils.readLineFromConsole("Senha do voluntário: ");
+
+            Instituicao instituicaoEscolhida = escolherInstituicao();
+            if (instituicaoEscolhida == null) {
+                System.out.println("Operação cancelada.");
+                return;
+            }
+
+            if (instituicaoEscolhida.listaContemVoluntario(numeroAluno)) {
+                System.out.println("Voluntário com esse número já existe na instituição.");
+                return;
+            }
+
+            VoluntarioStock voluntario = new VoluntarioStock(nome, numeroAluno, instituicaoEscolhida, curso, senha);
+            instituicaoEscolhida.adicionarVoluntario(voluntario);
+
+            System.out.println("Voluntário de Stock adicionado com sucesso à instituição " + instituicaoEscolhida.getNome());
+        } catch (ExcecaoNumeroAluno | ExcecaoNome e) {
+            System.out.println("Erro: " + e.getMessage());
         }
-
-        if (instituicaoEscolhida.listaContemVoluntario(numeroAluno)) {
-            System.out.println("Voluntário com esse número já existe na instituição.");
-            return;
-        }
-
-        VoluntarioStock voluntario = new VoluntarioStock(nome, numeroAluno, instituicaoEscolhida, curso, senha);
-        instituicaoEscolhida.adicionarVoluntario(voluntario);
-
-        System.out.println("Voluntário de Stock adicionado com sucesso à instituição " + instituicaoEscolhida.getNome());
     }
 
+    /**
+     * Método para adicionar um voluntário do tipo Vendas a uma instituição.
+     * Realiza validação do número do aluno e nome, escolhe instituição e adiciona o voluntário.
+     * Trata exceções específicas para entrada inválida.
+     */
     private void adicionarVoluntarioVendas() {
-        int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
-        String nome = Utils.readLineFromConsole("Nome do voluntário: ");
-        String curso = Utils.readLineFromConsole("Curso do voluntário: ");
-        String senha = Utils.readLineFromConsole("Senha do voluntário: ");
+        try {
+            String numStr = Utils.readLineFromConsole("Número do aluno: ");
+            if (!numStr.matches("\\d+")) {
+                throw new ExcecaoNumeroAluno();
+            }
+            int numeroAluno = Integer.parseInt(numStr);
 
-        Instituicao instituicaoEscolhida = escolherInstituicao();
-        if (instituicaoEscolhida == null) {
-            System.out.println("Operação cancelada.");
-            return;
+            String nome = Utils.readLineFromConsole("Nome do voluntário: ");
+            if (!nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
+                throw new ExcecaoNome();
+            }
+
+            String curso = Utils.readLineFromConsole("Curso do voluntário: ");
+            String senha = Utils.readLineFromConsole("Senha do voluntário: ");
+
+            Instituicao instituicaoEscolhida = escolherInstituicao();
+            if (instituicaoEscolhida == null) {
+                System.out.println("Operação cancelada.");
+                return;
+            }
+
+            if (instituicaoEscolhida.listaContemVoluntario(numeroAluno)) {
+                System.out.println("Voluntário com esse número já existe na instituição.");
+                return;
+            }
+
+            VoluntarioVendas voluntario = new VoluntarioVendas(nome, numeroAluno, instituicaoEscolhida, curso, senha);
+            instituicaoEscolhida.adicionarVoluntario(voluntario);
+
+            System.out.println("Voluntário de Vendas adicionado com sucesso à instituição " + instituicaoEscolhida.getNome());
+        } catch (ExcecaoNumeroAluno | ExcecaoNome e) {
+            System.out.println("Erro: " + e.getMessage());
         }
-
-        if (instituicaoEscolhida.listaContemVoluntario(numeroAluno)) {
-            System.out.println("Voluntário com esse número já existe na instituição.");
-            return;
-        }
-
-        VoluntarioVendas voluntario = new VoluntarioVendas(nome, numeroAluno, instituicaoEscolhida, curso, senha);
-        instituicaoEscolhida.adicionarVoluntario(voluntario);
-
-        System.out.println("Voluntário de Vendas adicionado com sucesso à instituição " + instituicaoEscolhida.getNome());
     }
 
+    /**
+     * Apresenta a lista de instituições disponíveis e permite
+     * ao utilizador escolher uma delas.
+     *
+     * @return A Instituicao escolhida ou null caso não tenha sido selecionada nenhuma.
+     */
     private Instituicao escolherInstituicao() {
         List<Instituicao> instituicoes = federacao.getInstituicoes();
         if (instituicoes.isEmpty()) {

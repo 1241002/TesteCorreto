@@ -8,13 +8,32 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Menu para exibir rankings relacionados às escalas diárias da federação.
+ * Permite ao utilizador selecionar uma escala pela data, visualizar os voluntários
+ * ordenados por número de aluno em cada barraca, e ver as barracas agrupadas por categorias
+ * (Ouro, Prata, Bronze) com os respetivos stocks finais e vendas.
+ */
 public class MenuRankings {
+
+    /**
+     * Instância da federação que contém as escalas, barracas e voluntários.
+     */
     private Federacao federacao;
 
+    /**
+     * Construtor que inicializa o menu com a federação fornecida.
+     *
+     * @param federacao A federação usada para obter escalas e dados relacionados.
+     */
     public MenuRankings(Federacao federacao) {
         this.federacao = federacao;
     }
 
+    /**
+     * Executa o menu de rankings, apresentando as escalas disponíveis e permitindo
+     * ao utilizador escolher uma escala para visualização dos rankings.
+     */
     public void run() {
         List<EscalaDiaria> escalas = federacao.getEscalas();
 
@@ -40,6 +59,12 @@ public class MenuRankings {
         mostrarBarracasPorCategoria(escalaSelecionada);
     }
 
+    /**
+     * Mostra os voluntários de cada barraca ordenados pelo número de aluno.
+     * Para voluntários do tipo VoluntarioVendas, exibe também a sua categoria.
+     *
+     * @param escala A escala diária para obter as barracas e voluntários.
+     */
     private void mostrarVoluntariosOrdenados(EscalaDiaria escala) {
         System.out.println("\n--- Voluntários por barraca (ordenados por nº de aluno) ---");
 
@@ -58,6 +83,12 @@ public class MenuRankings {
         }
     }
 
+    /**
+     * Mostra as barracas agrupadas por categoria (Ouro, Prata, Bronze),
+     * ordenadas por total de vendas de forma decrescente, e exibe o stock final.
+     *
+     * @param escala A escala diária que contém as barracas a classificar.
+     */
     private void mostrarBarracasPorCategoria(EscalaDiaria escala) {
         System.out.println("\n--- Barracas agrupadas por categoria ---");
 
@@ -81,6 +112,12 @@ public class MenuRankings {
         mostrarCategoria("Bronze", bronze);
     }
 
+    /**
+     * Exibe as barracas de uma categoria específica, ordenadas por vendas decrescentes.
+     *
+     * @param nomeCategoria Nome da categoria (ex.: "Ouro").
+     * @param barracas Lista de barracas pertencentes à categoria.
+     */
     private void mostrarCategoria(String nomeCategoria, List<Barraca> barracas) {
         Collections.sort(barracas, Comparator.comparingDouble(Barraca::exportarVendas).reversed());
         System.out.println("\nCategoria: " + nomeCategoria);
