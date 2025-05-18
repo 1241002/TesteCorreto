@@ -26,6 +26,7 @@ public class MenuRankings {
      * Construtor que inicializa o menu com a federação fornecida.
      *
      * @param federacao A federação usada para obter escalas e dados relacionados.
+     * @throws IllegalArgumentException se a federação for nula.
      */
     public MenuRankings(Federacao federacao) {
         if (federacao == null) {
@@ -37,6 +38,7 @@ public class MenuRankings {
     /**
      * Executa o menu de rankings, apresentando as escalas disponíveis e permitindo
      * ao utilizador escolher uma escala para visualização dos rankings.
+     * Exibe mensagens de erro para entradas inválidas ou exceções inesperadas.
      */
     public void run() {
         try {

@@ -3,14 +3,26 @@ package org.example.ui;
 import org.example.model.*;
 import org.example.utils.Utils;
 
+/**
+ * Classe responsável pelo menu interativo para voluntários das vendas,
+ * permitindo registar vendas e consultar o total de vendas de um voluntário.
+ */
 public class MenuVoluntarioVendas {
     private Federacao federacao;
     private String opcao;
 
+    /**
+     * Construtor que recebe a federação para gerir voluntários e instituições.
+     *
+     * @param federacao Instância da federação que contém as instituições e voluntários.
+     */
     public MenuVoluntarioVendas(Federacao federacao) {
         this.federacao = federacao;
     }
 
+    /**
+     * Método principal que executa o menu, mostrando opções até o utilizador escolher sair.
+     */
     public void run() {
         do {
             System.out.println("\n###### MENU VOLUNTÁRIO VENDAS #####");
@@ -30,6 +42,11 @@ public class MenuVoluntarioVendas {
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Permite ao voluntário registar uma venda.
+     * Solicita número do aluno, valida existência do voluntário e barraca,
+     * depois solicita nome do produto e quantidade vendida com validação.
+     */
     private void fazerVenda() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioVendas voluntario = federacao.buscarVoluntarioVendasPorNumeroAluno(numeroAluno);
@@ -41,7 +58,7 @@ public class MenuVoluntarioVendas {
 
         Barraca barraca = voluntario.getBarracaAssociada();
         if (barraca == null) {
-            System.out.println("Voluntário sem barraca.");
+            System.out.println("Voluntário sem barraca associada.");
             return;
         }
 
@@ -74,6 +91,9 @@ public class MenuVoluntarioVendas {
         System.out.println("Venda registrada com sucesso.");
     }
 
+    /**
+     * Mostra o total acumulado de vendas de um voluntário, identificado pelo número de aluno.
+     */
     private void verTotalVendas() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioVendas voluntario = federacao.buscarVoluntarioVendasPorNumeroAluno(numeroAluno);

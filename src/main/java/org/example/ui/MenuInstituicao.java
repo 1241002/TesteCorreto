@@ -23,6 +23,7 @@ public class MenuInstituicao {
      * Construtor que inicializa o menu com a instância da federação.
      *
      * @param federacao A federação usada para adicionar e verificar instituições.
+     * @throws IllegalArgumentException se a federação for nula.
      */
     public MenuInstituicao(Federacao federacao) {
         if (federacao == null) {
@@ -33,8 +34,12 @@ public class MenuInstituicao {
 
     /**
      * Executa o menu de instituição, solicitando ao utilizador o nome da nova instituição,
-     * valida se o nome não está vazio e se ainda não existe uma instituição com o mesmo nome,
-     * e adiciona a nova instituição à federação caso tudo esteja correto.
+     * valida se o nome não está vazio, se contém apenas letras e espaços, e se ainda não existe
+     * uma instituição com o mesmo nome. Caso todas as validações sejam passadas,
+     * adiciona a nova instituição à federação.
+     *
+     * Exibe mensagens de erro apropriadas caso ocorra alguma exceção.
+     * Aguarda o utilizador pressionar Enter antes de retornar.
      */
     public void run() {
         try {

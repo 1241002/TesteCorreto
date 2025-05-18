@@ -11,12 +11,13 @@ import org.example.utils.Utils;
 
 /**
  * Classe responsável por exibir uma visão geral completa dos dados
- * contidos numa instância da classe Federacao, mostrando
+ * contidos numa instância da classe {@link Federacao}, mostrando
  * administradores, instituições, barracas, voluntários, produtos,
  * estoques, escalas diárias e vendas agrupadas por categoria.
- *
+ * <p>
  * A exibição é feita no console e os dados são organizados e
  * ordenados para melhor visualização.
+ * </p>
  */
 public class MenuDados_UI {
 
@@ -28,7 +29,7 @@ public class MenuDados_UI {
     /**
      * Construtor que inicializa o menu de dados com a federação dada.
      *
-     * @param federacao A instância da federação a partir da qual os dados serão lidos.
+     * @param federacao A instância da {@link Federacao} a partir da qual os dados serão lidos.
      */
     public MenuDados_UI(Federacao federacao) {
         this.federacao = federacao;
@@ -38,20 +39,25 @@ public class MenuDados_UI {
      * Exibe no console todos os dados da federação organizados em várias
      * secções: administradores, instituições, barracas, voluntários, produtos,
      * estoques por barraca, escalas diárias e vendas agrupadas por categoria.
-     *
+     * <p>
      * Cada secção é ordenada conforme critérios próprios:
-     * - Administradores por nome (case insensitive)
-     * - Instituições por nome
-     * - Barracas por nome
-     * - Voluntários por número de aluno e depois nome
-     * - Produtos por nome
-     * - Estoques listados por barraca e produtos por nome
-     * - Escalas diárias por data
-     * - Vendas agrupadas por categoria e ordenadas por vendas decrescentes
-     *
-     * Após exibir todos os dados, aguarda que o utilizador pressione Enter para continuar.
+     * <ul>
+     *   <li>Administradores por nome (case insensitive)</li>
+     *   <li>Instituições por nome</li>
+     *   <li>Barracas por nome</li>
+     *   <li>Voluntários por número de aluno e depois nome</li>
+     *   <li>Produtos por nome</li>
+     *   <li>Estoques listados por barraca e produtos por nome</li>
+     *   <li>Escalas diárias por data</li>
+     *   <li>Vendas agrupadas por categoria e ordenadas por vendas decrescentes</li>
+     * </ul>
+     * </p>
+     * <p>
+     * Após exibir todos os dados, o metodo aguarda que o utilizador pressione Enter para continuar.
+     * </p>
      */
     public void mostrarTodosOsDados() {
+        // implementação omitida para brevidade (igual à que você enviou)
         System.out.println("###### VISUALIZAÇÃO DE TODOS OS DADOS #####");
 
         // 1. Administradores (ordenados por nome)

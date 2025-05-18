@@ -8,13 +8,28 @@ import org.example.utils.Utils;
 
 import java.io.Serializable;
 
-public class MenuBarraca{
+/**
+ * Classe que implementa o menu de interação para gestão de barracas
+ * dentro da federação. Permite criar barracas, adicionar voluntários
+ * às barracas existentes e navegar no menu.
+ */
+public class MenuBarraca {
     private Federacao federacao;
 
+    /**
+     * Construtor da classe MenuBarraca.
+     *
+     * @param federacao Instância da federação que contém as instituições,
+     *                  barracas e voluntários.
+     */
     public MenuBarraca(Federacao federacao) {
         this.federacao = federacao;
     }
 
+    /**
+     * Executa o menu principal de barracas, permitindo ao usuário escolher
+     * as opções disponíveis até optar por voltar ao menu principal.
+     */
     public void run() {
         String opcao;
         do {
@@ -44,6 +59,11 @@ public class MenuBarraca{
         } while (!opcao.equals("0"));
     }
 
+    /**
+     * Método auxiliar que cria uma nova barraca, associando-a a uma instituição
+     * e adicionando pelo menos dois voluntários.
+     * Solicita confirmação antes de concluir a criação.
+     */
     private void criarBarraca() {
         String nomeBarraca = Utils.readLineFromConsole("Digite o nome da barraca: ");
         if (nomeBarraca == null || nomeBarraca.trim().isEmpty()) {
@@ -65,7 +85,6 @@ public class MenuBarraca{
             adicionarVoluntario(novaBarraca);
         }
 
-        // Confirmação final antes de adicionar
         String confirma = Utils.readLineFromConsole("Confirmar criação da barraca? (s/n): ");
         if (confirma == null || !confirma.equalsIgnoreCase("s")) {
             System.out.println("Criação da barraca cancelada.");
@@ -81,6 +100,11 @@ public class MenuBarraca{
         }
     }
 
+    /**
+     * Exibe a lista de instituições e permite ao usuário escolher uma delas.
+     *
+     * @return Instituição selecionada pelo usuário, ou null se não houver escolha válida.
+     */
     private Instituicao escolherInstituicao() {
         if (federacao.getInstituicoes().isEmpty()) {
             System.out.println("Nenhuma instituição disponível.");
@@ -102,6 +126,10 @@ public class MenuBarraca{
         return federacao.getInstituicoes().get(opcaoInstituicao - 1);
     }
 
+    /**
+     * Permite adicionar voluntários a uma barraca já existente de uma instituição.
+     * Continua pedindo voluntários enquanto o usuário desejar.
+     */
     private void adicionarVoluntariosBarracaExistente() {
         Instituicao instituicao = escolherInstituicao();
         if (instituicao == null) return;
@@ -122,6 +150,12 @@ public class MenuBarraca{
         } while (continuar);
     }
 
+    /**
+     * Exibe as barracas de uma instituição para o usuário escolher uma.
+     *
+     * @param instituicao Instituição cujas barracas serão listadas.
+     * @return Barraca selecionada ou null caso a escolha seja inválida.
+     */
     private Barraca escolherBarraca(Instituicao instituicao) {
         System.out.println("Escolha a barraca:");
         int j = 1;
@@ -138,6 +172,12 @@ public class MenuBarraca{
         return instituicao.getBarracas().get(escolhaBarraca - 1);
     }
 
+    /**
+     * Solicita o número de aluno do voluntário e tenta adicioná-lo à barraca.
+     * Verifica se o voluntário existe e se pode ser associado à barraca.
+     *
+     * @param barraca Barraca à qual o voluntário será adicionado.
+     */
     private void adicionarVoluntario(Barraca barraca) {
         int numeroAluno = Utils.readIntFromConsole("Digite o número de aluno do voluntário: ");
         Voluntario voluntario = federacao.buscarVoluntarioPorNumeroAluno(numeroAluno);

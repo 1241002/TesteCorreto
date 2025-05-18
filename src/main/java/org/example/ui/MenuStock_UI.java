@@ -15,6 +15,12 @@ public class MenuStock_UI {
     private Federacao federacao;
     private String opcao;
 
+    /**
+     * Construtor que inicializa o menu com a federação fornecida.
+     *
+     * @param federacao objeto {@link Federacao} que representa a federação onde estão as barracas.
+     * @throws IllegalArgumentException se a federação for {@code null}.
+     */
     public MenuStock_UI(Federacao federacao) {
         if (federacao == null) {
             throw new IllegalArgumentException("Federação não pode ser nula");
@@ -23,6 +29,10 @@ public class MenuStock_UI {
         this.opcao = "";
     }
 
+    /**
+     * Executa o loop principal do menu, apresentando opções para o utilizador gerir o stock.
+     * O método só termina quando o utilizador escolher a opção para voltar.
+     */
     public void run() {
         do {
             try {
@@ -65,6 +75,11 @@ public class MenuStock_UI {
         } while (!opcao.trim().equals("0"));
     }
 
+    /**
+     * Permite adicionar um novo produto ao stock de uma barraca selecionada.
+     * Solicita ao utilizador o nome do produto, preço unitário e quantidade.
+     * Valida as entradas e lança exceções específicas em caso de erros.
+     */
     private void adicionarNovoProduto() {
         try {
             List<Barraca> barracas = federacao.getTodasBarracas();
@@ -85,7 +100,6 @@ public class MenuStock_UI {
                 throw new IllegalArgumentException("Nome do produto não pode ser vazio");
             }
 
-            // Verificar se o produto existe na federação
             if (!federacao.listaContemProduto(nomeProduto)) {
                 throw new ExcecaoProdutoNaoExistente("Produto '" + nomeProduto + "' não registrado na federação");
             }
@@ -132,6 +146,11 @@ public class MenuStock_UI {
         }
     }
 
+    /**
+     * Permite repor a quantidade de stock de um produto já existente numa barraca.
+     * O utilizador escolhe a barraca, o produto e a quantidade a adicionar.
+     * Valida a entrada e atualiza o stock.
+     */
     private void reporStock() {
         try {
             List<Barraca> barracas = federacao.getTodasBarracas();
@@ -182,6 +201,10 @@ public class MenuStock_UI {
         }
     }
 
+    /**
+     * Exibe o stock atual de uma barraca selecionada pelo utilizador.
+     * Lista todos os produtos com suas quantidades e preços unitários.
+     */
     private void verStock() {
         try {
             List<Barraca> barracas = federacao.getTodasBarracas();

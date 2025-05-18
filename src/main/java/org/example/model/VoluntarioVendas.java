@@ -150,7 +150,7 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios, 
 
     @Override
     public void verificarEExibirCategoria() {
-        // Método da interface, pode ser implementado conforme necessidade.
+        // Metodo da interface, pode ser implementado conforme necessidade.
     }
 
     /**

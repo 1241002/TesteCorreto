@@ -13,7 +13,7 @@ import java.util.List;
  * Permite criar novas escalas, terminar o dia (finalizar e guardar dados da escala atual)
  * e visualizar escalas anteriores.
  *
- * Este menu interage com a instância de {@link Federacao} para manipular as escalas.
+ * Este menu interage com a instância da federação para manipular as escalas.
  */
 public class MenuEscalaDiaria {
 

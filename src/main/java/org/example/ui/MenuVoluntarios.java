@@ -3,7 +3,6 @@ package org.example.ui;
 import org.example.model.*;
 import org.example.utils.Utils;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -25,8 +24,8 @@ public class MenuVoluntarios {
     }
 
     /**
-     * Executa o loop do menu, mostrando as opções e
-     * respondendo às escolhas do utilizador.
+     * Executa o loop do menu, mostrando as opções ao utilizador
+     * e respondendo às escolhas feitas até que o utilizador escolha sair.
      */
     public void run() {
         do {
@@ -46,9 +45,15 @@ public class MenuVoluntarios {
     }
 
     /**
-     * Metodo para adicionar um voluntário do tipo Stock a uma instituição.
-     * Realiza validação do número do aluno e nome, escolhe instituição e adiciona o voluntário.
-     * Trata exceções específicas para entrada inválida.
+     * Adiciona um voluntário do tipo Stock a uma instituição da federação.
+     * <p>
+     * Realiza validação do número do aluno e do nome do voluntário, permite
+     * escolher a instituição, verifica se o voluntário já existe, e adiciona-o
+     * à lista da instituição escolhida.
+     * </p>
+     * <p>
+     * Em caso de entrada inválida, exibe mensagens de erro apropriadas.
+     * </p>
      */
     private void adicionarVoluntarioStock() {
         try {
@@ -87,9 +92,15 @@ public class MenuVoluntarios {
     }
 
     /**
-     * Método para adicionar um voluntário do tipo Vendas a uma instituição.
-     * Realiza validação do número do aluno e nome, escolhe instituição e adiciona o voluntário.
-     * Trata exceções específicas para entrada inválida.
+     * Adiciona um voluntário do tipo Vendas a uma instituição da federação.
+     * <p>
+     * Realiza validação do número do aluno e do nome do voluntário, permite
+     * escolher a instituição, verifica se o voluntário já existe, e adiciona-o
+     * à lista da instituição escolhida.
+     * </p>
+     * <p>
+     * Em caso de entrada inválida, exibe mensagens de erro apropriadas.
+     * </p>
      */
     private void adicionarVoluntarioVendas() {
         try {
@@ -128,10 +139,11 @@ public class MenuVoluntarios {
     }
 
     /**
-     * Apresenta a lista de instituições disponíveis e permite
-     * ao utilizador escolher uma delas.
+     * Apresenta uma lista das instituições registadas na federação e permite
+     * que o utilizador escolha uma instituição para associar ao voluntário.
      *
-     * @return A Instituicao escolhida ou null caso não tenha sido selecionada nenhuma.
+     * @return A instituição escolhida pelo utilizador, ou null se a escolha for cancelada
+     *         ou se não houver instituições registadas.
      */
     private Instituicao escolherInstituicao() {
         List<Instituicao> instituicoes = federacao.getInstituicoes();
