@@ -102,18 +102,82 @@ public class MenuEscalaDiaria {
      * Cria uma nova escala diária com data definida pelo utilizador.
      * Inicialmente, adiciona todas as barracas da federação à nova escala,
      * registra a escala na federação e define esta nova escala como a escala atual.
+     * Lança exceções específicas em caso de erros.
      */
     private void criarNovaEscala() {
-        Data novaData = Utils.readDateFromConsole("Insira a data da nova escala (formato DD-MM-AAAA): ");
-        EscalaDiaria novaEscala = new EscalaDiaria(novaData);
+        Data novaData = null;
+        boolean dataValida = false;
 
-        for (Barraca b : federacao.getTodasBarracas()) {
-            novaEscala.adicionarBarraca(b);
+        while (!dataValida) {
+            try {
+                novaData = Utils.readDateFromConsole("Insira a data da nova escala (formato DD-MM-AAAA) ou 'cancelar' para sair: ");
+
+                if (novaData == null) {
+                    System.out.println("Operação cancelada.");
+                    return;
+                }
+
+                int dia = novaData.getDia();
+                int mes = novaData.getMes();
+                int ano = novaData.getAno();
+
+                if (mes < 1 || mes > 12) {
+                    throw new ExecaoEscalaDiaria.ExcecaoValoresDataInvalidos("Mês inválido. Use um valor entre 01 e 12.");
+                }
+                if (dia < 1 || dia > 31) {
+                    throw new ExecaoEscalaDiaria.ExcecaoValoresDataInvalidos("Dia inválido. Use um valor entre 01 e 31.");
+                }
+                if (ano < 1000 || ano > 9999) {
+                    throw new ExecaoEscalaDiaria.ExcecaoValoresDataInvalidos("Ano inválido. Use um valor entre 1000 e 9999.");
+                }
+
+                dataValida = true;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Use apenas números no formato DD-MM-AAAA (ex.: 01-12-2023).");
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Erro: Valores de data inválidos. Use um formato válido (ex.: 01-12-2023) com mês entre 01 e 12 e dia entre 01 e 31.");
+            } catch (ExecaoEscalaDiaria.ExcecaoValoresDataInvalidos e) {
+                System.out.println("Erro: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Erro ao processar a data: " + e.getMessage());
+            }
         }
 
-        federacao.adicionarEscala(novaEscala);
-        federacao.setEscalaAtual(novaEscala);
-        System.out.println("Nova escala criada para a data: " + novaData);
+        try {
+            Data dataAtual = new Data(); // construtor para data atual, supondo que exista
+            if (novaData.compareTo(dataAtual) < 0) {
+                throw new ExecaoEscalaDiaria.ExcecaoDataInvalida("A data inserida está no passado.");
+            }
+
+            for (EscalaDiaria escala : escalas) {
+                if (escala.getData().equals(novaData)) {
+                    throw new ExecaoEscalaDiaria.ExcecaoEscalaExistente("Já existe uma escala para a data especificada.");
+                }
+            }
+
+            if (federacao.getTodasBarracas().isEmpty()) {
+                throw new ExecaoEscalaDiaria.ExcecaoSemBarracas("A federação não possui barracas.");
+            }
+
+            EscalaDiaria novaEscala = new EscalaDiaria(novaData);
+            for (Barraca b : federacao.getTodasBarracas()) {
+                novaEscala.adicionarBarraca(b);
+            }
+
+            federacao.adicionarEscala(novaEscala);
+            federacao.setEscalaAtual(novaEscala);
+            System.out.println("Nova escala criada para a data: " + novaData);
+
+        } catch (ExecaoEscalaDiaria.ExcecaoDataInvalida e) {
+            System.out.println("Erro: " + e.getMessage());
+        } catch (ExecaoEscalaDiaria.ExcecaoEscalaExistente e) {
+            System.out.println("Erro: " + e.getMessage());
+        } catch (ExecaoEscalaDiaria.ExcecaoSemBarracas e) {
+            System.out.println("Erro: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro inesperado: " + e.getMessage());
+        }
     }
 
     /**

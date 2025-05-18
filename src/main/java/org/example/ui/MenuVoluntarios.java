@@ -46,7 +46,7 @@ public class MenuVoluntarios {
     }
 
     /**
-     * Método para adicionar um voluntário do tipo Stock a uma instituição.
+     * Metodo para adicionar um voluntário do tipo Stock a uma instituição.
      * Realiza validação do número do aluno e nome, escolhe instituição e adiciona o voluntário.
      * Trata exceções específicas para entrada inválida.
      */

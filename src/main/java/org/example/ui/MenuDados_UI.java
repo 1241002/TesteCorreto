@@ -18,7 +18,7 @@ import org.example.utils.Utils;
  * A exibição é feita no console e os dados são organizados e
  * ordenados para melhor visualização.
  */
-public class MenuDados_UI{
+public class MenuDados_UI {
 
     /**
      * A federação que contém todos os dados a serem exibidos.
@@ -60,9 +60,7 @@ public class MenuDados_UI{
         if (administradores.isEmpty()) {
             System.out.println("Nenhum administrador registrado.");
         } else {
-            // Ordena administradores por nome ignorando maiúsculas/minúsculas
             Collections.sort(administradores, Comparator.comparing(Administrador::getNome, String.CASE_INSENSITIVE_ORDER));
-            // Exibe nome, número e curso (ou "N/A" se curso for nulo)
             for (Administrador admin : administradores) {
                 String curso = admin.getCurso() != null ? admin.getCurso() : "N/A";
                 System.out.printf("- Nome: %s, Número: %d, Curso: %s%n",
@@ -76,9 +74,7 @@ public class MenuDados_UI{
         if (instituicoes.isEmpty()) {
             System.out.println("Nenhuma instituição registrada.");
         } else {
-            // Ordena instituições por nome (case insensitive)
             Collections.sort(instituicoes, Comparator.comparing(Instituicao::getNome, String.CASE_INSENSITIVE_ORDER));
-            // Exibe nome, quantidade de barracas e número de voluntários
             for (Instituicao inst : instituicoes) {
                 System.out.printf("- Nome: %s, Barracas: %d, Voluntários: %d%n",
                         inst.getNome(), inst.getBarracas().size(), inst.getListaVoluntarios().size());
@@ -91,9 +87,7 @@ public class MenuDados_UI{
         if (barracas.isEmpty()) {
             System.out.println("Nenhuma barraca registrada.");
         } else {
-            // Ordena barracas por nome
             Collections.sort(barracas, Comparator.comparing(Barraca::getNome, String.CASE_INSENSITIVE_ORDER));
-            // Exibe nome da barraca, nome da instituição (ou "N/A"), estoque total, vendas e categoria
             for (Barraca barraca : barracas) {
                 String instituicaoNome = barraca.getInstituicao() != null ? barraca.getInstituicao().getNome() : "N/A";
                 System.out.printf("- Nome: %s, Instituição: %s, Estoque Total: %d, Vendas: %.2f€, Categoria: %s%n",
@@ -105,17 +99,14 @@ public class MenuDados_UI{
         // 4. Voluntários (ordenados por número de aluno e depois nome)
         System.out.println("\n=== Voluntários ===");
         List<Voluntario> voluntarios = new ArrayList<>();
-        // Junta todos os voluntários das instituições na lista geral
         for (Instituicao inst : instituicoes) {
             voluntarios.addAll(inst.getListaVoluntarios());
         }
         if (voluntarios.isEmpty()) {
             System.out.println("Nenhum voluntário registrado.");
         } else {
-            // Ordena por númeroAluno e nome
             Collections.sort(voluntarios, Comparator.comparingInt(Voluntario::getNumeroAluno)
                     .thenComparing(Voluntario::getNome, String.CASE_INSENSITIVE_ORDER));
-            // Exibe nome, número, tipo (Stock ou Vendas), barraca associada e instituição
             for (Voluntario voluntario : voluntarios) {
                 String tipo = (voluntario instanceof VoluntarioStock) ? "Stock" : "Vendas";
                 String barraca = voluntario.getBarracaAssociada() != null ? voluntario.getBarracaAssociada().getNome() : "Nenhuma";
@@ -131,9 +122,7 @@ public class MenuDados_UI{
         if (produtos.isEmpty()) {
             System.out.println("Nenhum produto registrado.");
         } else {
-            // Ordena produtos por nome
             Collections.sort(produtos, Comparator.comparing(Produto::getNome, String.CASE_INSENSITIVE_ORDER));
-            // Exibe nome e preço unitário
             for (Produto produto : produtos) {
                 System.out.printf("- Nome: %s, Preço: %.2f€%n",
                         produto.getNome(), produto.getPrecoUnitario());
@@ -145,7 +134,6 @@ public class MenuDados_UI{
         if (barracas.isEmpty()) {
             System.out.println("Nenhuma barraca para exibir estoques.");
         } else {
-            // Para cada barraca exibe os produtos em estoque ordenados por nome
             for (Barraca barraca : barracas) {
                 System.out.println("Barraca: " + barraca.getNome());
                 List<StockProdutos> stock = new ArrayList<>(barraca.getStock());
@@ -167,9 +155,7 @@ public class MenuDados_UI{
         if (escalas.isEmpty()) {
             System.out.println("Nenhuma escala diária registrada.");
         } else {
-            // Ordena escalas por data
             Collections.sort(escalas, Comparator.comparing(escala -> escala.getData().toString()));
-            // Exibe data, número de barracas, vendas totais e stock final
             for (EscalaDiaria escala : escalas) {
                 System.out.printf("- Data: %s, Barracas: %d, Vendas Totais: %.2f€, Estoque Final: %d%n",
                         escala.getData().toString(), escala.getBarracas().size(),
@@ -177,12 +163,25 @@ public class MenuDados_UI{
             }
         }
 
-        // 8. Vendas por Barraca (agrupadas por categoria, ordenadas por vendas decrescentes)
+        // 8. Depuração de Produtos nas Instituições
+        System.out.println("\n=== Produtos Registrados nas Instituições ===");
+        for (Instituicao inst : federacao.getInstituicoes()) {
+            System.out.println("Instituição: " + inst.getNome());
+            List<Produto> produtosInst = inst.getLstProdutos();
+            if (produtosInst.isEmpty()) {
+                System.out.println("\tNenhum produto registrado.");
+            } else {
+                for (Produto p : produtosInst) {
+                    System.out.printf("\t- Produto: %s, Preço Unitário: %.2f€%n", p.getNome(), p.getPrecoUnitario());
+                }
+            }
+        }
+
+        // 9. Vendas por Barraca (agrupadas por categoria, ordenadas por vendas decrescentes)
         System.out.println("\n=== Vendas por Barraca (Agrupadas por Categoria) ===");
         if (barracas.isEmpty()) {
             System.out.println("Nenhuma barraca para exibir vendas.");
         } else {
-            // Agrupa barracas por categoria
             List<Barraca> ouro = new ArrayList<>();
             List<Barraca> prata = new ArrayList<>();
             List<Barraca> bronze = new ArrayList<>();
@@ -197,21 +196,19 @@ public class MenuDados_UI{
                 List<Barraca> barracasCategoria = categoria.equals("Ouro") ? ouro : categoria.equals("Prata") ? prata : bronze;
                 if (!barracasCategoria.isEmpty()) {
                     System.out.println("Categoria: " + categoria);
-                    // Ordena barracas da categoria por vendas decrescentes
                     Collections.sort(barracasCategoria, Comparator.comparingDouble(Barraca::exportarVendas).reversed());
                     for (Barraca barraca : barracasCategoria) {
                         System.out.printf("  Barraca: %s (Vendas Totais: %.2f€)%n", barraca.getNome(), barraca.exportarVendas());
-                        // Recolhe todas as vendas feitas pelos voluntários de vendas na barraca
                         List<VendaProdutos> vendas = new ArrayList<>();
                         for (Voluntario v : barraca.getVoluntarios()) {
                             if (v instanceof VoluntarioVendas) {
                                 vendas.addAll(((VoluntarioVendas) v).getTodasVendas());
+                                System.out.println("Depuração: Voluntário " + v.getNome() + " tem " + ((VoluntarioVendas) v).getTodasVendas().size() + " vendas.");
                             }
                         }
                         if (vendas.isEmpty()) {
                             System.out.println("\tSem vendas registradas.");
                         } else {
-                            // Ordena vendas por nome do produto
                             Collections.sort(vendas, Comparator.comparing(VendaProdutos::getNomeProduto, String.CASE_INSENSITIVE_ORDER));
                             for (VendaProdutos venda : vendas) {
                                 System.out.printf("\t- Produto: %s, Quantidade: %d, Valor Total: %.2f€%n",

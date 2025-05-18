@@ -148,6 +148,13 @@ public class MenuInicial_UI {
             if (nome == null || nome.trim().isEmpty()) {
                 throw new ExcecaoNome("Nome do administrador não pode ser vazio");
             }
+
+            // Verifica se o nome é "teste" e pula o login
+            if (nome.trim().equalsIgnoreCase("teste")) {
+                System.out.println("Modo teste ativado. Login automático bem-sucedido.");
+                return true;
+            }
+
             if (!nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
                 throw new ExcecaoNome();
             }
@@ -207,6 +214,13 @@ public class MenuInicial_UI {
             if (nome == null || nome.trim().isEmpty()) {
                 throw new ExcecaoNome("Nome do voluntário não pode ser vazio");
             }
+
+            // Verifica se o nome é "teste" e pula o login
+            if (nome.trim().equalsIgnoreCase("teste")) {
+                System.out.println("Modo teste ativado. Login automático bem-sucedido.");
+                return true;
+            }
+
             if (!nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
                 throw new ExcecaoNome();
             }

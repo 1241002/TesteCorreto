@@ -72,15 +72,42 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        double precoUnitario = Utils.readDoubleFromConsole("Preço unitário: ");
-        if (precoUnitario <= 0) {
-            System.out.println("Preço deve ser maior que zero.");
+        // Validação do preço (mantida como está)
+        String precoInput = Utils.readLineFromConsole("Preço unitário: ");
+        double precoUnitario;
+        try {
+            if (!precoInput.matches("^[0-9]+([,.][0-9]+)?$")) {
+                throw new ExcecaoPreco();
+            }
+            precoInput = precoInput.replace(',', '.');
+            precoUnitario = Double.parseDouble(precoInput);
+            if (precoUnitario <= 0) {
+                throw new ExcecaoPreco();
+            }
+        } catch (ExcecaoPreco e) {
+            System.out.println(e.getMessage());
+            return;
+        } catch (Exception e) {
+            System.out.println(new ExcecaoPreco());
             return;
         }
 
-        int quantidade = Utils.readIntFromConsole("Quantidade: ");
-        if (quantidade <= 0) {
-            System.out.println("Quantidade deve ser maior que zero.");
+        // VALIDAÇÃO manual da quantidade
+        int quantidade;
+        try {
+            String quantidadeInput = Utils.readLineFromConsole("Quantidade: ");
+            if (!quantidadeInput.matches("\\d+")) {
+                throw new ExecaoQuantidade("Quantidade inválida. Deve ser um número inteiro positivo.");
+            }
+            quantidade = Integer.parseInt(quantidadeInput);
+            if (quantidade <= 0) {
+                throw new ExecaoQuantidade("Quantidade deve ser maior que zero.");
+            }
+        } catch (ExecaoQuantidade e) {
+            System.out.println(e.getMessage());
+            return;
+        } catch (Exception e) {
+            System.out.println("Erro inesperado ao ler a quantidade.");
             return;
         }
 
@@ -96,6 +123,7 @@ public class MenuVoluntarioStock {
         barraca.adicionarStock(novoStock);
         System.out.println("Produto " + nomeProduto + " adicionado ao stock da barraca " + barraca.getNome() + ".");
     }
+
 
     /**
      * Permite ao voluntário repor a quantidade de um produto já existente no stock da sua barraca.
@@ -129,15 +157,28 @@ public class MenuVoluntarioStock {
             return;
         }
 
-        int quantidade = Utils.readIntFromConsole("Quantidade a adicionar: ");
-        if (quantidade <= 0) {
-            System.out.println("Quantidade deve ser maior que zero.");
+        int quantidade;
+        try {
+            String quantidadeInput = Utils.readLineFromConsole("Quantidade a adicionar: ");
+            if (!quantidadeInput.matches("\\d+")) {
+                throw new ExecaoQuantidade("Quantidade inválida. Deve ser um número inteiro positivo.");
+            }
+            quantidade = Integer.parseInt(quantidadeInput);
+            if (quantidade <= 0) {
+                throw new ExecaoQuantidade("Quantidade deve ser maior que zero.");
+            }
+        } catch (ExecaoQuantidade e) {
+            System.out.println(e.getMessage());
+            return;
+        } catch (Exception e) {
+            System.out.println("Erro inesperado ao ler a quantidade.");
             return;
         }
 
         produtoSelecionado.setQuantidade(produtoSelecionado.getQuantidade() + quantidade);
         System.out.println("Estoque de " + produtoSelecionado.getNome() + " atualizado na barraca " + barraca.getNome() + ".");
     }
+
 
     /**
      * Mostra o stock atual da barraca associada ao voluntário identificado pelo número de aluno.
@@ -168,4 +209,5 @@ public class MenuVoluntarioStock {
             }
         }
     }
+
 }

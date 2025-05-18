@@ -48,15 +48,41 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios, 
      *
      * @param nomeProduto Nome do produto vendido.
      * @param quantidade Quantidade vendida.
+     * @throws IllegalArgumentException se o produto não for encontrado ou a quantidade for inválida.
+     */
+    /**
+     * Regista uma venda de um produto, reduzindo o stock da barraca associada
+     * e adicionando a venda à lista interna.
+     *
+     * @param nomeProduto Nome do produto vendido.
+     * @param quantidade Quantidade vendida.
+     * @throws IllegalArgumentException se o produto não for encontrado no estoque da barraca ou a quantidade for inválida.
      */
     public void registarVenda(String nomeProduto, int quantidade) {
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade deve ser positiva.");
+        }
         Barraca barraca = this.getBarracaAssociada();
+        if (barraca == null) {
+            throw new IllegalStateException("Voluntário não associado a uma barraca.");
+        }
         double precoUnitario = 0.0;
-        for (Produto produto : this.getInstituicao().getLstProdutos()) {
-            if (produto.getNome().equals(nomeProduto)) {
-                precoUnitario = produto.getPrecoUnitario();
+        StockProdutos produtoEncontrado = null;
+        for (StockProdutos sp : barraca.getStock()) {
+            if (sp.getNome().trim().equalsIgnoreCase(nomeProduto.trim())) { // Comparação robusta
+                precoUnitario = sp.getPrecoUnitario();
+                produtoEncontrado = sp;
                 break;
             }
+        }
+        if (produtoEncontrado == null) {
+            throw new IllegalArgumentException("Produto '" + nomeProduto + "' não encontrado no estoque da barraca '" + barraca.getNome() + "'.");
+        }
+        if (precoUnitario <= 0.0) {
+            throw new IllegalArgumentException("Preço unitário do produto '" + nomeProduto + "' é inválido (zero ou negativo).");
+        }
+        if (produtoEncontrado.getQuantidade() < quantidade) {
+            throw new IllegalArgumentException("Quantidade insuficiente no estoque para o produto '" + nomeProduto + "'. Disponível: " + produtoEncontrado.getQuantidade());
         }
         barraca.reduzirStock(nomeProduto, quantidade);
         double valorTotal = quantidade * precoUnitario;

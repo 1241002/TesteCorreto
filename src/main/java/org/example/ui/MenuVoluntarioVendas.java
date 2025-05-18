@@ -3,26 +3,14 @@ package org.example.ui;
 import org.example.model.*;
 import org.example.utils.Utils;
 
-/**
- * Classe que implementa o menu interativo para os voluntários responsáveis pelas vendas,
- * permitindo fazer vendas e consultar o total de vendas realizadas por um voluntário.
- */
 public class MenuVoluntarioVendas {
     private Federacao federacao;
     private String opcao;
 
-    /**
-     * Construtor que recebe a federação para gerir voluntários e as respetivas barracas.
-     *
-     * @param federacao Instância da federação que contém os voluntários.
-     */
     public MenuVoluntarioVendas(Federacao federacao) {
         this.federacao = federacao;
     }
 
-    /**
-     * Método principal que apresenta o menu e executa as ações até o utilizador escolher sair.
-     */
     public void run() {
         do {
             System.out.println("\n###### MENU VOLUNTÁRIO VENDAS #####");
@@ -42,10 +30,6 @@ public class MenuVoluntarioVendas {
         } while (!opcao.equals("0"));
     }
 
-    /**
-     * Permite ao voluntário registrar uma venda de um produto.
-     * Valida se o voluntário e a barraca existem, e verifica a validade dos dados fornecidos.
-     */
     private void fazerVenda() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioVendas voluntario = federacao.buscarVoluntarioVendasPorNumeroAluno(numeroAluno);
@@ -62,14 +46,27 @@ public class MenuVoluntarioVendas {
         }
 
         String nomeProduto = Utils.readLineFromConsole("Nome do produto: ");
-        if (nomeProduto == null || nomeProduto.isEmpty()) {
+        if (nomeProduto == null || nomeProduto.trim().isEmpty()) {
             System.out.println("Nome do produto inválido.");
             return;
         }
 
-        int quantidade = Utils.readIntFromConsole("Quantidade vendida: ");
-        if (quantidade <= 0) {
-            System.out.println("Quantidade inválida.");
+        // Validação manual da quantidade com exceção personalizada
+        int quantidade;
+        try {
+            String quantidadeInput = Utils.readLineFromConsole("Quantidade vendida: ");
+            if (!quantidadeInput.matches("\\d+")) {
+                throw new ExecaoQuantidade("Quantidade inválida. Deve ser um número inteiro positivo.");
+            }
+            quantidade = Integer.parseInt(quantidadeInput);
+            if (quantidade <= 0) {
+                throw new ExecaoQuantidade("Quantidade deve ser maior que zero.");
+            }
+        } catch (ExecaoQuantidade e) {
+            System.out.println(e.getMessage());
+            return;
+        } catch (Exception e) {
+            System.out.println("Erro inesperado ao ler a quantidade.");
             return;
         }
 
@@ -77,9 +74,6 @@ public class MenuVoluntarioVendas {
         System.out.println("Venda registrada com sucesso.");
     }
 
-    /**
-     * Mostra o total acumulado de vendas efetuadas por um voluntário.
-     */
     private void verTotalVendas() {
         int numeroAluno = Utils.readIntFromConsole("Número do aluno: ");
         VoluntarioVendas voluntario = federacao.buscarVoluntarioVendasPorNumeroAluno(numeroAluno);

@@ -5,6 +5,7 @@ import org.example.model.ExcecaoProdutoNaoExistente;
 import org.example.model.Federacao;
 import org.example.model.Produto;
 import org.example.utils.Utils;
+import org.example.model.ExcecaoNome; // Importação da nova exceção
 
 /**
  * Interface de utilizador para registar um novo produto na federação.
@@ -57,6 +58,8 @@ public class RegistarProduto_UI {
             System.out.println("Erro no preço: " + e.getMessage());
         } catch (ExcecaoProdutoNaoExistente e) {
             System.out.println("Erro no produto: " + e.getMessage());
+        } catch (ExcecaoNome e) { // Tratamento da nova exceção
+            System.out.println("Erro no nome do produto: " + e.getMessage());
         } catch (IllegalArgumentException e) {
             System.out.println("Erro de entrada: " + e.getMessage());
         } catch (Exception e) {
@@ -71,13 +74,17 @@ public class RegistarProduto_UI {
      *
      * @return Produto criado com os dados introduzidos ou null se o utilizador cancelar.
      * @throws ExcecaoPreco Se o preço for inválido.
-     * @throws IllegalArgumentException Se o nome for inválido.
+     * @throws ExcecaoNome Se o nome do produto for inválido.
      */
-    private Produto introduzDados() throws ExcecaoPreco {
+    private Produto introduzDados() throws ExcecaoPreco, ExcecaoNome {
         try {
             String nome = Utils.readLineFromConsole("Introduza o nome do produto: ");
             if (nome == null || nome.trim().isEmpty()) {
                 throw new IllegalArgumentException("Nome do produto não pode ser vazio");
+            }
+            // Verificação do nome: apenas letras e espaços são permitidos
+            if (!nome.matches("[a-zA-Z\\s]+")) {
+                throw new ExcecaoNome();
             }
 
             String precoStr = Utils.readLineFromConsole("Introduza o preço: ");
