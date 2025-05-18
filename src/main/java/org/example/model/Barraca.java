@@ -16,6 +16,8 @@ public class Barraca implements Comparable<Barraca>, Serializable {
     private List<Voluntario> voluntarios;
     private List<StockProdutos> stock;
 
+    private static final String NOME_POR_OMISSAO = "Sem Nome";
+
     /**
      * Construtor completo.
      *
@@ -33,7 +35,7 @@ public class Barraca implements Comparable<Barraca>, Serializable {
      * Construtor por omissão.
      */
     public Barraca() {
-        this.nome = "";
+        this.nome = NOME_POR_OMISSAO;
         this.instituicao = null;
         this.voluntarios = new ArrayList<>();
         this.stock = new ArrayList<>();

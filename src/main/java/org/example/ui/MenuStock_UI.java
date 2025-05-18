@@ -31,7 +31,7 @@ public class MenuStock_UI {
 
     /**
      * Executa o loop principal do menu, apresentando opções para o utilizador gerir o stock.
-     * O método só termina quando o utilizador escolher a opção para voltar.
+     * O metodo só termina quando o utilizador escolher a opção para voltar.
      */
     public void run() {
         do {

@@ -10,6 +10,10 @@ public class StockProdutos implements Comparable<StockProdutos>, Serializable {
     private int quantidade;
     private double precoUnitario;
 
+    private static final String NOME_POR_OMISSAO = "Sem Nome";
+    private static final double PRECOUNITARIO_POR_OMISSAO = 0;
+    private static final int QUANTIDADE_POR_OMISSAO = 0;
+
     /**
      * Construtor completo.
      *
@@ -27,9 +31,9 @@ public class StockProdutos implements Comparable<StockProdutos>, Serializable {
      * Construtor por omissão.
      */
     public StockProdutos() {
-        this.nome = "";
-        this.precoUnitario = 0.0;
-        this.quantidade = 0;
+        this.nome = NOME_POR_OMISSAO;
+        this.precoUnitario = PRECOUNITARIO_POR_OMISSAO;
+        this.quantidade = QUANTIDADE_POR_OMISSAO;
     }
 
     /**

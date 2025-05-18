@@ -10,6 +10,10 @@ public class VendaProdutos implements Comparable<VendaProdutos>, Serializable {
     private int quantidade;
     private double valorTotal;
 
+    private static final String NOME_POR_OMISSAO = "Sem Nome";
+    private static final double VALORTOTAL_POR_OMISSAO = 0;
+    private static final int QUANTIDADE_POR_OMISSAO = 0;
+
     /**
      * Construtor completo.
      *
@@ -27,9 +31,9 @@ public class VendaProdutos implements Comparable<VendaProdutos>, Serializable {
      * Construtor por omissão.
      */
     public VendaProdutos() {
-        this.nomeProduto = "";
-        this.quantidade = 0;
-        this.valorTotal = 0.0;
+        this.nomeProduto = NOME_POR_OMISSAO;
+        this.quantidade = QUANTIDADE_POR_OMISSAO;
+        this.valorTotal = VALORTOTAL_POR_OMISSAO;
     }
 
     /**

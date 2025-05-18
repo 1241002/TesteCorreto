@@ -16,6 +16,9 @@ public class Instituicao implements Comparable<Instituicao>, Serializable {
     private final List<EscalaDiaria> escalasDiarias;
     private Federacao federacao;
 
+    private static final String NOME_POR_OMISSAO = "Sem Nome";
+
+
     /**
      * Construtor completo com nome.
      * @param nome Nome da instituição.
@@ -33,7 +36,12 @@ public class Instituicao implements Comparable<Instituicao>, Serializable {
      * Construtor por omissão.
      */
     public Instituicao() {
-        this("");
+        this.nome = NOME_POR_OMISSAO;
+        this.listaVoluntarios = new ArrayList<>();
+        this.lstProdutos = new ArrayList<>();
+        this.barracas = new ArrayList<>();
+        this.escalasDiarias = new ArrayList<>();
+        this.federacao = null;
     }
 
     /**

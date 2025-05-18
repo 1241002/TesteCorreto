@@ -15,6 +15,9 @@ public class EscalaDiaria implements Comparable<EscalaDiaria>, Serializable {
     private double vendasTotais;
     private int stockFinal;
 
+    private static final double VENDASTOTAIS_POR_OMISSAO = 0.0;
+    private static final int STOCKFINAL_POR_OMISSAO = 0;
+
     /**
      * Construtor que inicializa a escala com uma data específica.
      * @param data Data da escala.
@@ -32,8 +35,8 @@ public class EscalaDiaria implements Comparable<EscalaDiaria>, Serializable {
     public EscalaDiaria() {
         this.data = null;
         this.barracas = new ArrayList<>();
-        this.vendasTotais = 0.0;
-        this.stockFinal = 0;
+        this.vendasTotais = VENDASTOTAIS_POR_OMISSAO;
+        this.stockFinal = STOCKFINAL_POR_OMISSAO;
     }
 
     /**

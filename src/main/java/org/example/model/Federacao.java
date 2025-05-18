@@ -19,6 +19,9 @@ public class Federacao implements Comparable<Federacao>, Serializable {
     private final List<EscalaDiaria> escalas;
     private final List<Administrador> administradores;
 
+    private static final String NOME_POR_OMISSAO = "Sem Nome";
+
+
     /**
      * Construtor que inicializa a federação com um nome.
      *
@@ -38,7 +41,13 @@ public class Federacao implements Comparable<Federacao>, Serializable {
      * Construtor padrão que inicializa uma federação com nome vazio.
      */
     public Federacao() {
-        this("");
+        this.nome = NOME_POR_OMISSAO;
+        this.lstProdutos = new ArrayList<>();
+        this.instituicoes = new ArrayList<>();
+        this.todasBarracas = new ArrayList<>();
+        this.escalas = new ArrayList<>();
+        this.administradores = new ArrayList<>();
+        this.escalaAtual = null;
     }
 
     /**

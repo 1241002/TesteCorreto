@@ -11,6 +11,9 @@ public class Produto implements Comparable<Produto>, Serializable {
     private String nome;
     private double precoUnitario;
 
+    private static final String NOME_POR_OMISSAO = "Sem Nome";
+    private static final double PRECOUNITARIO_POR_OMISSAO = 0;
+
     /**
      * Constrói um novo produto com o nome e preço unitário fornecidos.
      *
@@ -26,8 +29,8 @@ public class Produto implements Comparable<Produto>, Serializable {
      * Constrói um produto vazio, com nome vazio e preço unitário zero.
      */
     public Produto() {
-        this.nome = "";
-        this.precoUnitario = 0.0;
+        this.nome = NOME_POR_OMISSAO;
+        this.precoUnitario = PRECOUNITARIO_POR_OMISSAO;
     }
 
     /**

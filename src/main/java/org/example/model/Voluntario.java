@@ -14,6 +14,11 @@ public abstract class Voluntario implements Comparable<Voluntario>, Serializable
     private Barraca barracaAssociada;
     private Instituicao instituicao;
 
+    private static final String NOME_POR_OMISSAO = "Sem Nome";
+    private static final int NUMERO_POR_OMISSAO = 0;
+    private static final String SENHA_POR_OMISSAO = "1234";
+    private static final String CURSO_POR_OMISSAO = "Nenhum";
+
     /**
      * Construtor completo.
      *
@@ -34,11 +39,11 @@ public abstract class Voluntario implements Comparable<Voluntario>, Serializable
 
     /** Construtor por omissão. */
     public Voluntario() {
-        this.nome = "";
-        this.numeroAluno = 0;
+        this.nome = NOME_POR_OMISSAO;
+        this.numeroAluno = NUMERO_POR_OMISSAO;
         this.instituicao = null;
-        this.curso = "";
-        this.senha = "";
+        this.curso = CURSO_POR_OMISSAO;
+        this.senha = SENHA_POR_OMISSAO;
         this.barracaAssociada = null;
     }
 

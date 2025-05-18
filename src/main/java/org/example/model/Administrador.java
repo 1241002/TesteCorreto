@@ -15,6 +15,13 @@ public class Administrador implements Comparable<Administrador>, Serializable {
     private String senha;
     private String curso;
 
+    // Variáveis de omissão
+    private static final String NOME_POR_OMISSAO = "Sem Nome";
+    private static final int NUMERO_POR_OMISSAO = 0;
+    private static final String SENHA_POR_OMISSAO = "1234";
+    private static final String CURSO_POR_OMISSAO = "Nenhum";
+
+
     /**
      * Construtor completo.
      *
@@ -34,10 +41,10 @@ public class Administrador implements Comparable<Administrador>, Serializable {
      * Construtor por omissão (sem dados).
      */
     public Administrador() {
-        this.nome = "";
-        this.numero = 0;
-        this.senha = "";
-        this.curso = "";
+        this.nome = NOME_POR_OMISSAO;
+        this.numero = NUMERO_POR_OMISSAO;
+        this.senha = SENHA_POR_OMISSAO;
+        this.curso = CURSO_POR_OMISSAO;
     }
 
     /**
@@ -47,7 +54,7 @@ public class Administrador implements Comparable<Administrador>, Serializable {
      */
     public Administrador(Administrador admin) {
         this.nome = admin.nome;
-        this.numero = numero;
+        this.numero = admin.numero;
         this.senha = admin.senha;
         this.curso = admin.curso;
     }
