@@ -1,6 +1,7 @@
 package org.example.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Representa um voluntário, com dados pessoais e associação a uma barraca e instituição.
@@ -136,12 +137,9 @@ public abstract class Voluntario implements Comparable<Voluntario>, Serializable
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Voluntario)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Voluntario that = (Voluntario) o;
-        return this.numeroAluno == that.numeroAluno &&
-                this.nome.equals(that.nome) &&
-                this.instituicao.equals(that.instituicao);
+        return numeroAluno == that.numeroAluno && Objects.equals(nome, that.nome) && Objects.equals(curso, that.curso) && Objects.equals(senha, that.senha) && Objects.equals(barracaAssociada, that.barracaAssociada) && Objects.equals(instituicao, that.instituicao);
     }
 
     /**

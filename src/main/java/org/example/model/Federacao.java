@@ -3,6 +3,7 @@ package org.example.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Representa a federação responsável por gerir instituições, barracas, produtos,
@@ -175,9 +176,9 @@ public class Federacao implements Comparable<Federacao>, Serializable {
     public boolean validarLoginAdministrador(String nome, int numero, String senha, String curso) {
         for (Administrador admin : this.administradores) {
             if (admin.getNumero() == numero &&
-                    admin.getNome().equals(nome) &&
+                    admin.getNome().equalsIgnoreCase(nome) &&   // aqui mudou
                     admin.getSenha().equals(senha) &&
-                    admin.getCurso().equals(curso)) {
+                    admin.getCurso().equalsIgnoreCase(curso)) {  // aqui mudou
                 return true;
             }
         }
@@ -198,9 +199,9 @@ public class Federacao implements Comparable<Federacao>, Serializable {
         Voluntario voluntario = this.buscarVoluntarioPorNumeroAluno(numero);
         return voluntario != null &&
                 ((isVendas && voluntario instanceof VoluntarioVendas) || (!isVendas && voluntario instanceof VoluntarioStock)) &&
-                voluntario.getNome().equals(nome) &&
+                voluntario.getNome().equalsIgnoreCase(nome) &&      // aqui mudou
                 voluntario.getSenha().equals(senha) &&
-                voluntario.getCurso().equals(curso);
+                voluntario.getCurso().equalsIgnoreCase(curso);      // aqui mudou
     }
 
     /**
@@ -362,10 +363,9 @@ public class Federacao implements Comparable<Federacao>, Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Federacao)) return false;
-        Federacao that = (Federacao) o;
-        return this.nome.equals(that.nome);
+        if (o == null || getClass() != o.getClass()) return false;
+        Federacao federacao = (Federacao) o;
+        return Objects.equals(nome, federacao.nome) && Objects.equals(lstProdutos, federacao.lstProdutos) && Objects.equals(instituicoes, federacao.instituicoes) && Objects.equals(escalaAtual, federacao.escalaAtual) && Objects.equals(todasBarracas, federacao.todasBarracas) && Objects.equals(escalas, federacao.escalas) && Objects.equals(administradores, federacao.administradores);
     }
 
     /**

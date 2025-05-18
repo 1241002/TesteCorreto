@@ -95,13 +95,19 @@ public class MenuAdministrador {
     }
 
     private void apagarDadosSalvos() {
-        boolean apagou = PersistenciaDados.apagarDados();
-        if (apagou) {
-            System.out.println("Dados salvos apagados com sucesso.");
+        String resposta = Utils.readLineFromConsole("Tem a certeza que quer apagar todos os dados salvos? (s/n): ");
+        if (resposta.equalsIgnoreCase("s")) {
+            boolean apagou = PersistenciaDados.apagarDados();
+            if (apagou) {
+                System.out.println("Dados salvos apagados com sucesso.");
+            } else {
+                System.out.println("Não existiam dados salvos para apagar.");
+            }
         } else {
-            System.out.println("Não existiam dados salvos para apagar.");
+            System.out.println("Operação cancelada.");
         }
     }
+
 
     private void guardarDados() {
         try {

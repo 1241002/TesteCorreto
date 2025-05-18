@@ -39,8 +39,12 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios, 
      */
     public VoluntarioVendas(VoluntarioVendas outro) {
         super(outro);
-        this.vendasProdutos = new ArrayList<>(outro.vendasProdutos);
+        this.vendasProdutos = new ArrayList<>();
+        for (VendaProdutos venda : outro.vendasProdutos) {
+            this.vendasProdutos.add(new VendaProdutos(venda)); // assumindo que existe construtor de cópia
+        }
     }
+
 
     /**
      * Regista uma venda de um produto, reduzindo o stock da barraca associada

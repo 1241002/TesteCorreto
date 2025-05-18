@@ -83,8 +83,14 @@ public class StockProdutos implements Comparable<StockProdutos>, Serializable {
      * @param quantidade Quantidade a reduzir.
      */
     public void reduzirQuantidade(int quantidade) {
-        this.quantidade -= quantidade;
+        if (quantidade > 0 && this.quantidade >= quantidade) {
+            this.quantidade -= quantidade;
+        } else {
+            // podes lançar exceção, ou ignorar, ou mostrar mensagem
+            System.out.println("Quantidade inválida para redução no stock.");
+        }
     }
+
 
     /**
      * Compara produtos pelo nome (ignora maiúsculas/minúsculas).

@@ -84,7 +84,6 @@ public class MenuBarraca {
             System.out.println("Adicione voluntários à barraca (" +
                     novaBarraca.getVoluntarios().size() + "/2):");
 
-            // pergunta inicial de cancelamento
             String cancelar = Utils.readLineFromConsole(
                     "Deseja cancelar a criação da barraca? (s para cancelar / Enter para continuar): "
             );
@@ -93,48 +92,34 @@ public class MenuBarraca {
                 return;
             }
 
-            // agora, sempre que apertar Enter no número, volta a perguntar cancelar
-            while (true) {
-                String linha = Utils.readLineFromConsole(
-                        "Digite o número de aluno do voluntário (ou só Enter para cancelar): "
-                );
-
-                // se só Enter, repete a pergunta de cancelamento
-                if (linha == null || linha.trim().isEmpty()) {
-                    String confirma = Utils.readLineFromConsole(
-                            "Deseja cancelar a criação da barraca? (s para cancelar / Enter para continuar): "
-                    );
-                    if (confirma != null && confirma.equalsIgnoreCase("s")) {
-                        System.out.println("Criação da barraca cancelada.");
-                        return;
-                    }
-                    // se não cancelou, volta a pedir número
-                    continue;
-                }
-
-                // tentamos converter para inteiro
-                int numeroAluno;
-                try {
-                    numeroAluno = Integer.parseInt(linha.trim());
-                } catch (NumberFormatException e) {
-                    System.out.println("Número inválido. Tente novamente.");
-                    continue;
-                }
-
-                // buscamos o voluntário e tentamos adicionar
-                Voluntario voluntario = federacao.buscarVoluntarioPorNumeroAluno(numeroAluno);
-                if (voluntario == null) {
-                    System.out.println("Voluntário com número " + numeroAluno + " não encontrado.");
-                    continue;
-                }
-                if (!novaBarraca.adicionarVoluntario(voluntario)) {
-                    System.out.println("Erro: voluntário já está associado ou não é elegível.");
-                    continue;
-                }
-
-                System.out.println("Voluntário " + voluntario.getNome() + " adicionado com sucesso!");
-                break;  // sai do loop de número e volta ao while externo
+            String linha = Utils.readLineFromConsole(
+                    "Digite o número de aluno do voluntário: "
+            );
+            if (linha == null || linha.trim().isEmpty()) {
+                System.out.println("Número inválido.");
+                continue;
             }
+
+            int numeroAluno;
+            try {
+                numeroAluno = Integer.parseInt(linha.trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Número inválido. Tente novamente.");
+                continue;
+            }
+
+            Voluntario voluntario = federacao.buscarVoluntarioPorNumeroAluno(numeroAluno);
+            if (voluntario == null) {
+                System.out.println("Voluntário com número " + numeroAluno + " não encontrado.");
+                continue;
+            }
+
+            if (!novaBarraca.adicionarVoluntario(voluntario)) {
+                System.out.println("Erro: voluntário já está associado ou não é elegível.");
+                continue;
+            }
+
+            System.out.println("Voluntário " + voluntario.getNome() + " adicionado com sucesso!");
         }
 
         // confirmação final

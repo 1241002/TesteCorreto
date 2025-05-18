@@ -3,6 +3,7 @@ package org.example.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Representa uma barraca associada a uma instituição,
@@ -193,7 +194,8 @@ public class Barraca implements Comparable<Barraca>, Serializable {
     public void reduzirStock(String nomeProduto, int quantidade) {
         for (StockProdutos sp : this.stock) {
             if (sp.getNome().equals(nomeProduto)) {
-                sp.setQuantidade(sp.getQuantidade() - quantidade);
+                int novaQuantidade = sp.getQuantidade() - quantidade;
+                sp.setQuantidade(Math.max(novaQuantidade, 0));
                 return;
             }
         }
@@ -218,12 +220,11 @@ public class Barraca implements Comparable<Barraca>, Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Barraca)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Barraca barraca = (Barraca) o;
-        return this.nome.equals(barraca.nome) &&
-                this.instituicao.equals(barraca.instituicao);
+        return Objects.equals(nome, barraca.nome) && Objects.equals(instituicao, barraca.instituicao) && Objects.equals(voluntarios, barraca.voluntarios) && Objects.equals(stock, barraca.stock);
     }
+
 
     /**
      * Representação textual da barraca.

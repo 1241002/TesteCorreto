@@ -56,13 +56,17 @@ public class VoluntarioStock extends Voluntario implements Serializable {
      */
     public void reporProduto(String nomeProduto, int quantidade) {
         Barraca barraca = this.getBarracaAssociada();
-        double precoUnitario = 0.0;
+        double precoUnitario = -1.0; // indicador de produto não encontrado
         for (Produto produto : this.getInstituicao().getLstProdutos()) {
-            if (produto.getNome().equals(nomeProduto)) {
+            if (produto.getNome().equalsIgnoreCase(nomeProduto)) {
                 precoUnitario = produto.getPrecoUnitario();
                 break;
             }
         }
+        if (precoUnitario < 0) {
+            throw new IllegalArgumentException("Produto não encontrado na instituição: " + nomeProduto);
+        }
+
         barraca.adicionarStock(new StockProdutos(nomeProduto, precoUnitario, quantidade));
     }
 
