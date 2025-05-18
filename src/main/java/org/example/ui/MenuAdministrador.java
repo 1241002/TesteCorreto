@@ -3,7 +3,9 @@ package org.example.ui;
 import org.example.model.Federacao;
 import org.example.model.IVendasVoluntarios;
 import org.example.utils.Utils;
+import org.example.utils.PersistenciaDados;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -39,6 +41,8 @@ public class MenuAdministrador {
             System.out.println("6. Gerenciar Stock");
             System.out.println("7. Ver Rankings");
             System.out.println("8. Ver Lista de Todos os Dados");
+            System.out.println("9. Guardar Dados");
+            System.out.println("10. Apagar dados salvos");
             System.out.println("0. Voltar");
 
             opcao = Utils.readLineFromConsole("Escolha uma opção: ");
@@ -68,12 +72,19 @@ public class MenuAdministrador {
                 case "8":
                     new MenuDados_UI(federacao).mostrarTodosOsDados();
                     break;
+                case "9":
+                    guardarDados();
+                    break;
+                case "10":
+                    apagarDadosSalvos();
+                    break;
                 case "0":
                     System.out.println("A voltar ao menu inicial...");
                     break;
                 default:
                     System.out.println("Opção inválida!");
             }
+
 
             // Sugestão para melhorar UX: pedir ao utilizador para pressionar Enter para continuar
             if (!opcao.equals("0")) {
@@ -82,4 +93,23 @@ public class MenuAdministrador {
             }
         } while (!opcao.equals("0"));
     }
+
+    private void apagarDadosSalvos() {
+        boolean apagou = PersistenciaDados.apagarDados();
+        if (apagou) {
+            System.out.println("Dados salvos apagados com sucesso.");
+        } else {
+            System.out.println("Não existiam dados salvos para apagar.");
+        }
+    }
+
+    private void guardarDados() {
+        try {
+            PersistenciaDados.salvarDados(federacao);
+            System.out.println("Dados guardados com sucesso!");
+        } catch (IOException e) {
+            System.err.println("Erro ao guardar dados: " + e.getMessage());
+        }
+    }
+
 }

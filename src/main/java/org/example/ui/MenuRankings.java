@@ -81,7 +81,7 @@ public class MenuRankings {
 
     /**
      * Mostra os voluntários de cada barraca ordenados pelo número de aluno.
-     * Para voluntários do tipo VoluntarioVendas, exibe também a sua categoria.
+     * Para voluntários do tipo VoluntarioVendas, exibe também a sua categoria e vendas usando a interface IVendasVoluntarios.
      *
      * @param escala A escala diária para obter as barracas e voluntários.
      */
@@ -112,18 +112,12 @@ public class MenuRankings {
                         continue;
                     }
                     System.out.println("\t" + v.getNome() + " (nº " + v.getNumeroAluno() + ")");
-                    if (v instanceof VoluntarioVendas) {
-                        VoluntarioVendas vendedor = (VoluntarioVendas) v;
-                        String categoria = vendedor.verificarCategoria();
-                        if (categoria == null) {
-                            throw new ExcecaoVoluntarioVendasNaoExistente("Categoria inválida para voluntário de vendas: " + v.getNome());
-                        }
-                        System.out.println("\t\t" + categoria);
+                    if (v instanceof IVendasVoluntarios) { // Usa a interface em vez de cast direto
+                        IVendasVoluntarios vendedor = (IVendasVoluntarios) v;
+                        vendedor.verificarEExibirCategoria();
                     }
                 }
             }
-        } catch (ExcecaoVoluntarioVendasNaoExistente e) {
-            System.out.println("Erro no voluntário de vendas: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Ocorreu um erro inesperado ao exibir voluntários: " + e.getMessage());
         }
@@ -175,7 +169,7 @@ public class MenuRankings {
     }
 
     /**
-     * Exibe as barracas de uma categoria específica, ordenadas por vendas decrescentes.
+     * Exibe as barracas de uma categoria específica, ordenadas por stock total de forma decrescente.
      *
      * @param nomeCategoria Nome da categoria (ex.: "Ouro").
      * @param barracas      Lista de barracas pertencentes à categoria.
@@ -186,7 +180,7 @@ public class MenuRankings {
                 System.out.println("Lista de barracas inválida para categoria: " + nomeCategoria);
                 return;
             }
-            Collections.sort(barracas, Comparator.comparingDouble(Barraca::exportarVendas).reversed());
+            Collections.sort(barracas, Comparator.comparingInt(Barraca::exportarStockTotal).reversed());
             System.out.println("\nCategoria: " + nomeCategoria);
             if (barracas.isEmpty()) {
                 System.out.println("\tNenhuma barraca nesta categoria.");

@@ -60,7 +60,7 @@ public class MenuBarraca {
     }
 
     /**
-     * Método auxiliar que cria uma nova barraca, associando-a a uma instituição
+     * Metodo auxiliar que cria uma nova barraca, associando-a a uma instituição
      * e adicionando pelo menos dois voluntários.
      * Solicita confirmação antes de concluir a criação.
      */
@@ -79,12 +79,65 @@ public class MenuBarraca {
 
         Barraca novaBarraca = new Barraca(nomeBarraca, instituicaoSelecionada);
 
-        // Pedir pelo menos 2 voluntários
+        // Pedir pelo menos 2 voluntários, repetindo até ter 2 ou cancelar
         while (novaBarraca.getVoluntarios().size() < 2) {
-            System.out.println("Adicione voluntários à barraca (" + novaBarraca.getVoluntarios().size() + "/2):");
-            adicionarVoluntario(novaBarraca);
+            System.out.println("Adicione voluntários à barraca (" +
+                    novaBarraca.getVoluntarios().size() + "/2):");
+
+            // pergunta inicial de cancelamento
+            String cancelar = Utils.readLineFromConsole(
+                    "Deseja cancelar a criação da barraca? (s para cancelar / Enter para continuar): "
+            );
+            if (cancelar != null && cancelar.equalsIgnoreCase("s")) {
+                System.out.println("Criação da barraca cancelada.");
+                return;
+            }
+
+            // agora, sempre que apertar Enter no número, volta a perguntar cancelar
+            while (true) {
+                String linha = Utils.readLineFromConsole(
+                        "Digite o número de aluno do voluntário (ou só Enter para cancelar): "
+                );
+
+                // se só Enter, repete a pergunta de cancelamento
+                if (linha == null || linha.trim().isEmpty()) {
+                    String confirma = Utils.readLineFromConsole(
+                            "Deseja cancelar a criação da barraca? (s para cancelar / Enter para continuar): "
+                    );
+                    if (confirma != null && confirma.equalsIgnoreCase("s")) {
+                        System.out.println("Criação da barraca cancelada.");
+                        return;
+                    }
+                    // se não cancelou, volta a pedir número
+                    continue;
+                }
+
+                // tentamos converter para inteiro
+                int numeroAluno;
+                try {
+                    numeroAluno = Integer.parseInt(linha.trim());
+                } catch (NumberFormatException e) {
+                    System.out.println("Número inválido. Tente novamente.");
+                    continue;
+                }
+
+                // buscamos o voluntário e tentamos adicionar
+                Voluntario voluntario = federacao.buscarVoluntarioPorNumeroAluno(numeroAluno);
+                if (voluntario == null) {
+                    System.out.println("Voluntário com número " + numeroAluno + " não encontrado.");
+                    continue;
+                }
+                if (!novaBarraca.adicionarVoluntario(voluntario)) {
+                    System.out.println("Erro: voluntário já está associado ou não é elegível.");
+                    continue;
+                }
+
+                System.out.println("Voluntário " + voluntario.getNome() + " adicionado com sucesso!");
+                break;  // sai do loop de número e volta ao while externo
+            }
         }
 
+        // confirmação final
         String confirma = Utils.readLineFromConsole("Confirmar criação da barraca? (s/n): ");
         if (confirma == null || !confirma.equalsIgnoreCase("s")) {
             System.out.println("Criação da barraca cancelada.");
@@ -93,12 +146,14 @@ public class MenuBarraca {
 
         instituicaoSelecionada.adicionarBarraca(novaBarraca);
         System.out.println("Barraca criada com sucesso!");
-
         if (federacao.getEscalaAtual() != null) {
             federacao.getEscalaAtual().adicionarBarraca(novaBarraca);
-            System.out.println("Barraca adicionada à escala atual do dia: " + federacao.getEscalaAtual().getData());
+            System.out.println("Barraca adicionada à escala atual: " +
+                    federacao.getEscalaAtual().getData());
         }
     }
+
+
 
     /**
      * Exibe a lista de instituições e permite ao usuário escolher uma delas.

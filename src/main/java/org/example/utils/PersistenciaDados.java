@@ -29,6 +29,21 @@ public class PersistenciaDados {
         }
     }
 
+    public static boolean apagarDados() {
+        boolean apagou = false;
+
+        File fileDados = new File(ARQUIVO_DADOS);
+        if (fileDados.exists()) {
+            apagou = fileDados.delete();
+        }
+        File fileBackup = new File(ARQUIVO_BACKUP);
+        if (fileBackup.exists()) {
+            apagou = fileBackup.delete() || apagou;
+        }
+        return apagou;
+    }
+
+
     public static Federacao carregarDados() throws IOException, ClassNotFoundException {
         File arquivo = new File(ARQUIVO_DADOS);
         if (!arquivo.exists()) {

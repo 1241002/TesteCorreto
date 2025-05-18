@@ -61,19 +61,19 @@ public class Main {
                 barraca2.adicionarVoluntario(voluntarioVendas2);
 
                 // Adicionando produtos à federação
-                fap.adicionarProduto(new Produto("Bolo", 3.5));
-                fap.adicionarProduto(new Produto("Suco", 2.0));
-                fap.adicionarProduto(new Produto("Caneta", 1.5));
+                fap.adicionarProduto(new Produto("shots", 3.5));
+                fap.adicionarProduto(new Produto("batatas", 2.0));
+                fap.adicionarProduto(new Produto("cachorro", 4.5));
 
                 // Adicionando produtos ao stock das barracas via voluntários
-                voluntarioStock1.adicionarProdutoAoStock("Bolo", 3.5, 50);
-                voluntarioStock1.adicionarProdutoAoStock("Suco", 2.0, 30);
-                voluntarioStock2.adicionarProdutoAoStock("Caneta", 1.5, 100);
+                voluntarioStock1.adicionarProdutoAoStock("shots", 3.5, 50);
+                voluntarioStock1.adicionarProdutoAoStock("batatas", 2.0, 30);
+                voluntarioStock2.adicionarProdutoAoStock("cachorro", 4.5, 100);
 
                 // Realizando algumas vendas iniciais
-                voluntarioVendas1.registarVenda("Bolo", 5);
-                voluntarioVendas1.registarVenda("Suco", 3);
-                voluntarioVendas2.registarVenda("Caneta", 10);
+                voluntarioVendas1.registarVenda("shots", 10);
+                voluntarioVendas1.registarVenda("batatas", 24);
+                voluntarioVendas2.registarVenda("cachorro", 50);
             }
 
             // Iniciar menu principal

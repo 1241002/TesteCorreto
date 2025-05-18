@@ -123,18 +123,18 @@ public class Barraca implements Comparable<Barraca>, Serializable {
     }
 
     /**
-     * Classifica a barraca com base nas suas vendas.
+     * Classifica a barraca com base no seu stock total.
      *
      * @return "Ouro", "Prata" ou "Bronze".
      */
     public String classificar() {
-        double vendasTotal = this.exportarVendas();
-        if (vendasTotal >= 1000) {
-            return "Ouro";
-        } else if (vendasTotal >= 500) {
+        int stockTotal = this.exportarStockTotal();
+        if (stockTotal >= 100) {
+            return "Bronze";
+        } else if (stockTotal >= 50) {
             return "Prata";
         } else {
-            return "Bronze";
+            return "ouro";
         }
     }
 

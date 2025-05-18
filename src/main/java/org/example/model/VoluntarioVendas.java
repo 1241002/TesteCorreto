@@ -139,18 +139,23 @@ public class VoluntarioVendas extends Voluntario implements IVendasVoluntarios, 
      */
     public String getCategoria() {
         double total = this.getTotalVendas();
-        if (total < 500) {
+        if (total < 200) {
             return "Bronze";
-        } else if (total <= 1000) {
+        } else if (total <= 500) {
             return "Prata";
         } else {
             return "Ouro";
         }
     }
 
+    /**
+     * Mostra no ecrã a categoria atual do voluntário.
+     * A mensagem inclui nome, total de vendas e categoria atribuída.
+     */
     @Override
     public void verificarEExibirCategoria() {
-        // Metodo da interface, pode ser implementado conforme necessidade.
+        System.out.printf("\t\tVoluntário: %s, Total de Vendas: %.2f€, Classificação: %s%n",
+                this.getNome(), this.getTotalVendas(), this.getCategoria());
     }
 
     /**
