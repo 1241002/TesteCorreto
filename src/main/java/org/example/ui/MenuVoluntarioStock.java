@@ -23,7 +23,7 @@ public class MenuVoluntarioStock {
     }
 
     /**
-     * Método principal que executa o menu, mostrando opções até o utilizador escolher sair.
+     * Metodo principal que executa o menu, mostrando opções até o utilizador escolher sair.
      */
     public void run() {
         do {
